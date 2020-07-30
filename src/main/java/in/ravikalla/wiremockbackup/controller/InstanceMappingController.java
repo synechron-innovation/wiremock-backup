@@ -6,6 +6,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +25,7 @@ public class InstanceMappingController {
 	@Autowired
 	public InstanceMappingService instanceMappingService;
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
+	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public List<InstanceMappingDTO> getAll() {
 		L.info("Start : InstanceMappingController.getAll()");
 
@@ -32,6 +33,15 @@ public class InstanceMappingController {
 
 		L.info("End : InstanceMappingController.getAll() : Size = {}", (CollectionUtils.isNotEmpty(allMappings)?allMappings.size():0));
 		return allMappings;
+	}
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public InstanceMappingDTO getAll(@PathVariable("id") Long id) {
+		L.info("Start : InstanceMappingController.getAll() : id = {}", id);
+
+		InstanceMappingDTO instanceMappingDTO = instanceMappingService.getById(id);
+
+		L.info("End : InstanceMappingController.getAll() : id = {}, instanceMappingDTO = {}", id, instanceMappingDTO);
+		return instanceMappingDTO;
 	}
 	@RequestMapping(value = "", method = RequestMethod.DELETE)
 	public void delete(@RequestParam(value = "id", required = true) Long id) {

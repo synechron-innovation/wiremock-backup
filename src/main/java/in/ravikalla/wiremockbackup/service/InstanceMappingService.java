@@ -1,6 +1,7 @@
 package in.ravikalla.wiremockbackup.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -49,6 +50,14 @@ public class InstanceMappingService {
 		InstanceMapping instanceMapping = instanceMappingRepository.save(new InstanceMapping(instanceMappingDTO));
 		instanceMappingDTO = new InstanceMappingDTO(instanceMapping);
 		L.debug("End : InstanceMappingService.update() : instanceMappingDTO = {}", instanceMappingDTO);
+		return instanceMappingDTO;
+	}
+
+	public InstanceMappingDTO getById(Long id) {
+		Optional<InstanceMapping> instanceMappingOptional = instanceMappingRepository.findById(id);
+		InstanceMappingDTO instanceMappingDTO = null;
+		if (instanceMappingOptional.isPresent())
+			instanceMappingDTO = new InstanceMappingDTO(instanceMappingOptional.get());
 		return instanceMappingDTO;
 	}
 }
