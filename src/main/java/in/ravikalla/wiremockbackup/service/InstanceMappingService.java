@@ -32,6 +32,16 @@ public class InstanceMappingService {
 		return lstInstanceMappingDTO;
 	}
 
+	public InstanceMappingDTO getById(Long id) {
+		L.debug("Start : InstanceMappingService.getById() : id = {}", id);
+		Optional<InstanceMapping> instanceMappingOptional = instanceMappingRepository.findById(id);
+		InstanceMappingDTO instanceMappingDTO = null;
+		if (instanceMappingOptional.isPresent())
+			instanceMappingDTO = new InstanceMappingDTO(instanceMappingOptional.get());
+		L.debug("End : InstanceMappingService.getById() : id = {}", id);
+		return instanceMappingDTO;
+	}
+
 	public void delete(Long id) {
 		L.debug("Start : InstanceMappingService.delete() : id = {}", id);
 		instanceMappingRepository.deleteById(id);
@@ -50,14 +60,6 @@ public class InstanceMappingService {
 		InstanceMapping instanceMapping = instanceMappingRepository.save(new InstanceMapping(instanceMappingDTO));
 		instanceMappingDTO = new InstanceMappingDTO(instanceMapping);
 		L.debug("End : InstanceMappingService.update() : instanceMappingDTO = {}", instanceMappingDTO);
-		return instanceMappingDTO;
-	}
-
-	public InstanceMappingDTO getById(Long id) {
-		Optional<InstanceMapping> instanceMappingOptional = instanceMappingRepository.findById(id);
-		InstanceMappingDTO instanceMappingDTO = null;
-		if (instanceMappingOptional.isPresent())
-			instanceMappingDTO = new InstanceMappingDTO(instanceMappingOptional.get());
 		return instanceMappingDTO;
 	}
 }

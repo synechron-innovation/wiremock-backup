@@ -11,16 +11,19 @@ public class InstanceMappingDTO {
 		super();
 	}
 	public InstanceMappingDTO(Long id, String instanceName, String instanceUrl) {
+		super();
 		this.id = id;
 		this.instanceName = instanceName;
 		this.instanceUrl = instanceUrl;
 	}
 	public InstanceMappingDTO(String instanceName, String instanceUrl) {
+		super();
 		this.id = null;
 		this.instanceName = instanceName;
 		this.instanceUrl = instanceUrl;
 	}
 	public InstanceMappingDTO(InstanceMapping instanceMapping) {
+		super();
 		this.id = instanceMapping.getId();
 		this.instanceName = instanceMapping.getInstanceName();
 		this.instanceUrl = instanceMapping.getInstanceUrl();
