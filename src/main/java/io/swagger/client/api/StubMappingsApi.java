@@ -23,6 +23,8 @@ import io.swagger.client.ProgressResponseBody;
 
 import com.google.gson.reflect.TypeToken;
 
+import in.ravikalla.wiremockbackup.service.WiremockOperationsService;
+
 import java.io.IOException;
 
 
@@ -39,7 +41,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class StubMappingsApi {
+	private static final Logger L = LogManager.getLogger(StubMappingsApi.class);
+
     private ApiClient apiClient;
 
     public StubMappingsApi() {
@@ -66,6 +73,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to serialize the request body object
      */
     public com.squareup.okhttp.Call adminMappingsDeleteCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsDeleteCall(...)");
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -103,13 +111,15 @@ public class StubMappingsApi {
         }
 
         String[] localVarAuthNames = new String[] {  };
+        L.debug("End : StubMappingsApi.adminMappingsDeleteCall(...)");
         return apiClient.buildCall(localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
     }
     
     @SuppressWarnings("rawtypes")
     private com.squareup.okhttp.Call adminMappingsDeleteValidateBeforeCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        
+    	L.debug("Start : StubMappingsApi.adminMappingsDeleteValidateBeforeCall(...)");
         com.squareup.okhttp.Call call = adminMappingsDeleteCall(progressListener, progressRequestListener);
+        L.debug("End : StubMappingsApi.adminMappingsDeleteValidateBeforeCall(...)");
         return call;
 
         
@@ -124,7 +134,9 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public void adminMappingsDelete() throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsDelete()");
         adminMappingsDeleteWithHttpInfo();
+        L.debug("Start : StubMappingsApi.adminMappingsDelete()");
     }
 
     /**
@@ -134,7 +146,9 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public ApiResponse<Void> adminMappingsDeleteWithHttpInfo() throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsDeleteWithHttpInfo()");
         com.squareup.okhttp.Call call = adminMappingsDeleteValidateBeforeCall(null, null);
+        L.debug("Start : StubMappingsApi.adminMappingsDeleteWithHttpInfo()");
         return apiClient.execute(call);
     }
 
@@ -146,7 +160,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
     public com.squareup.okhttp.Call adminMappingsDeleteAsync(final ApiCallback<Void> callback) throws ApiException {
-
+    	L.debug("Start : StubMappingsApi.adminMappingsDeleteAsync()");
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
 
@@ -168,6 +182,7 @@ public class StubMappingsApi {
 
         com.squareup.okhttp.Call call = adminMappingsDeleteValidateBeforeCall(progressListener, progressRequestListener);
         apiClient.executeAsync(call, callback);
+        L.debug("End : StubMappingsApi.adminMappingsDeleteAsync()");
         return call;
     }
     /**
@@ -179,6 +194,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to serialize the request body object
      */
     public com.squareup.okhttp.Call adminMappingsFindByMetadataPostCall(Body2 body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsFindByMetadataPostCall()");
         Object localVarPostBody = body;
         
         // create path and map variables
@@ -216,17 +232,20 @@ public class StubMappingsApi {
         }
 
         String[] localVarAuthNames = new String[] {  };
+        L.debug("End : StubMappingsApi.adminMappingsFindByMetadataPostCall()");
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
     }
     
     @SuppressWarnings("rawtypes")
     private com.squareup.okhttp.Call adminMappingsFindByMetadataPostValidateBeforeCall(Body2 body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsFindByMetadataPostValidateBeforeCall(...)");
         // verify the required parameter 'body' is set
         if (body == null) {
             throw new ApiException("Missing the required parameter 'body' when calling adminMappingsFindByMetadataPost(Async)");
         }
         
         com.squareup.okhttp.Call call = adminMappingsFindByMetadataPostCall(body, progressListener, progressRequestListener);
+        L.debug("End : StubMappingsApi.adminMappingsFindByMetadataPostValidateBeforeCall(...)");
         return call;
 
         
@@ -243,7 +262,9 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public InlineResponse200 adminMappingsFindByMetadataPost(Body2 body) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsFindByMetadataPost(...)");
         ApiResponse<InlineResponse200> resp = adminMappingsFindByMetadataPostWithHttpInfo(body);
+        L.debug("End : StubMappingsApi.adminMappingsFindByMetadataPost(...)");
         return resp.getData();
     }
 
@@ -255,8 +276,10 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public ApiResponse<InlineResponse200> adminMappingsFindByMetadataPostWithHttpInfo(Body2 body) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsFindByMetadataPostWithHttpInfo(...)");
         com.squareup.okhttp.Call call = adminMappingsFindByMetadataPostValidateBeforeCall(body, null, null);
         Type localVarReturnType = new TypeToken<InlineResponse200>(){}.getType();
+        L.debug("End : StubMappingsApi.adminMappingsFindByMetadataPostWithHttpInfo(...)");
         return apiClient.execute(call, localVarReturnType);
     }
 
@@ -269,7 +292,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
     public com.squareup.okhttp.Call adminMappingsFindByMetadataPostAsync(Body2 body, final ApiCallback<InlineResponse200> callback) throws ApiException {
-
+    	L.debug("Start : StubMappingsApi.adminMappingsFindByMetadataPostAsync(...)");
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
 
@@ -292,6 +315,7 @@ public class StubMappingsApi {
         com.squareup.okhttp.Call call = adminMappingsFindByMetadataPostValidateBeforeCall(body, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<InlineResponse200>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
+        L.debug("End : StubMappingsApi.adminMappingsFindByMetadataPostAsync(...)");
         return call;
     }
     /**
@@ -304,6 +328,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to serialize the request body object
      */
     public com.squareup.okhttp.Call adminMappingsGetCall(Integer limit, Integer offset, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsGetCall(...)");
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -345,13 +370,16 @@ public class StubMappingsApi {
         }
 
         String[] localVarAuthNames = new String[] {  };
+        L.debug("End : StubMappingsApi.adminMappingsGetCall(...)");
         return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
     }
     
     @SuppressWarnings("rawtypes")
     private com.squareup.okhttp.Call adminMappingsGetValidateBeforeCall(Integer limit, Integer offset, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsGetValidateBeforeCall(...)");
         
         com.squareup.okhttp.Call call = adminMappingsGetCall(limit, offset, progressListener, progressRequestListener);
+        L.debug("End : StubMappingsApi.adminMappingsGetValidateBeforeCall(...)");
         return call;
 
         
@@ -369,7 +397,9 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public InlineResponse200 adminMappingsGet(Integer limit, Integer offset) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsGet(...)");
         ApiResponse<InlineResponse200> resp = adminMappingsGetWithHttpInfo(limit, offset);
+        L.debug("End : StubMappingsApi.adminMappingsGet(...)");
         return resp.getData();
     }
 
@@ -382,8 +412,10 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public ApiResponse<InlineResponse200> adminMappingsGetWithHttpInfo(Integer limit, Integer offset) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsGetWithHttpInfo(...)");
         com.squareup.okhttp.Call call = adminMappingsGetValidateBeforeCall(limit, offset, null, null);
         Type localVarReturnType = new TypeToken<InlineResponse200>(){}.getType();
+        L.debug("End : StubMappingsApi.adminMappingsGetWithHttpInfo(...)");
         return apiClient.execute(call, localVarReturnType);
     }
 
@@ -397,6 +429,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
     public com.squareup.okhttp.Call adminMappingsGetAsync(Integer limit, Integer offset, final ApiCallback<InlineResponse200> callback) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsGetAsync(...)");
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -420,6 +453,7 @@ public class StubMappingsApi {
         com.squareup.okhttp.Call call = adminMappingsGetValidateBeforeCall(limit, offset, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<InlineResponse200>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
+        L.debug("End : StubMappingsApi.adminMappingsGetAsync(...)");
         return call;
     }
     /**
@@ -431,6 +465,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to serialize the request body object
      */
     public com.squareup.okhttp.Call adminMappingsPostCall(Body body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsPostCall(...)");
         Object localVarPostBody = body;
         
         // create path and map variables
@@ -468,13 +503,16 @@ public class StubMappingsApi {
         }
 
         String[] localVarAuthNames = new String[] {  };
+        L.debug("End : StubMappingsApi.adminMappingsPostCall(...)");
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
     }
     
     @SuppressWarnings("rawtypes")
     private com.squareup.okhttp.Call adminMappingsPostValidateBeforeCall(Body body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsPostValidateBeforeCall(...)");
         
         com.squareup.okhttp.Call call = adminMappingsPostCall(body, progressListener, progressRequestListener);
+        L.debug("End : StubMappingsApi.adminMappingsPostValidateBeforeCall(...)");
         return call;
 
         
@@ -491,7 +529,9 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public InlineResponse201 adminMappingsPost(Body body) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsPost(...)");
         ApiResponse<InlineResponse201> resp = adminMappingsPostWithHttpInfo(body);
+        L.debug("End : StubMappingsApi.adminMappingsPost(...)");
         return resp.getData();
     }
 
@@ -503,8 +543,10 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public ApiResponse<InlineResponse201> adminMappingsPostWithHttpInfo(Body body) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsPostWithHttpInfo(...)");
         com.squareup.okhttp.Call call = adminMappingsPostValidateBeforeCall(body, null, null);
         Type localVarReturnType = new TypeToken<InlineResponse201>(){}.getType();
+        L.debug("End : StubMappingsApi.adminMappingsPostWithHttpInfo(...)");
         return apiClient.execute(call, localVarReturnType);
     }
 
@@ -517,6 +559,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
     public com.squareup.okhttp.Call adminMappingsPostAsync(Body body, final ApiCallback<InlineResponse201> callback) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsPostAsync(...)");
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -540,6 +583,7 @@ public class StubMappingsApi {
         com.squareup.okhttp.Call call = adminMappingsPostValidateBeforeCall(body, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<InlineResponse201>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
+        L.debug("End : StubMappingsApi.adminMappingsPostAsync(...)");
         return call;
     }
     /**
@@ -551,6 +595,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to serialize the request body object
      */
     public com.squareup.okhttp.Call adminMappingsRemoveByMetadataPostCall(Body3 body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsRemoveByMetadataPostCall(...)");
         Object localVarPostBody = body;
         
         // create path and map variables
@@ -588,13 +633,16 @@ public class StubMappingsApi {
         }
 
         String[] localVarAuthNames = new String[] {  };
+        L.debug("End : StubMappingsApi.adminMappingsRemoveByMetadataPostCall(...)");
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
     }
     
     @SuppressWarnings("rawtypes")
     private com.squareup.okhttp.Call adminMappingsRemoveByMetadataPostValidateBeforeCall(Body3 body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsRemoveByMetadataPostValidateBeforeCall(...)");
         
         com.squareup.okhttp.Call call = adminMappingsRemoveByMetadataPostCall(body, progressListener, progressRequestListener);
+        L.debug("End : StubMappingsApi.adminMappingsRemoveByMetadataPostValidateBeforeCall(...)");
         return call;
 
         
@@ -610,7 +658,9 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public void adminMappingsRemoveByMetadataPost(Body3 body) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsRemoveByMetadataPost(...)");
         adminMappingsRemoveByMetadataPostWithHttpInfo(body);
+        L.debug("End : StubMappingsApi.adminMappingsRemoveByMetadataPost(...)");
     }
 
     /**
@@ -621,7 +671,9 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public ApiResponse<Void> adminMappingsRemoveByMetadataPostWithHttpInfo(Body3 body) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsRemoveByMetadataPostWithHttpInfo(...)");
         com.squareup.okhttp.Call call = adminMappingsRemoveByMetadataPostValidateBeforeCall(body, null, null);
+        L.debug("End : StubMappingsApi.adminMappingsRemoveByMetadataPostWithHttpInfo(...)");
         return apiClient.execute(call);
     }
 
@@ -634,6 +686,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
     public com.squareup.okhttp.Call adminMappingsRemoveByMetadataPostAsync(Body3 body, final ApiCallback<Void> callback) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsRemoveByMetadataPostAsync(...)");
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -656,6 +709,7 @@ public class StubMappingsApi {
 
         com.squareup.okhttp.Call call = adminMappingsRemoveByMetadataPostValidateBeforeCall(body, progressListener, progressRequestListener);
         apiClient.executeAsync(call, callback);
+        L.debug("End : StubMappingsApi.adminMappingsRemoveByMetadataPostAsync(...)");
         return call;
     }
     /**
@@ -666,6 +720,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to serialize the request body object
      */
     public com.squareup.okhttp.Call adminMappingsResetPostCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsResetPostCall(...)");
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -703,13 +758,15 @@ public class StubMappingsApi {
         }
 
         String[] localVarAuthNames = new String[] {  };
+        L.debug("End : StubMappingsApi.adminMappingsResetPostCall(...)");
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
     }
     
     @SuppressWarnings("rawtypes")
     private com.squareup.okhttp.Call adminMappingsResetPostValidateBeforeCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        
+    	L.debug("Start : StubMappingsApi.adminMappingsResetPostValidateBeforeCall(...)");
         com.squareup.okhttp.Call call = adminMappingsResetPostCall(progressListener, progressRequestListener);
+        L.debug("End : StubMappingsApi.adminMappingsResetPostValidateBeforeCall(...)");
         return call;
 
         
@@ -724,7 +781,9 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public void adminMappingsResetPost() throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsResetPost(...)");
         adminMappingsResetPostWithHttpInfo();
+        L.debug("End : StubMappingsApi.adminMappingsResetPost(...)");
     }
 
     /**
@@ -734,7 +793,9 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public ApiResponse<Void> adminMappingsResetPostWithHttpInfo() throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsResetPostWithHttpInfo(...)");
         com.squareup.okhttp.Call call = adminMappingsResetPostValidateBeforeCall(null, null);
+        L.debug("End : StubMappingsApi.adminMappingsResetPostWithHttpInfo(...)");
         return apiClient.execute(call);
     }
 
@@ -746,7 +807,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
     public com.squareup.okhttp.Call adminMappingsResetPostAsync(final ApiCallback<Void> callback) throws ApiException {
-
+    	L.debug("Start : StubMappingsApi.adminMappingsResetPostAsync(...)");
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
 
@@ -768,6 +829,7 @@ public class StubMappingsApi {
 
         com.squareup.okhttp.Call call = adminMappingsResetPostValidateBeforeCall(progressListener, progressRequestListener);
         apiClient.executeAsync(call, callback);
+        L.debug("End : StubMappingsApi.adminMappingsResetPostAsync(...)");
         return call;
     }
     /**
@@ -778,6 +840,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to serialize the request body object
      */
     public com.squareup.okhttp.Call adminMappingsSavePostCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsSavePostCall(...)");
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -815,13 +878,15 @@ public class StubMappingsApi {
         }
 
         String[] localVarAuthNames = new String[] {  };
+        L.debug("End : StubMappingsApi.adminMappingsSavePostCall(...)");
         return apiClient.buildCall(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
     }
     
     @SuppressWarnings("rawtypes")
     private com.squareup.okhttp.Call adminMappingsSavePostValidateBeforeCall(final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        
+    	L.debug("Start : StubMappingsApi.adminMappingsSavePostValidateBeforeCall(...)");
         com.squareup.okhttp.Call call = adminMappingsSavePostCall(progressListener, progressRequestListener);
+        L.debug("End : StubMappingsApi.adminMappingsSavePostValidateBeforeCall(...)");
         return call;
 
         
@@ -836,7 +901,9 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public void adminMappingsSavePost() throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsSavePost()");
         adminMappingsSavePostWithHttpInfo();
+        L.debug("End : StubMappingsApi.adminMappingsSavePost()");
     }
 
     /**
@@ -846,7 +913,9 @@ public class StubMappingsApi {
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
     public ApiResponse<Void> adminMappingsSavePostWithHttpInfo() throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsSavePostWithHttpInfo()");
         com.squareup.okhttp.Call call = adminMappingsSavePostValidateBeforeCall(null, null);
+        L.debug("End : StubMappingsApi.adminMappingsSavePostWithHttpInfo()");
         return apiClient.execute(call);
     }
 
@@ -858,7 +927,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
     public com.squareup.okhttp.Call adminMappingsSavePostAsync(final ApiCallback<Void> callback) throws ApiException {
-
+    	L.debug("Start : StubMappingsApi.adminMappingsSavePostAsync(...)");
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
 
@@ -880,6 +949,7 @@ public class StubMappingsApi {
 
         com.squareup.okhttp.Call call = adminMappingsSavePostValidateBeforeCall(progressListener, progressRequestListener);
         apiClient.executeAsync(call, callback);
+        L.debug("End : StubMappingsApi.adminMappingsSavePostAsync(...)");
         return call;
     }
     /**
@@ -891,6 +961,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to serialize the request body object
      */
     public com.squareup.okhttp.Call adminMappingsStubMappingIdDeleteCall(String stubMappingId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsStubMappingIdDeleteCall(...)");
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -929,17 +1000,20 @@ public class StubMappingsApi {
         }
 
         String[] localVarAuthNames = new String[] {  };
+        L.debug("End : StubMappingsApi.adminMappingsStubMappingIdDeleteCall(...)");
         return apiClient.buildCall(localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
     }
     
     @SuppressWarnings("rawtypes")
     private com.squareup.okhttp.Call adminMappingsStubMappingIdDeleteValidateBeforeCall(String stubMappingId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsStubMappingIdDeleteValidateBeforeCall(...)");
         // verify the required parameter 'stubMappingId' is set
         if (stubMappingId == null) {
             throw new ApiException("Missing the required parameter 'stubMappingId' when calling adminMappingsStubMappingIdDelete(Async)");
         }
         
         com.squareup.okhttp.Call call = adminMappingsStubMappingIdDeleteCall(stubMappingId, progressListener, progressRequestListener);
+        L.debug("End : StubMappingsApi.adminMappingsStubMappingIdDeleteValidateBeforeCall(...)");
         return call;
 
         
@@ -979,7 +1053,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
     public com.squareup.okhttp.Call adminMappingsStubMappingIdDeleteAsync(String stubMappingId, final ApiCallback<Void> callback) throws ApiException {
-
+    	L.debug("Start : StubMappingsApi.adminMappingsStubMappingIdDeleteAsync(...)");
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
 
@@ -1001,6 +1075,7 @@ public class StubMappingsApi {
 
         com.squareup.okhttp.Call call = adminMappingsStubMappingIdDeleteValidateBeforeCall(stubMappingId, progressListener, progressRequestListener);
         apiClient.executeAsync(call, callback);
+        L.debug("End : StubMappingsApi.adminMappingsStubMappingIdDeleteAsync(...)");
         return call;
     }
     /**
@@ -1012,6 +1087,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to serialize the request body object
      */
     public com.squareup.okhttp.Call adminMappingsStubMappingIdGetCall(String stubMappingId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsStubMappingIdGetCall(...)");
         Object localVarPostBody = null;
         
         // create path and map variables
@@ -1050,17 +1126,20 @@ public class StubMappingsApi {
         }
 
         String[] localVarAuthNames = new String[] {  };
+        L.debug("End : StubMappingsApi.adminMappingsStubMappingIdGetCall(...)");
         return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
     }
     
     @SuppressWarnings("rawtypes")
     private com.squareup.okhttp.Call adminMappingsStubMappingIdGetValidateBeforeCall(String stubMappingId, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsStubMappingIdGetValidateBeforeCall(...)");
         // verify the required parameter 'stubMappingId' is set
         if (stubMappingId == null) {
             throw new ApiException("Missing the required parameter 'stubMappingId' when calling adminMappingsStubMappingIdGet(Async)");
         }
         
         com.squareup.okhttp.Call call = adminMappingsStubMappingIdGetCall(stubMappingId, progressListener, progressRequestListener);
+        L.debug("End : StubMappingsApi.adminMappingsStubMappingIdGetValidateBeforeCall(...)");
         return call;
 
         
@@ -1103,7 +1182,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
     public com.squareup.okhttp.Call adminMappingsStubMappingIdGetAsync(String stubMappingId, final ApiCallback<InlineResponse201> callback) throws ApiException {
-
+    	L.debug("Start : StubMappingsApi.adminMappingsStubMappingIdGetAsync(...)");
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
 
@@ -1126,6 +1205,7 @@ public class StubMappingsApi {
         com.squareup.okhttp.Call call = adminMappingsStubMappingIdGetValidateBeforeCall(stubMappingId, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<InlineResponse201>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
+        L.debug("End : StubMappingsApi.adminMappingsStubMappingIdGetAsync(...)");
         return call;
     }
     /**
@@ -1138,6 +1218,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to serialize the request body object
      */
     public com.squareup.okhttp.Call adminMappingsStubMappingIdPutCall(String stubMappingId, Body1 body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    	L.debug("Start : StubMappingsApi.adminMappingsStubMappingIdPutCall(...)");
         Object localVarPostBody = body;
         
         // create path and map variables
@@ -1176,6 +1257,7 @@ public class StubMappingsApi {
         }
 
         String[] localVarAuthNames = new String[] {  };
+        L.debug("End : StubMappingsApi.adminMappingsStubMappingIdPutCall(...)");
         return apiClient.buildCall(localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
     }
     
@@ -1232,7 +1314,7 @@ public class StubMappingsApi {
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
     public com.squareup.okhttp.Call adminMappingsStubMappingIdPutAsync(String stubMappingId, Body1 body, final ApiCallback<InlineResponse201> callback) throws ApiException {
-
+    	L.debug("Start : StubMappingsApi.adminMappingsStubMappingIdPutAsync(...)");
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
 
@@ -1255,6 +1337,7 @@ public class StubMappingsApi {
         com.squareup.okhttp.Call call = adminMappingsStubMappingIdPutValidateBeforeCall(stubMappingId, body, progressListener, progressRequestListener);
         Type localVarReturnType = new TypeToken<InlineResponse201>(){}.getType();
         apiClient.executeAsync(call, localVarReturnType, callback);
+        L.debug("End : StubMappingsApi.adminMappingsStubMappingIdPutAsync(...)");
         return call;
     }
 }
