@@ -25,22 +25,22 @@ public class WiremockOperationsController {
 		this.wiremockOperationsService = wiremockOperationsService;
 	}
 
-	@RequestMapping(value = "/import/instanceId/{instanceId}", method = RequestMethod.GET)
-	public void importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId) {
-		L.info("Start : WiremockOperationsController.importAllFromWiremockByInstanceId() : instanceId = {}", instanceId);
+	@RequestMapping(value = "/import/instanceId/{instanceId}/{limit}/{offset}", method = RequestMethod.GET)
+	public void importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @PathVariable("limit") Integer limit, @PathVariable("offset") Integer offset) {
+		L.info("Start : WiremockOperationsController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 
 		InstanceMappingDTO instanceMappingDTO = instanceMappingService.getById(instanceId);
-		wiremockOperationsService.importWiremock(instanceMappingDTO.getHost(), instanceMappingDTO.getPort());
+		wiremockOperationsService.importWiremock(instanceMappingDTO.getHost(), instanceMappingDTO.getPort(), limit, offset);
 
-		L.info("End : WiremockOperationsController.importAllFromWiremockByInstanceId() : instanceId = {}", instanceId);
+		L.info("End : WiremockOperationsController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 	}
-	@RequestMapping(value = "/import/instanceName/{instanceName}", method = RequestMethod.GET)
-	public void importAllFromWiremockByInstanceName(@PathVariable("instanceId") String instanceName) {
-		L.info("Start : WiremockOperationsController.importAllFromWiremockByInstanceName() : instanceName = {}", instanceName);
+	@RequestMapping(value = "/import/instanceName/{instanceName}/{limit}/{offset}", method = RequestMethod.GET)
+	public void importAllFromWiremockByInstanceName(@PathVariable("instanceId") String instanceName, @PathVariable("limit") Integer limit, @PathVariable("offset") Integer offset) {
+		L.info("Start : WiremockOperationsController.importAllFromWiremockByInstanceName() : instanceName = {}, limit = {}, offset = {}", instanceName, limit, offset);
 
 		InstanceMappingDTO instanceMappingDTO = instanceMappingService.getByInstanceName(instanceName);
-		wiremockOperationsService.importWiremock(instanceMappingDTO.getHost(), instanceMappingDTO.getPort());
+		wiremockOperationsService.importWiremock(instanceMappingDTO.getHost(), instanceMappingDTO.getPort(), limit, offset);
 
-		L.info("End : WiremockOperationsController.importAllFromWiremockByInstanceName() : instanceName = {}", instanceName);
+		L.info("End : WiremockOperationsController.importAllFromWiremockByInstanceName() : instanceName = {}, limit = {}, offset = {}", instanceName, limit, offset);
 	}
 }

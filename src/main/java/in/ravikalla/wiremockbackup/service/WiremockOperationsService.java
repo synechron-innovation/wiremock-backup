@@ -13,14 +13,12 @@ import io.swagger.client.model.InlineResponse200;
 public class WiremockOperationsService {
 	private static final Logger L = LogManager.getLogger(WiremockOperationsService.class);
 
-	public void importWiremock(String host, String port) {
+	public void importWiremock(String host, String port, Integer limit, Integer offset) {
 		L.debug("Start : WiremockOperationsService.importWiremock(...) : Host = {}, Port = {}", host, port);
 
 		ApiClient apiClient = new ApiClient();
 		apiClient.setBasePath("http://" + host + ":" + port);
 		StubMappingsApi apiInstance = new StubMappingsApi(apiClient);
-		Integer limit = 56; // Integer | The maximum number of results to return
-		Integer offset = 56; // Integer | The start index of the results to return
 		try {
 		    InlineResponse200 result = apiInstance.adminMappingsGet(limit, offset);
 		    L.debug("23 : WiremockOperationsService.importWiremock(...) : result = {}", result);

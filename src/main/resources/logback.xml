@@ -4,7 +4,8 @@
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
- 
+
+	<logger name="io.swagger.client" level="debug" />
     <logger name="in.ravikalla.wiremockbackup" level="debug" />
     <logger name="org.mongodb" level="info" />
  
