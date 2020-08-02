@@ -5,28 +5,32 @@ import in.ravikalla.wiremockbackup.document.InstanceMapping;
 public class InstanceMappingDTO {
 	private Long id;
 	private String instanceName;
-	private String instanceUrl;
+	private String host;
+	private String port;
 
 	public InstanceMappingDTO() {
 		super();
 	}
-	public InstanceMappingDTO(Long id, String instanceName, String instanceUrl) {
+	public InstanceMappingDTO(Long id, String instanceName, String host, String port) {
 		super();
 		this.id = id;
 		this.instanceName = instanceName;
-		this.instanceUrl = instanceUrl;
+		this.host = host;
+		this.port = port;
 	}
-	public InstanceMappingDTO(String instanceName, String instanceUrl) {
+	public InstanceMappingDTO(String instanceName, String host, String port) {
 		super();
 		this.id = null;
 		this.instanceName = instanceName;
-		this.instanceUrl = instanceUrl;
+		this.host = host;
+		this.port = port;
 	}
 	public InstanceMappingDTO(InstanceMapping instanceMapping) {
 		super();
 		this.id = instanceMapping.getId();
 		this.instanceName = instanceMapping.getInstanceName();
-		this.instanceUrl = instanceMapping.getInstanceUrl();
+		this.host = instanceMapping.getHost();
+		this.port = instanceMapping.getPort();
 	}
 
 	public Long getId() {
@@ -41,15 +45,21 @@ public class InstanceMappingDTO {
 	public void setInstanceName(String instanceName) {
 		this.instanceName = instanceName;
 	}
-	public String getInstanceUrl() {
-		return instanceUrl;
+	public String getHost() {
+		return host;
 	}
-	public void setInstanceUrl(String instanceUrl) {
-		this.instanceUrl = instanceUrl;
+	public void setHost(String host) {
+		this.host = host;
+	}
+	public String getPort() {
+		return port;
+	}
+	public void setPort(String port) {
+		this.port = port;
 	}
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", instanceUrl=" + instanceUrl + "]";
+		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", host=" + host + ", port=" + port + "]";
 	}
 }

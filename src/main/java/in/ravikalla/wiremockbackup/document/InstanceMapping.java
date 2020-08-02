@@ -14,7 +14,8 @@ public class InstanceMapping {
 	@Id
 	private Long id;
 	private String instanceName;
-	private String instanceUrl;
+	private String host;
+	private String port;
 
 	@DBRef
     private Collection<Recording> recordings;
@@ -22,16 +23,18 @@ public class InstanceMapping {
 	public InstanceMapping() {
 		super();
 	}
-	public InstanceMapping(String instanceName, String instanceUrl) {
+	public InstanceMapping(String instanceName, String host, String port) {
 		super();
 		this.instanceName = instanceName;
-		this.instanceUrl = instanceUrl;
+		this.host = host;
+		this.port = port;
 	}
 	public InstanceMapping(InstanceMappingDTO instanceMappingDTO) {
 		super();
 		this.id = instanceMappingDTO.getId();
 		this.instanceName = instanceMappingDTO.getInstanceName();
-		this.instanceUrl = instanceMappingDTO.getInstanceUrl();
+		this.host = instanceMappingDTO.getHost();
+		this.port = instanceMappingDTO.getPort();
 	}
 
 	public Long getId() {
@@ -46,11 +49,17 @@ public class InstanceMapping {
 	public void setInstanceName(String instanceName) {
 		this.instanceName = instanceName;
 	}
-	public String getInstanceUrl() {
-		return instanceUrl;
+	public String getHost() {
+		return host;
 	}
-	public void setInstanceUrl(String instanceUrl) {
-		this.instanceUrl = instanceUrl;
+	public void setHost(String host) {
+		this.host = host;
+	}
+	public String getPort() {
+		return port;
+	}
+	public void setPort(String port) {
+		this.port = port;
 	}
 	public Collection<Recording> getRecordings() {
 		return recordings;
@@ -61,6 +70,6 @@ public class InstanceMapping {
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", instanceUrl=" + instanceUrl + "]";
+		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", host=" + host + ", port=" + port + "]";
 	}
 }

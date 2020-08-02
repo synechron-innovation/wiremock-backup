@@ -1,6 +1,5 @@
 package in.ravikalla.wiremockbackup.dto;
 
-import in.ravikalla.wiremockbackup.document.InstanceMapping;
 import in.ravikalla.wiremockbackup.document.Recording;
 
 public class RecordingDTO {

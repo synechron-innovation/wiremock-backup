@@ -1,10 +1,8 @@
 package in.ravikalla.wiremockbackup.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import in.ravikalla.wiremockbackup.document.Recording;
-import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
 import in.ravikalla.wiremockbackup.dto.RecordingDTO;
 import in.ravikalla.wiremockbackup.repo.RecordingRepository;
 
@@ -22,7 +19,7 @@ public class RecordingService {
 	private static final Logger L = LogManager.getLogger(RecordingService.class);
 
 	@Autowired
-	private RecordingRepository recordingRepository; 
+	private RecordingRepository recordingRepository;
 
 	public List<RecordingDTO> getAllMappingsForInstance(Long lngInstanceId) {
 		L.debug("Start : RecordingService.getAllMappingsForInstance() : lngInstanceId = {}", lngInstanceId);
