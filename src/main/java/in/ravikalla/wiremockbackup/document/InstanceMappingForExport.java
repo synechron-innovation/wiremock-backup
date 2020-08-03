@@ -4,13 +4,19 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
 import io.swagger.client.model.Body;
-import io.swagger.client.model.Body1;
 
+/**
+ *  
+ * @author ravi_kalla
+ *
+ * This is a redundant collection for "InstanceMapping" class. This is created to use "Body" instead of "Body1" which is used in "InstanceMapping" class.
+ * "Body" is used for exporting the instances to Wiremock. "Body1" is used for importing the instances from Wiremock.
+ *
+ */
 @Document(collection = "instanceMapping")
 public class InstanceMappingForExport {
 
