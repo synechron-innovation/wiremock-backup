@@ -4,13 +4,15 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
+import io.swagger.client.model.Body;
 import io.swagger.client.model.Body1;
 
 @Document(collection = "instanceMapping")
-public class InstanceMapping {
+public class InstanceMappingForExport {
 
 	@Id
 	private Long id;
@@ -18,18 +20,18 @@ public class InstanceMapping {
 	private String host;
 	private String port;
 
-	private List<Body1> mappings;
+	private List<Body> mappings;
 
-	public InstanceMapping() {
+	public InstanceMappingForExport() {
 		super();
 	}
-	public InstanceMapping(String instanceName, String host, String port) {
+	public InstanceMappingForExport(String instanceName, String host, String port) {
 		super();
 		this.instanceName = instanceName;
 		this.host = host;
 		this.port = port;
 	}
-	public InstanceMapping(InstanceMappingDTO instanceMappingDTO) {
+	public InstanceMappingForExport(InstanceMappingDTO instanceMappingDTO) {
 		super();
 		this.id = instanceMappingDTO.getId();
 		this.instanceName = instanceMappingDTO.getInstanceName();
@@ -61,10 +63,10 @@ public class InstanceMapping {
 	public void setPort(String port) {
 		this.port = port;
 	}
-	public List<Body1> getMappings() {
+	public List<Body> getMappings() {
 		return mappings;
 	}
-	public void setMappings(List<Body1> mappings) {
+	public void setMappings(List<Body> mappings) {
 		this.mappings = mappings;
 	}
 

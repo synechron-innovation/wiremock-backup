@@ -1,29 +1,37 @@
 package in.ravikalla.wiremockbackup.dto;
 
+import java.util.List;
+
+import org.apache.commons.collections4.CollectionUtils;
+
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
+import io.swagger.client.model.Body1;
 
 public class InstanceMappingDTO {
 	private Long id;
 	private String instanceName;
 	private String host;
 	private String port;
+	private List<Body1> mappings;
 
 	public InstanceMappingDTO() {
 		super();
 	}
-	public InstanceMappingDTO(Long id, String instanceName, String host, String port) {
+	public InstanceMappingDTO(Long id, String instanceName, String host, String port, List<Body1> mappings) {
 		super();
 		this.id = id;
 		this.instanceName = instanceName;
 		this.host = host;
 		this.port = port;
+		this.mappings = mappings;
 	}
-	public InstanceMappingDTO(String instanceName, String host, String port) {
+	public InstanceMappingDTO(String instanceName, String host, String port, List<Body1> mappings) {
 		super();
 		this.id = null;
 		this.instanceName = instanceName;
 		this.host = host;
 		this.port = port;
+		this.mappings = mappings;
 	}
 	public InstanceMappingDTO(InstanceMapping instanceMapping) {
 		super();
@@ -31,6 +39,7 @@ public class InstanceMappingDTO {
 		this.instanceName = instanceMapping.getInstanceName();
 		this.host = instanceMapping.getHost();
 		this.port = instanceMapping.getPort();
+		this.mappings = instanceMapping.getMappings();
 	}
 
 	public Long getId() {
@@ -57,9 +66,15 @@ public class InstanceMappingDTO {
 	public void setPort(String port) {
 		this.port = port;
 	}
+	public List<Body1> getMappings() {
+		return mappings;
+	}
+	public void setMappings(List<Body1> mappings) {
+		this.mappings = mappings;
+	}
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", host=" + host + ", port=" + port + "]";
+		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + "]";
 	}
 }

@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
-import in.ravikalla.wiremockbackup.service.InstanceMappingService;
 import in.ravikalla.wiremockbackup.service.WiremockOperationsService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
 
@@ -17,30 +15,36 @@ import in.ravikalla.wiremockbackup.util.AppConstants;
 public class WiremockOperationsController {
 	private static final Logger L = LogManager.getLogger(WiremockOperationsController.class);
 
-	private InstanceMappingService instanceMappingService;
 	private WiremockOperationsService wiremockOperationsService;
 
-	public WiremockOperationsController(InstanceMappingService instanceMappingService, WiremockOperationsService wiremockOperationsService) {
-		this.instanceMappingService = instanceMappingService;
+	public WiremockOperationsController(WiremockOperationsService wiremockOperationsService) {
 		this.wiremockOperationsService = wiremockOperationsService;
 	}
 
-	@RequestMapping(value = "/import/instanceId/{instanceId}/{limit}/{offset}", method = RequestMethod.GET)
+	@RequestMapping(value = "/importFromWiremock/instanceId/{instanceId}/limit/{limit}/offset/{offset}", method = RequestMethod.GET)
 	public void importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @PathVariable("limit") Integer limit, @PathVariable("offset") Integer offset) {
 		L.info("Start : WiremockOperationsController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 
-		InstanceMappingDTO instanceMappingDTO = instanceMappingService.getById(instanceId);
-		wiremockOperationsService.importWiremock(instanceMappingDTO.getHost(), instanceMappingDTO.getPort(), limit, offset);
+		wiremockOperationsService.importWiremockRecordings(instanceId, limit, offset);
 
 		L.info("End : WiremockOperationsController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 	}
-	@RequestMapping(value = "/import/instanceName/{instanceName}/{limit}/{offset}", method = RequestMethod.GET)
-	public void importAllFromWiremockByInstanceName(@PathVariable("instanceId") String instanceName, @PathVariable("limit") Integer limit, @PathVariable("offset") Integer offset) {
-		L.info("Start : WiremockOperationsController.importAllFromWiremockByInstanceName() : instanceName = {}, limit = {}, offset = {}", instanceName, limit, offset);
+	@RequestMapping(value = "/exportToWiremock/instanceId/{instanceId}", method = RequestMethod.POST)
+	public boolean exportAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId) {
+		L.info("Start : WiremockOperationsController.exportAllFromWiremockByInstanceId() : instanceId = {}", instanceId);
 
-		InstanceMappingDTO instanceMappingDTO = instanceMappingService.getByInstanceName(instanceName);
-		wiremockOperationsService.importWiremock(instanceMappingDTO.getHost(), instanceMappingDTO.getPort(), limit, offset);
+		boolean exported = wiremockOperationsService.exportWiremockRecordings(instanceId);
 
-		L.info("End : WiremockOperationsController.importAllFromWiremockByInstanceName() : instanceName = {}, limit = {}, offset = {}", instanceName, limit, offset);
+		L.info("End : WiremockOperationsController.exportAllFromWiremockByInstanceId() : instanceId = {}, Exported = {}", instanceId, exported);
+		return exported;
+	}
+	@RequestMapping(value = "/deleteFromWiremock/instanceId/{instanceId}", method = RequestMethod.DELETE)
+	public boolean deleteAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId) {
+		L.info("Start : WiremockOperationsController.deleteAllFromWiremockByInstanceId() : instanceId = {}", instanceId);
+
+		boolean deleted = wiremockOperationsService.deleteWiremockRecordings(instanceId);
+
+		L.info("End : WiremockOperationsController.deleteAllFromWiremockByInstanceId() : instanceId = {}, deleted = {}", instanceId, deleted);
+		return deleted;
 	}
 }
