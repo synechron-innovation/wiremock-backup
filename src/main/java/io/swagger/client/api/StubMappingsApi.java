@@ -12,29 +12,7 @@
 
 package io.swagger.client.api;
 
-import io.swagger.client.ApiCallback;
-import io.swagger.client.ApiClient;
-import io.swagger.client.ApiException;
-import io.swagger.client.ApiResponse;
-import io.swagger.client.Configuration;
-import io.swagger.client.Pair;
-import io.swagger.client.ProgressRequestBody;
-import io.swagger.client.ProgressResponseBody;
-
-import com.google.gson.reflect.TypeToken;
-
-import in.ravikalla.wiremockbackup.service.WiremockOperationsService;
-
 import java.io.IOException;
-
-
-import io.swagger.client.model.Body;
-import io.swagger.client.model.Body1;
-import io.swagger.client.model.Body2;
-import io.swagger.client.model.Body3;
-import io.swagger.client.model.InlineResponse200;
-import io.swagger.client.model.InlineResponse201;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +21,23 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.gson.reflect.TypeToken;
+
+import io.swagger.client.ApiCallback;
+import io.swagger.client.ApiClient;
+import io.swagger.client.ApiException;
+import io.swagger.client.ApiResponse;
+import io.swagger.client.Configuration;
+import io.swagger.client.Pair;
+import io.swagger.client.ProgressRequestBody;
+import io.swagger.client.ProgressResponseBody;
+import io.swagger.client.model.Body;
+import io.swagger.client.model.Body1;
+import io.swagger.client.model.Body2;
+import io.swagger.client.model.Body3;
+import io.swagger.client.model.InlineResponse200;
+import io.swagger.client.model.InlineResponse201;
 
 public class StubMappingsApi {
 	private static final Logger L = LogManager.getLogger(StubMappingsApi.class);

@@ -20,13 +20,13 @@ import io.swagger.client.model.Body1;
 import io.swagger.client.model.InlineResponse200;
 
 @Service
-public class WiremockOperationsService {
-	private static final Logger L = LogManager.getLogger(WiremockOperationsService.class);
+public class MappingOperationsService {
+	private static final Logger L = LogManager.getLogger(MappingOperationsService.class);
 
 	private InstanceMappingRepository instanceMappingRepository;
 	private InstanceMappingForExportRepository instanceMappingForExportRepository;
 
-	public WiremockOperationsService(InstanceMappingRepository instanceMappingRepository, InstanceMappingForExportRepository instanceMappingForExportRepository) {
+	public MappingOperationsService(InstanceMappingRepository instanceMappingRepository, InstanceMappingForExportRepository instanceMappingForExportRepository) {
 		this.instanceMappingRepository = instanceMappingRepository;
 		this.instanceMappingForExportRepository = instanceMappingForExportRepository;
 	}
@@ -38,36 +38,36 @@ public class WiremockOperationsService {
 		return importWiremockRecordings(limit, offset, instanceMappingRepository.findByInstanceName(instanceName));
 	}
 	private InstanceMapping importWiremockRecordings(Integer limit, Integer offset, Optional<InstanceMapping> instanceMappingOptional) {
-		L.debug("Start : WiremockOperationsService.importWiremockRecordings(...) : limit = {}, offset = {}", limit, offset);
+		L.debug("Start : MappingOperationsService.importWiremockRecordings(...) : limit = {}, offset = {}", limit, offset);
 		InstanceMapping instanceMapping = null;
 		if (instanceMappingOptional.isPresent()) {
 			instanceMapping = instanceMappingOptional.get();
 
-			L.debug("43 : WiremockOperationsService.importWiremockRecordings(...) : instanceMapping = {}", instanceMapping);
+			L.debug("43 : MappingOperationsService.importWiremockRecordings(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
 			apiClient.setBasePath("http://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
 			StubMappingsApi apiInstance = new StubMappingsApi(apiClient);
 			try {
 				InlineResponse200 inlineResponse200 = apiInstance.adminMappingsGet(limit, offset);
-				L.debug("50 : WiremockOperationsService.importWiremockRecordings(...) : result = {}", inlineResponse200);
+				L.debug("50 : MappingOperationsService.importWiremockRecordings(...) : result = {}", inlineResponse200);
 
 				if ((null != inlineResponse200) && CollectionUtils.isNotEmpty(inlineResponse200.getMappings())) {
 					List<Body1> mappings = inlineResponse200.getMappings();
 					if (CollectionUtils.isNotEmpty(mappings)) {
 						instanceMapping.setMappings(mappings);
 						instanceMapping = instanceMappingRepository.save(instanceMapping);
-						L.debug("57 : WiremockOperationsService.importWiremockRecordings(...) : saved size = {}", mappings.size());
+						L.debug("57 : MappingOperationsService.importWiremockRecordings(...) : saved size = {}", mappings.size());
 					}
 				}
 			} catch (ApiException e) {
-				L.error("61 : WiremockOperationsService.importWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
+				L.error("61 : MappingOperationsService.importWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
 			}
 		} else {
-			L.error("Error : WiremockOperationsService.importWiremockRecordings(...) : couldn\'t find anything to import");
+			L.error("Error : MappingOperationsService.importWiremockRecordings(...) : couldn\'t find anything to import");
 		}
 
-		L.debug("End : WiremockOperationsService.importWiremockRecordings(...) : limit = {}, offset = {}", limit, offset);
+		L.debug("End : MappingOperationsService.importWiremockRecordings(...) : limit = {}, offset = {}", limit, offset);
 		return instanceMapping;
 	}
 
@@ -78,7 +78,7 @@ public class WiremockOperationsService {
 		return exportWiremockRecordings(instanceMappingForExportRepository.findByInstanceName(instanceName));
 	}
 	private boolean exportWiremockRecordings(Optional<InstanceMappingForExport> instanceMappingForExportOptional) {
-		L.debug("Start : WiremockOperationsService.exportWiremockRecordings(...)");
+		L.debug("Start : MappingOperationsService.exportWiremockRecordings(...)");
 		boolean uploadSuccess = true;
 		InstanceMappingForExport instanceMappingForExport = null;
 		if (instanceMappingForExportOptional.isPresent()) {
@@ -94,16 +94,16 @@ public class WiremockOperationsService {
 						apiInstance.adminMappingsPost(body);
 					}
 				} catch (ApiException e) {
-					L.error("61 : WiremockOperationsService.exportWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
+					L.error("61 : MappingOperationsService.exportWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
 					uploadSuccess = false;
 				}
 			}
 		} else {
-			L.error("Error : WiremockOperationsService.exportWiremockRecordings(...) : couldn\'t find anything to export");
+			L.error("Error : MappingOperationsService.exportWiremockRecordings(...) : couldn\'t find anything to export");
 			uploadSuccess = false;
 		}
 
-		L.debug("End : WiremockOperationsService.exportWiremockRecordings(...) : uploadSuccess = {}", uploadSuccess);
+		L.debug("End : MappingOperationsService.exportWiremockRecordings(...) : uploadSuccess = {}", uploadSuccess);
 		return uploadSuccess;
 	}
 
@@ -114,7 +114,7 @@ public class WiremockOperationsService {
 		return deleteWiremockRecordings(instanceMappingForExportRepository.findByInstanceName(instanceName));
 	}
 	private boolean deleteWiremockRecordings(Optional<InstanceMappingForExport> instanceMappingForExportOptional) {
-		L.debug("Start : WiremockOperationsService.exportWiremockRecordings(...)");
+		L.debug("Start : MappingOperationsService.exportWiremockRecordings(...)");
 		boolean uploadSuccess = true;
 		InstanceMappingForExport instanceMappingForExport = null;
 		if (instanceMappingForExportOptional.isPresent()) {
@@ -127,16 +127,16 @@ public class WiremockOperationsService {
 				try {
 					apiInstance.adminMappingsDelete();
 				} catch (ApiException e) {
-					L.error("61 : WiremockOperationsService.exportWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
+					L.error("61 : MappingOperationsService.exportWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
 					uploadSuccess = false;
 				}
 			}
 		} else {
-			L.error("Error : WiremockOperationsService.exportWiremockRecordings(...) : couldn\'t find anything to export");
+			L.error("Error : MappingOperationsService.exportWiremockRecordings(...) : couldn\'t find anything to export");
 			uploadSuccess = false;
 		}
 
-		L.debug("End : WiremockOperationsService.exportWiremockRecordings(...) : uploadSuccess = {}", uploadSuccess);
+		L.debug("End : MappingOperationsService.exportWiremockRecordings(...) : uploadSuccess = {}", uploadSuccess);
 		return uploadSuccess;
 	}
 }
