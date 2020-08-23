@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
@@ -23,8 +24,8 @@ public class MappingLocalAndDBController {
 		this.mappingOperationsService = mappingOperationsService;
 	}
 
-	@RequestMapping(value = "/importFromDB/instanceId/{instanceId}/limit/{limit}/offset/{offset}", method = RequestMethod.GET)
-	public void importAllFromDBByInstanceId(@PathVariable("instanceId") Long instanceId, @PathVariable("limit") Integer limit, @PathVariable("offset") Integer offset) {
+	@RequestMapping(value = "/importFromDB/instanceId/{instanceId}", method = RequestMethod.GET)
+	public void importAllFromDBByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) {
 		L.info("Start : MappingOperationsControllerDB.importAllFromDBByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 
 		mappingOperationsService.importRecordingsFromDB(instanceId, limit, offset);

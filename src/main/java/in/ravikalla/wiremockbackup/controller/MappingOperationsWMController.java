@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import in.ravikalla.wiremockbackup.service.MappingOperationsService;
@@ -21,8 +22,8 @@ public class MappingOperationsWMController {
 		this.mappingOperationsService = mappingOperationsService;
 	}
 
-	@RequestMapping(value = "/importFromWiremock/instanceId/{instanceId}/limit/{limit}/offset/{offset}", method = RequestMethod.GET)
-	public void importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @PathVariable("limit") Integer limit, @PathVariable("offset") Integer offset) {
+	@RequestMapping(value = "/importFromWiremock/instanceId/{instanceId}", method = RequestMethod.GET)
+	public void importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) {
 		L.info("Start : MappingOperationsWMController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 
 		mappingOperationsService.importWiremockRecordings(instanceId, limit, offset);
