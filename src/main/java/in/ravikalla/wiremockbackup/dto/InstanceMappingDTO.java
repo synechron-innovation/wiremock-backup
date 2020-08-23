@@ -12,25 +12,28 @@ public class InstanceMappingDTO {
 	private String instanceName;
 	private String host;
 	private String port;
+	private String targetURL;
 	private List<Body1> mappings;
 
 	public InstanceMappingDTO() {
 		super();
 	}
-	public InstanceMappingDTO(Long id, String instanceName, String host, String port, List<Body1> mappings) {
+	public InstanceMappingDTO(Long id, String instanceName, String host, String port, String targetURL, List<Body1> mappings) {
 		super();
 		this.id = id;
 		this.instanceName = instanceName;
 		this.host = host;
 		this.port = port;
+		this.targetURL = targetURL;
 		this.mappings = mappings;
 	}
-	public InstanceMappingDTO(String instanceName, String host, String port, List<Body1> mappings) {
+	public InstanceMappingDTO(String instanceName, String host, String port, String targetURL, List<Body1> mappings) {
 		super();
 		this.id = null;
 		this.instanceName = instanceName;
 		this.host = host;
 		this.port = port;
+		this.targetURL = targetURL;
 		this.mappings = mappings;
 	}
 	public InstanceMappingDTO(InstanceMapping instanceMapping) {
@@ -39,6 +42,7 @@ public class InstanceMappingDTO {
 		this.instanceName = instanceMapping.getInstanceName();
 		this.host = instanceMapping.getHost();
 		this.port = instanceMapping.getPort();
+		this.targetURL = instanceMapping.getTargetURL();
 		this.mappings = instanceMapping.getMappings();
 	}
 
@@ -72,9 +76,15 @@ public class InstanceMappingDTO {
 	public void setMappings(List<Body1> mappings) {
 		this.mappings = mappings;
 	}
+	public String getTargetURL() {
+		return targetURL;
+	}
+	public void setTargetURL(String targetURL) {
+		this.targetURL = targetURL;
+	}
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + "]";
+		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
 	}
 }

@@ -17,17 +17,19 @@ public class InstanceMapping {
 	private String instanceName;
 	private String host;
 	private String port;
+	private String targetURL;
 
 	private List<Body1> mappings;
 
 	public InstanceMapping() {
 		super();
 	}
-	public InstanceMapping(String instanceName, String host, String port) {
+	public InstanceMapping(String instanceName, String host, String port, String targetURL) {
 		super();
 		this.instanceName = instanceName;
 		this.host = host;
 		this.port = port;
+		this.targetURL = targetURL;
 	}
 	public InstanceMapping(InstanceMappingDTO instanceMappingDTO) {
 		super();
@@ -35,6 +37,7 @@ public class InstanceMapping {
 		this.instanceName = instanceMappingDTO.getInstanceName();
 		this.host = instanceMappingDTO.getHost();
 		this.port = instanceMappingDTO.getPort();
+		this.targetURL = instanceMappingDTO.getTargetURL();
 	}
 
 	public Long getId() {
@@ -67,9 +70,15 @@ public class InstanceMapping {
 	public void setMappings(List<Body1> mappings) {
 		this.mappings = mappings;
 	}
+	public String getTargetURL() {
+		return targetURL;
+	}
+	public void setTargetURL(String targetURL) {
+		this.targetURL = targetURL;
+	}
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + "]";
+		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
 import in.ravikalla.wiremockbackup.document.InstanceMappingForExport;
+import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
 import in.ravikalla.wiremockbackup.repo.InstanceMappingForExportRepository;
 import in.ravikalla.wiremockbackup.repo.InstanceMappingRepository;
 import io.swagger.client.ApiClient;
@@ -138,5 +139,17 @@ public class MappingOperationsService {
 
 		L.debug("End : MappingOperationsService.exportWiremockRecordings(...) : uploadSuccess = {}", uploadSuccess);
 		return uploadSuccess;
+	}
+
+	public InstanceMapping importRecordingsFromDB(Long instanceId, Integer limit, Integer offset) {
+		return instanceMappingRepository.findById(instanceId).get();
+	}
+
+	public InstanceMapping exportRecordingsToDB(InstanceMappingDTO instanceMappingDTO) {
+		return instanceMappingRepository.save(new InstanceMapping(instanceMappingDTO));
+	}
+
+	public void deleteRecordingsFromDB(Long instanceId) {
+		instanceMappingRepository.deleteById(instanceId);
 	}
 }
