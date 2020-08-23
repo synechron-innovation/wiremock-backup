@@ -5,14 +5,21 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.client.model.Body1;
 
 public class InstanceMappingDTO {
+	@ApiModelProperty(notes = "Primary key of wiremock instance. This is specific to UI application and not present in Wiremock server.")
 	private Long id;
+	@ApiModelProperty(notes = "Name of the wiremock instance in UI application. This is not present in Wiremock server.")
 	private String instanceName;
+	@ApiModelProperty(notes = "Host of the wiremock instance. This is where the application is hosted.")
 	private String host;
+	@ApiModelProperty(notes = "Port of the wiremock instance")
 	private String port;
+	@ApiModelProperty(notes = "URL to which Wiremock should be connected to - for recording")
 	private String targetURL;
+	@ApiModelProperty(notes = "List of recorded mappings under the wiremock instance that were imported to the WiremockUI related database")
 	private List<Body1> mappings;
 
 	public InstanceMappingDTO() {

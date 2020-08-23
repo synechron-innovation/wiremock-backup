@@ -72,9 +72,6 @@ public class MappingOperationsService {
 	public boolean exportWiremockRecordings(Long instanceId) {
 		return exportWiremockRecordings(instanceMappingForExportRepository.findById(instanceId));
 	}
-	public boolean exportWiremockRecordings(String instanceName) {
-		return exportWiremockRecordings(instanceMappingForExportRepository.findByInstanceName(instanceName));
-	}
 	private boolean exportWiremockRecordings(Optional<InstanceMappingForExport> instanceMappingForExportOptional) {
 		L.debug("Start : MappingOperationsService.exportWiremockRecordings(...)");
 		boolean uploadSuccess = true;
@@ -107,9 +104,6 @@ public class MappingOperationsService {
 
 	public boolean deleteWiremockRecordings(Long instanceId) {
 		return deleteWiremockRecordings(instanceMappingForExportRepository.findById(instanceId));
-	}
-	public boolean deleteWiremockRecordings(String instanceName) {
-		return deleteWiremockRecordings(instanceMappingForExportRepository.findByInstanceName(instanceName));
 	}
 	private boolean deleteWiremockRecordings(Optional<InstanceMappingForExport> instanceMappingForExportOptional) {
 		L.debug("Start : MappingOperationsService.exportWiremockRecordings(...)");

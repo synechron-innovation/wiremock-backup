@@ -12,6 +12,7 @@ import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.RecordingsApi;
 import io.swagger.client.model.Body10;
+import io.swagger.client.model.InlineResponse200;
 
 @Service
 public class RecordingService {
@@ -51,13 +52,15 @@ public class RecordingService {
 		L.debug("End : RecordingService.startRecord(...)");
 	}
 
-	public void stopRecord(Long instanceId) {
+	public InlineResponse200 stopRecord(Long instanceId) {
 		L.debug("Start : RecordingService.stopRecord(...) : instanceId = {}", instanceId);
-		stopRecord(instanceMappingRepository.findById(instanceId));
+		InlineResponse200 inlineResponse200 = stopRecord(instanceMappingRepository.findById(instanceId));
 		L.debug("End : RecordingService.stopRecord(...) : instanceId = {}", instanceId);
+		return inlineResponse200;
 	}
-	private void stopRecord(Optional<InstanceMapping> instanceMappingOptional) {
+	private InlineResponse200 stopRecord(Optional<InstanceMapping> instanceMappingOptional) {
 		InstanceMapping instanceMapping = null;
+		InlineResponse200 inlineResponse200 = null;
 		if (instanceMappingOptional.isPresent()) {
 			instanceMapping = instanceMappingOptional.get();
 
@@ -67,12 +70,13 @@ public class RecordingService {
 			apiClient.setBasePath("http://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
 			RecordingsApi recordingsApi = new RecordingsApi(apiClient);
 			try {
-				recordingsApi.adminRecordingsStopPost();
+				inlineResponse200 = recordingsApi.adminRecordingsStopPost();
 			} catch (ApiException e) {
 				L.error("73 : RecordingService.stopRecord(...) stopRecordption when Stopping recording : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
 			}
 		} else {
 			L.error("Error : RecordingService.stopRecord(...) : couldn\'t find anything to stop recording");
 		}
+		return inlineResponse200;
 	}
 }

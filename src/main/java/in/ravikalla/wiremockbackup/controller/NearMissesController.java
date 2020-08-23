@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import in.ravikalla.wiremockbackup.service.NearMissesService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
+import io.swagger.annotations.Api;
 import io.swagger.client.model.InlineResponse2002;
 
 @RestController
 @RequestMapping(AppConstants.URI_NEARMISSES)
+@Api(tags={"5 - Get Near Misses information"})
 public class NearMissesController {
 	private static final Logger L = LogManager.getLogger(NearMissesController.class);
 

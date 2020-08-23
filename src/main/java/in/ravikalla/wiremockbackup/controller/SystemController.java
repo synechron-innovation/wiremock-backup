@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import in.ravikalla.wiremockbackup.service.SystemService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(AppConstants.URI_SYSTEM)
+@Api(tags={"5 - System Settings"})
 public class SystemController {
 	private static final Logger L = LogManager.getLogger(SystemController.class);
 
@@ -24,6 +27,7 @@ public class SystemController {
 	}
 
 	@RequestMapping(value = "/setFixedDelay/{instanceId}/fixedDelay/{fixedDelay}", method = RequestMethod.GET)
+	@ApiOperation(value = "Set fixed delay for wiremock instance")
 	public void setFixedDelay(@PathVariable("instanceId") Long instanceId, @PathVariable("fixedDelay") BigDecimal fixedDelay) {
 		L.info("Start : RecordingsController.setFixedDelay() : instanceId = {}, fixedDelay = {}", instanceId, fixedDelay);
 
@@ -33,6 +37,7 @@ public class SystemController {
 	}
 
 	@RequestMapping(value = "/shutDown/{instanceId}", method = RequestMethod.GET)
+	@ApiOperation(value = "Shutdown Wiremock server based on InstanceID")
 	public void shutDown(@PathVariable("instanceId") Long instanceId) {
 		L.info("Start : RecordingsController.shutDown() : instanceId = {}", instanceId);
 
