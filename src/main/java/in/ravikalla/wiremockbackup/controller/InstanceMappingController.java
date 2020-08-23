@@ -18,14 +18,14 @@ import in.ravikalla.wiremockbackup.service.InstanceMappingService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
 
 @RestController
-@RequestMapping(AppConstants.URI_INSTANCE_MAPPING)
+@RequestMapping(AppConstants.URI_INSTANCE)
 public class InstanceMappingController {
 	private static final Logger L = LogManager.getLogger(InstanceMappingController.class);
 
 	@Autowired
 	public InstanceMappingService instanceMappingService;
 
-	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<InstanceMappingDTO> getAll() {
 		L.info("Start : InstanceMappingController.getAll()");
 
@@ -34,15 +34,34 @@ public class InstanceMappingController {
 		L.info("End : InstanceMappingController.getAll() : Size = {}", (CollectionUtils.isNotEmpty(allMappings)?allMappings.size():0));
 		return allMappings;
 	}
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public InstanceMappingDTO getAll(@PathVariable("id") Long id) {
-		L.info("Start : InstanceMappingController.getAll() : id = {}", id);
+	@RequestMapping(value = "/withMappings", method = RequestMethod.GET)
+	public List<InstanceMappingDTO> getAllWithMappings() {
+		L.info("Start : InstanceMappingController.getAllWithMappings()");
+
+		List<InstanceMappingDTO> allMappings = instanceMappingService.getAllMappingsFullDetails();
+
+		L.info("End : InstanceMappingController.getAllWithMappings() : Size = {}", (CollectionUtils.isNotEmpty(allMappings)?allMappings.size():0));
+		return allMappings;
+	}
+	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
+	public InstanceMappingDTO getById(@PathVariable("id") Long id) {
+		L.info("Start : InstanceMappingController.getById() : id = {}", id);
 
 		InstanceMappingDTO instanceMappingDTO = instanceMappingService.getById(id);
 
-		L.info("End : InstanceMappingController.getAll() : id = {}, instanceMappingDTO = {}", id, instanceMappingDTO);
+		L.info("End : InstanceMappingController.getById() : id = {}, instanceMappingDTO = {}", id, instanceMappingDTO);
 		return instanceMappingDTO;
 	}
+	@RequestMapping(value = "/id/{id}/withMappings", method = RequestMethod.GET)
+	public InstanceMappingDTO getByIdWithMappings(@PathVariable("id") Long id) {
+		L.info("Start : InstanceMappingController.getByIdWithMappings() : id = {}", id);
+
+		InstanceMappingDTO instanceMappingDTO = instanceMappingService.getByIdFullDetails(id);
+
+		L.info("End : InstanceMappingController.getByIdWithMappings() : id = {}, instanceMappingDTO = {}", id, instanceMappingDTO);
+		return instanceMappingDTO;
+	}
+
 	@RequestMapping(value = "", method = RequestMethod.DELETE)
 	public void delete(@RequestParam(value = "id", required = true) Long id) {
 		L.info("Start : InstanceMappingController.delete() : id = {}", id);

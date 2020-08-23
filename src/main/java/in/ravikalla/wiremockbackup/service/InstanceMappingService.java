@@ -22,7 +22,7 @@ public class InstanceMappingService {
 
 	public List<InstanceMappingDTO> getAllMappings() {
 		L.debug("Start : InstanceMappingService.getAllMappings()");
-		List<InstanceMapping> lstInstanceMapping = instanceMappingRepository.findAll();
+		List<InstanceMapping> lstInstanceMapping = instanceMappingRepository.findBasicDetails();
 		List<InstanceMappingDTO> lstInstanceMappingDTO = null;
 		if (null != lstInstanceMapping)
 			lstInstanceMappingDTO = lstInstanceMapping.stream()
@@ -32,22 +32,34 @@ public class InstanceMappingService {
 		return lstInstanceMappingDTO;
 	}
 
+	public List<InstanceMappingDTO> getAllMappingsFullDetails() {
+		L.debug("Start : InstanceMappingService.getAllMappingsFullDetails()");
+		List<InstanceMapping> lstInstanceMapping = instanceMappingRepository.findAll();
+		List<InstanceMappingDTO> lstInstanceMappingDTO = null;
+		if (null != lstInstanceMapping)
+			lstInstanceMappingDTO = lstInstanceMapping.stream()
+		        .map(instanceMapping -> new InstanceMappingDTO(instanceMapping))
+		        .collect(Collectors.toList());
+		L.debug("End : InstanceMappingService.getAllMappingsFullDetails()");
+		return lstInstanceMappingDTO;
+	}
+
 	public InstanceMappingDTO getById(Long id) {
+		L.debug("Start : InstanceMappingService.getById() : id = {}", id);
+		InstanceMapping instanceMappingOptional = instanceMappingRepository.findBasicDetailsById(id);
+		InstanceMappingDTO instanceMappingDTO = null;
+		instanceMappingDTO = new InstanceMappingDTO(instanceMappingOptional);
+		L.debug("End : InstanceMappingService.getById() : id = {}", id);
+		return instanceMappingDTO;
+	}
+
+	public InstanceMappingDTO getByIdFullDetails(Long id) {
 		L.debug("Start : InstanceMappingService.getById() : id = {}", id);
 		Optional<InstanceMapping> instanceMappingOptional = instanceMappingRepository.findById(id);
 		InstanceMappingDTO instanceMappingDTO = null;
 		if (instanceMappingOptional.isPresent())
 			instanceMappingDTO = new InstanceMappingDTO(instanceMappingOptional.get());
 		L.debug("End : InstanceMappingService.getById() : id = {}", id);
-		return instanceMappingDTO;
-	}
-	public InstanceMappingDTO getByInstanceName(String instanceName) {
-		L.debug("Start : InstanceMappingService.getByName() : instanceName = {}", instanceName);
-		Optional<InstanceMapping> instanceMappingOptional = instanceMappingRepository.findByInstanceName(instanceName);
-		InstanceMappingDTO instanceMappingDTO = null;
-		if (instanceMappingOptional.isPresent())
-			instanceMappingDTO = new InstanceMappingDTO(instanceMappingOptional.get());
-		L.debug("End : InstanceMappingService.getByName() : instanceName = {}", instanceName);
 		return instanceMappingDTO;
 	}
 

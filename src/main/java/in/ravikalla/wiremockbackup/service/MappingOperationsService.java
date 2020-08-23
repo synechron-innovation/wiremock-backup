@@ -35,9 +35,6 @@ public class MappingOperationsService {
 	public InstanceMapping importWiremockRecordings(Long instanceId, Integer limit, Integer offset) {
 		return importWiremockRecordings(limit, offset, instanceMappingRepository.findById(instanceId));
 	}
-	public InstanceMapping importWiremockRecordings(String instanceName, Integer limit, Integer offset) {
-		return importWiremockRecordings(limit, offset, instanceMappingRepository.findByInstanceName(instanceName));
-	}
 	private InstanceMapping importWiremockRecordings(Integer limit, Integer offset, Optional<InstanceMapping> instanceMappingOptional) {
 		L.debug("Start : MappingOperationsService.importWiremockRecordings(...) : limit = {}, offset = {}", limit, offset);
 		InstanceMapping instanceMapping = null;
