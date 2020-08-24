@@ -88,6 +88,7 @@ public class MappingOperationsService {
 					for (Body body : instanceMappingForExport.getMappings()) {
 						apiInstance.adminMappingsPost(body);
 					}
+					apiInstance.adminMappingsSavePost();
 				} catch (ApiException e) {
 					L.error("92 : MappingOperationsService.exportWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
 					uploadSuccess = false;

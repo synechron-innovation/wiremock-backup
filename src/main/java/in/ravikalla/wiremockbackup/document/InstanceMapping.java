@@ -29,14 +29,6 @@ public class InstanceMapping {
 	public InstanceMapping() {
 		super();
 	}
-	public InstanceMapping(String instanceName, Protocol protocol, String host, String port, String targetURL) {
-		super();
-		this.instanceName = instanceName;
-		this.protocol = protocol;
-		this.host = host;
-		this.port = port;
-		this.targetURL = targetURL;
-	}
 	public InstanceMapping(InstanceMappingDTO instanceMappingDTO) {
 		super();
 		this.id = instanceMappingDTO.getId();
@@ -45,6 +37,7 @@ public class InstanceMapping {
 		this.host = instanceMappingDTO.getHost();
 		this.port = instanceMappingDTO.getPort();
 		this.targetURL = instanceMappingDTO.getTargetURL();
+		this.mappings = instanceMappingDTO.getMappings();
 	}
 
 	public Long getId() {

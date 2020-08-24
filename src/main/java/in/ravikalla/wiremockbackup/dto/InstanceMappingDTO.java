@@ -28,26 +28,6 @@ public class InstanceMappingDTO {
 	public InstanceMappingDTO() {
 		super();
 	}
-	public InstanceMappingDTO(Long id, String instanceName, Protocol protocol, String host, String port, String targetURL, List<Body1> mappings) {
-		super();
-		this.id = id;
-		this.instanceName = instanceName;
-		this.protocol = protocol;
-		this.host = host;
-		this.port = port;
-		this.targetURL = targetURL;
-		this.mappings = mappings;
-	}
-	public InstanceMappingDTO(String instanceName, Protocol protocol, String host, String port, String targetURL, List<Body1> mappings) {
-		super();
-		this.id = null;
-		this.instanceName = instanceName;
-		this.protocol = protocol;
-		this.host = host;
-		this.port = port;
-		this.targetURL = targetURL;
-		this.mappings = mappings;
-	}
 	public InstanceMappingDTO(InstanceMapping instanceMapping) {
 		super();
 		this.id = instanceMapping.getId();

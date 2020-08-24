@@ -6,7 +6,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
 import in.ravikalla.wiremockbackup.util.Protocol;
 import io.swagger.client.model.Body;
 
@@ -30,27 +29,6 @@ public class InstanceMappingForExport {
 	private String targetURL;
 
 	private List<Body> mappings;
-
-	public InstanceMappingForExport() {
-		super();
-	}
-	public InstanceMappingForExport(String instanceName, Protocol protocol, String host, String port, String targetURL) {
-		super();
-		this.instanceName = instanceName;
-		this.protocol = protocol;
-		this.host = host;
-		this.port = port;
-		this.targetURL = targetURL;
-	}
-	public InstanceMappingForExport(InstanceMappingDTO instanceMappingDTO) {
-		super();
-		this.id = instanceMappingDTO.getId();
-		this.instanceName = instanceMappingDTO.getInstanceName();
-		this.protocol = instanceMappingDTO.getProtocol();
-		this.host = instanceMappingDTO.getHost();
-		this.port = instanceMappingDTO.getPort();
-		this.targetURL = instanceMappingDTO.getTargetURL();
-	}
 
 	public Long getId() {
 		return id;
