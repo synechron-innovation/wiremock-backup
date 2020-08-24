@@ -12,6 +12,8 @@ import in.ravikalla.wiremockbackup.util.AppConstants;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.client.model.InlineResponse200;
+import io.swagger.client.model.InlineResponse2003;
+import io.swagger.client.model.InlineResponse2003.StatusEnum;
 
 @RestController
 @RequestMapping(AppConstants.URI_RECORDINGS)
@@ -44,5 +46,16 @@ public class RecordingsController {
 
 		L.info("End : RecordingsController.stopRecoding() : instanceId = {}", instanceId);
 		return stopRecordResponse;
+	}
+
+	@ApiOperation(value = "Status of the Wiremock server recording based on InstanceID")
+	@RequestMapping(value = "/status/{instanceId}", method = RequestMethod.GET)
+	public StatusEnum statusOfRecoding(@PathVariable("instanceId") Long instanceId) {
+		L.info("Start : RecordingsController.statusOfRecoding() : instanceId = {}", instanceId);
+
+		InlineResponse2003 statusOfRecoding = recordingService.statusOfRecoding(instanceId);
+
+		L.info("End : RecordingsController.statusOfRecoding() : instanceId = {}", instanceId);
+		return statusOfRecoding.getStatus();
 	}
 }
