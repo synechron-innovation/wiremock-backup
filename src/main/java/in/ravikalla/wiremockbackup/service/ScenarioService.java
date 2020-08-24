@@ -36,7 +36,7 @@ public class ScenarioService {
 			L.debug("39 : SystemService.getScenarios(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath("http://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
+			apiClient.setBasePath(instanceMapping.getProtocol() + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
 			ScenariosApi scenariosApi = new ScenariosApi(apiClient);
 			try {
 				adminScenariosGet = scenariosApi.adminScenariosGet();
@@ -64,7 +64,7 @@ public class ScenarioService {
 			L.debug("39 : SystemService.resetScenarios(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath("http://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
+			apiClient.setBasePath(instanceMapping.getProtocol() + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
 			ScenariosApi scenariosApi = new ScenariosApi(apiClient);
 			try {
 				scenariosApi.adminScenariosResetPost();

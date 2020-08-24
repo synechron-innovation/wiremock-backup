@@ -36,7 +36,7 @@ public class RecordingService {
 			L.debug("43 : RecordingService.startRecord(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath("http://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
+			apiClient.setBasePath(instanceMapping.getProtocol() + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
 			RecordingsApi recordingsApi = new RecordingsApi(apiClient);
 			try {
 				Body10 body10 = new Body10();
@@ -67,7 +67,7 @@ public class RecordingService {
 			L.debug("63 : RecordingService.record(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath("http://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
+			apiClient.setBasePath(instanceMapping.getProtocol() + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
 			RecordingsApi recordingsApi = new RecordingsApi(apiClient);
 			try {
 				inlineResponse200 = recordingsApi.adminRecordingsStopPost();

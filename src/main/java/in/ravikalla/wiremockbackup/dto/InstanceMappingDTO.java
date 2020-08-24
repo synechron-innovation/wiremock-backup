@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
+import in.ravikalla.wiremockbackup.util.Protocol;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.client.model.Body1;
 
@@ -13,6 +14,8 @@ public class InstanceMappingDTO {
 	private Long id;
 	@ApiModelProperty(notes = "Name of the wiremock instance in UI application. This is not present in Wiremock server.")
 	private String instanceName;
+	@ApiModelProperty(notes = "HTTP/HTTPS protocol of the wiremock instance")
+	private Protocol protocol;
 	@ApiModelProperty(notes = "Host of the wiremock instance. This is where the application is hosted.")
 	private String host;
 	@ApiModelProperty(notes = "Port of the wiremock instance")
@@ -25,19 +28,21 @@ public class InstanceMappingDTO {
 	public InstanceMappingDTO() {
 		super();
 	}
-	public InstanceMappingDTO(Long id, String instanceName, String host, String port, String targetURL, List<Body1> mappings) {
+	public InstanceMappingDTO(Long id, String instanceName, Protocol protocol, String host, String port, String targetURL, List<Body1> mappings) {
 		super();
 		this.id = id;
 		this.instanceName = instanceName;
+		this.protocol = protocol;
 		this.host = host;
 		this.port = port;
 		this.targetURL = targetURL;
 		this.mappings = mappings;
 	}
-	public InstanceMappingDTO(String instanceName, String host, String port, String targetURL, List<Body1> mappings) {
+	public InstanceMappingDTO(String instanceName, Protocol protocol, String host, String port, String targetURL, List<Body1> mappings) {
 		super();
 		this.id = null;
 		this.instanceName = instanceName;
+		this.protocol = protocol;
 		this.host = host;
 		this.port = port;
 		this.targetURL = targetURL;
@@ -47,6 +52,7 @@ public class InstanceMappingDTO {
 		super();
 		this.id = instanceMapping.getId();
 		this.instanceName = instanceMapping.getInstanceName();
+		this.protocol = instanceMapping.getProtocol();
 		this.host = instanceMapping.getHost();
 		this.port = instanceMapping.getPort();
 		this.targetURL = instanceMapping.getTargetURL();
@@ -64,6 +70,12 @@ public class InstanceMappingDTO {
 	}
 	public void setInstanceName(String instanceName) {
 		this.instanceName = instanceName;
+	}
+	public Protocol getProtocol() {
+		return protocol;
+	}
+	public void setProtocol(Protocol protocol) {
+		this.protocol = protocol;
 	}
 	public String getHost() {
 		return host;
@@ -92,6 +104,6 @@ public class InstanceMappingDTO {
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
+		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", protocol=" + protocol + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
 	}
 }

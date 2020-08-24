@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
+import in.ravikalla.wiremockbackup.util.Protocol;
 import io.swagger.client.model.Body1;
 
 @Document(collection = "instanceMapping")
@@ -18,6 +19,7 @@ public class InstanceMapping {
 	@Id
 	private Long id;
 	private String instanceName;
+	private Protocol protocol;
 	private String host;
 	private String port;
 	private String targetURL;
@@ -27,9 +29,10 @@ public class InstanceMapping {
 	public InstanceMapping() {
 		super();
 	}
-	public InstanceMapping(String instanceName, String host, String port, String targetURL) {
+	public InstanceMapping(String instanceName, Protocol protocol, String host, String port, String targetURL) {
 		super();
 		this.instanceName = instanceName;
+		this.protocol = protocol;
 		this.host = host;
 		this.port = port;
 		this.targetURL = targetURL;
@@ -38,6 +41,7 @@ public class InstanceMapping {
 		super();
 		this.id = instanceMappingDTO.getId();
 		this.instanceName = instanceMappingDTO.getInstanceName();
+		this.protocol = instanceMappingDTO.getProtocol();
 		this.host = instanceMappingDTO.getHost();
 		this.port = instanceMappingDTO.getPort();
 		this.targetURL = instanceMappingDTO.getTargetURL();
@@ -54,6 +58,12 @@ public class InstanceMapping {
 	}
 	public void setInstanceName(String instanceName) {
 		this.instanceName = instanceName;
+	}
+	public Protocol getProtocol() {
+		return protocol;
+	}
+	public void setProtocol(Protocol protocol) {
+		this.protocol = protocol;
 	}
 	public String getHost() {
 		return host;
@@ -82,6 +92,6 @@ public class InstanceMapping {
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
+		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", protocol=" + protocol + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
 	}
 }

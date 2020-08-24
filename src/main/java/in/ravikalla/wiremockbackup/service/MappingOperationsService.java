@@ -44,7 +44,7 @@ public class MappingOperationsService {
 			L.debug("43 : MappingOperationsService.importWiremockRecordings(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath("http://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
+			apiClient.setBasePath(instanceMapping.getProtocol() + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
 			StubMappingsApi apiInstance = new StubMappingsApi(apiClient);
 			try {
 				InlineResponse200 inlineResponse200 = apiInstance.adminMappingsGet(limit, offset);
@@ -59,7 +59,7 @@ public class MappingOperationsService {
 					}
 				}
 			} catch (ApiException e) {
-				L.error("61 : MappingOperationsService.importWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
+				L.error("62 : MappingOperationsService.importWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
 			}
 		} else {
 			L.error("Error : MappingOperationsService.importWiremockRecordings(...) : couldn\'t find anything to import");
@@ -81,7 +81,7 @@ public class MappingOperationsService {
 
 			if (CollectionUtils.isNotEmpty(instanceMappingForExport.getMappings())) {
 				ApiClient apiClient = new ApiClient();
-				apiClient.setBasePath("http://" + instanceMappingForExport.getHost() + ":" + instanceMappingForExport.getPort());
+				apiClient.setBasePath(instanceMappingForExport.getProtocol() + "://" + instanceMappingForExport.getHost() + ":" + instanceMappingForExport.getPort());
 				StubMappingsApi apiInstance = new StubMappingsApi(apiClient);
 				try {
 					apiInstance.adminMappingsDelete();
@@ -89,7 +89,7 @@ public class MappingOperationsService {
 						apiInstance.adminMappingsPost(body);
 					}
 				} catch (ApiException e) {
-					L.error("61 : MappingOperationsService.exportWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
+					L.error("92 : MappingOperationsService.exportWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
 					uploadSuccess = false;
 				}
 			}
@@ -114,12 +114,12 @@ public class MappingOperationsService {
 
 			if (CollectionUtils.isNotEmpty(instanceMappingForExport.getMappings())) {
 				ApiClient apiClient = new ApiClient();
-				apiClient.setBasePath("http://" + instanceMappingForExport.getHost() + ":" + instanceMappingForExport.getPort());
+				apiClient.setBasePath(instanceMappingForExport.getProtocol() + "://" + instanceMappingForExport.getHost() + ":" + instanceMappingForExport.getPort());
 				StubMappingsApi apiInstance = new StubMappingsApi(apiClient);
 				try {
 					apiInstance.adminMappingsDelete();
 				} catch (ApiException e) {
-					L.error("61 : MappingOperationsService.exportWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
+					L.error("122 : MappingOperationsService.exportWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
 					uploadSuccess = false;
 				}
 			}
