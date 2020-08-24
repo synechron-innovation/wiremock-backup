@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(AppConstants.URI_SYSTEM)
-@Api(tags={"5 - System Settings"})
+@Api(tags={"6 - System Settings"})
 public class SystemController {
 	private static final Logger L = LogManager.getLogger(SystemController.class);
 
