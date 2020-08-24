@@ -18,7 +18,9 @@ public class InstanceMappingService {
 	private static final Logger L = LogManager.getLogger(InstanceMappingService.class);
 
 	@Autowired
-	private InstanceMappingRepository instanceMappingRepository; 
+	private InstanceMappingRepository instanceMappingRepository;
+	@Autowired
+	private SequenceGeneratorService sequenceGeneratorService;
 
 	public List<InstanceMappingDTO> getAllMappings() {
 		L.debug("Start : InstanceMappingService.getAllMappings()");
@@ -71,6 +73,7 @@ public class InstanceMappingService {
 
 	public Long create(InstanceMappingDTO instanceMappingDTO) {
 		L.debug("Start : InstanceMappingService.create() : instanceMappingDTO = {}", instanceMappingDTO);
+		instanceMappingDTO.setId(sequenceGeneratorService.generateSequence(InstanceMapping.SEQUENCE_NAME));
 		InstanceMapping insert = instanceMappingRepository.insert(new InstanceMapping(instanceMappingDTO));
 		L.debug("End : InstanceMappingService.create() : instanceMappingDTO = {}, id = {}", instanceMappingDTO, insert.getId());
 		return insert.getId();

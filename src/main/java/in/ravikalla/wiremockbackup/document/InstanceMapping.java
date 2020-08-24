@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
@@ -11,6 +12,8 @@ import io.swagger.client.model.Body1;
 
 @Document(collection = "instanceMapping")
 public class InstanceMapping {
+	@Transient
+    public static final String SEQUENCE_NAME = "instance_sequence";
 
 	@Id
 	private Long id;
