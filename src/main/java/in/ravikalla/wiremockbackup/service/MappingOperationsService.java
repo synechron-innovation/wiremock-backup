@@ -44,7 +44,7 @@ public class MappingOperationsService {
 			L.debug("43 : MappingOperationsService.importWiremockRecordings(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath(instanceMapping.getHttps()?"https":"http" + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
+			apiClient.setBasePath((instanceMapping.getHttps()?"https":"http") + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
 			StubMappingsApi apiInstance = new StubMappingsApi(apiClient);
 			try {
 				InlineResponse200 inlineResponse200 = apiInstance.adminMappingsGet(limit, offset);
@@ -82,7 +82,7 @@ public class MappingOperationsService {
 
 			if (CollectionUtils.isNotEmpty(instanceMappingForExport.getMappings())) {
 				ApiClient apiClient = new ApiClient();
-				apiClient.setBasePath(instanceMappingForExport.getHttps()?"https":"http" + "://" + instanceMappingForExport.getHost() + ":" + instanceMappingForExport.getPort());
+				apiClient.setBasePath((instanceMappingForExport.getHttps()?"https":"http") + "://" + instanceMappingForExport.getHost() + ":" + instanceMappingForExport.getPort());
 				StubMappingsApi apiInstance = new StubMappingsApi(apiClient);
 				try {
 					apiInstance.adminMappingsDelete();
@@ -117,7 +117,7 @@ public class MappingOperationsService {
 
 			if (CollectionUtils.isNotEmpty(instanceMappingForExport.getMappings())) {
 				ApiClient apiClient = new ApiClient();
-				apiClient.setBasePath(instanceMappingForExport.getHttps()?"https":"http" + "://" + instanceMappingForExport.getHost() + ":" + instanceMappingForExport.getPort());
+				apiClient.setBasePath((instanceMappingForExport.getHttps()?"https":"http") + "://" + instanceMappingForExport.getHost() + ":" + instanceMappingForExport.getPort());
 				StubMappingsApi apiInstance = new StubMappingsApi(apiClient);
 				try {
 					apiInstance.adminMappingsDelete();
