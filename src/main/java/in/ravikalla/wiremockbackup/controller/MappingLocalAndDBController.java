@@ -2,6 +2,7 @@ package in.ravikalla.wiremockbackup.controller;
 
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +38,7 @@ public class MappingLocalAndDBController {
 
 		List<Body1> mappings = mappingOperationsService.importRecordingsFromDB(instanceId);
 
-		L.info("End : MappingOperationsControllerDB.importAllFromDBByInstanceId() : instanceId = {}", instanceId);
+		L.info("End : MappingOperationsControllerDB.importAllFromDBByInstanceId() : instanceId = {}, MappingSize = {}", instanceId, (CollectionUtils.isEmpty(mappings)?0:mappings.size()));
 		return mappings;
 	}
 	@ApiOperation(value = "Export all mappings to DB for an Instance")

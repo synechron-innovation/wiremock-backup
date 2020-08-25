@@ -137,7 +137,11 @@ public class MappingOperationsService {
 	}
 
 	public List<Body1> importRecordingsFromDB(Long instanceId) {
-		return instanceMappingRepository.findMappingDetailsById(instanceId);
+		InstanceMapping instanceMapping = instanceMappingRepository.findMappingDetailsById(instanceId);
+		List<Body1> mappings = null;
+		if (null != instanceMapping)
+			mappings = instanceMapping.getMappings();
+		return mappings;
 	}
 
 	public InstanceMapping exportRecordingsToDB(Long instanceId, List<Body1> mappings) {

@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
-import io.swagger.client.model.Body1;
 
 public interface InstanceMappingRepository extends MongoRepository<InstanceMapping, Long> {
 	@Query(value = "{}", fields = "{ 'id' : 1, 'instanceName' : 1, 'host' : 1, 'port' : 1, 'targetURL' : 1}")
@@ -16,5 +15,5 @@ public interface InstanceMappingRepository extends MongoRepository<InstanceMappi
 	InstanceMapping findBasicDetailsById(Long instanceId);
 
 	@Query(value = "{'id' : ?0 }", fields = "{ 'mappings' : 1}")
-	List<Body1> findMappingDetailsById(Long instanceId);
+	InstanceMapping findMappingDetailsById(Long instanceId);
 }
