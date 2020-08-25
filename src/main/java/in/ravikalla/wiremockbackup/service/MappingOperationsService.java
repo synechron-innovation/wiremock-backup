@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
 import in.ravikalla.wiremockbackup.document.InstanceMappingForExport;
 import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
+import in.ravikalla.wiremockbackup.exception.WiremockUIException;
 import in.ravikalla.wiremockbackup.repo.InstanceMappingForExportRepository;
 import in.ravikalla.wiremockbackup.repo.InstanceMappingRepository;
 import io.swagger.client.ApiClient;
@@ -32,10 +33,10 @@ public class MappingOperationsService {
 		this.instanceMappingForExportRepository = instanceMappingForExportRepository;
 	}
 
-	public InstanceMapping importWiremockRecordings(Long instanceId, Integer limit, Integer offset) {
+	public InstanceMapping importWiremockRecordings(Long instanceId, Integer limit, Integer offset) throws WiremockUIException {
 		return importWiremockRecordings(limit, offset, instanceMappingRepository.findById(instanceId));
 	}
-	private InstanceMapping importWiremockRecordings(Integer limit, Integer offset, Optional<InstanceMapping> instanceMappingOptional) {
+	private InstanceMapping importWiremockRecordings(Integer limit, Integer offset, Optional<InstanceMapping> instanceMappingOptional) throws WiremockUIException {
 		L.debug("Start : MappingOperationsService.importWiremockRecordings(...) : limit = {}, offset = {}", limit, offset);
 		InstanceMapping instanceMapping = null;
 		if (instanceMappingOptional.isPresent()) {
@@ -60,6 +61,7 @@ public class MappingOperationsService {
 				}
 			} catch (ApiException e) {
 				L.error("62 : MappingOperationsService.importWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
+				throw new WiremockUIException("Custom exception while importing Wiremock Recordings", e);
 			}
 		} else {
 			L.error("Error : MappingOperationsService.importWiremockRecordings(...) : couldn\'t find anything to import");
@@ -69,10 +71,10 @@ public class MappingOperationsService {
 		return instanceMapping;
 	}
 
-	public boolean exportWiremockRecordings(Long instanceId) {
+	public boolean exportWiremockRecordings(Long instanceId) throws WiremockUIException {
 		return exportWiremockRecordings(instanceMappingForExportRepository.findById(instanceId));
 	}
-	private boolean exportWiremockRecordings(Optional<InstanceMappingForExport> instanceMappingForExportOptional) {
+	private boolean exportWiremockRecordings(Optional<InstanceMappingForExport> instanceMappingForExportOptional) throws WiremockUIException {
 		L.debug("Start : MappingOperationsService.exportWiremockRecordings(...)");
 		boolean uploadSuccess = true;
 		InstanceMappingForExport instanceMappingForExport = null;
@@ -91,7 +93,8 @@ public class MappingOperationsService {
 					apiInstance.adminMappingsSavePost();
 				} catch (ApiException e) {
 					L.error("92 : MappingOperationsService.exportWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
-					uploadSuccess = false;
+					throw new WiremockUIException("Custom exception while exporting Wiremock Recordings", e);
+//					uploadSuccess = false;
 				}
 			}
 		} else {
@@ -103,10 +106,10 @@ public class MappingOperationsService {
 		return uploadSuccess;
 	}
 
-	public boolean deleteWiremockRecordings(Long instanceId) {
+	public boolean deleteWiremockRecordings(Long instanceId) throws WiremockUIException {
 		return deleteWiremockRecordings(instanceMappingForExportRepository.findById(instanceId));
 	}
-	private boolean deleteWiremockRecordings(Optional<InstanceMappingForExport> instanceMappingForExportOptional) {
+	private boolean deleteWiremockRecordings(Optional<InstanceMappingForExport> instanceMappingForExportOptional) throws WiremockUIException {
 		L.debug("Start : MappingOperationsService.exportWiremockRecordings(...)");
 		boolean uploadSuccess = true;
 		InstanceMappingForExport instanceMappingForExport = null;
@@ -121,7 +124,8 @@ public class MappingOperationsService {
 					apiInstance.adminMappingsDelete();
 				} catch (ApiException e) {
 					L.error("122 : MappingOperationsService.exportWiremockRecordings(...) : Exception when calling StubMappingsApi#adminMappingsGet : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
-					uploadSuccess = false;
+					throw new WiremockUIException("Custom exception while deleting Wiremock Recordings", e);
+//					uploadSuccess = false;
 				}
 			}
 		} else {

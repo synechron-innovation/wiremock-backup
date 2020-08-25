@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
+import in.ravikalla.wiremockbackup.exception.WiremockUIException;
 import in.ravikalla.wiremockbackup.service.MappingOperationsService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
 import io.swagger.annotations.Api;
@@ -29,7 +30,7 @@ public class MappingOperationsWMController {
 
 	@ApiOperation(value = "Import all mappings of a Wiremock server to DB based in its ID")
 	@RequestMapping(value = "/importFromWiremock/instanceId/{instanceId}", method = RequestMethod.GET)
-	public Integer importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) {
+	public Integer importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) throws WiremockUIException {
 		L.info("Start : MappingOperationsWMController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 
 		InstanceMapping instanceMapping = mappingOperationsService.importWiremockRecordings(instanceId, limit, offset);
@@ -40,7 +41,7 @@ public class MappingOperationsWMController {
 	}
 	@ApiOperation(value = "Export all mappings from DB to Wiremock server based on its ID")
 	@RequestMapping(value = "/exportToWiremock/instanceId/{instanceId}", method = RequestMethod.POST)
-	public boolean exportAllToWiremockByInstanceId(@PathVariable("instanceId") Long instanceId) {
+	public boolean exportAllToWiremockByInstanceId(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
 		L.info("Start : MappingOperationsWMController.exportAllToWiremockByInstanceId() : instanceId = {}", instanceId);
 
 		boolean exported = mappingOperationsService.exportWiremockRecordings(instanceId);
@@ -50,7 +51,7 @@ public class MappingOperationsWMController {
 	}
 	@ApiOperation(value = "Delete all mappings from a Wiremock server based in its ID")
 	@RequestMapping(value = "/deleteFromWiremock/instanceId/{instanceId}", method = RequestMethod.DELETE)
-	public boolean deleteAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId) {
+	public boolean deleteAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
 		L.info("Start : MappingOperationsWMController.deleteAllFromWiremockByInstanceId() : instanceId = {}", instanceId);
 
 		boolean deleted = mappingOperationsService.deleteWiremockRecordings(instanceId);

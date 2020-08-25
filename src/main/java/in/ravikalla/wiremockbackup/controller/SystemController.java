@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import in.ravikalla.wiremockbackup.exception.WiremockUIException;
 import in.ravikalla.wiremockbackup.service.SystemService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
 import io.swagger.annotations.Api;
@@ -28,7 +29,7 @@ public class SystemController {
 
 	@RequestMapping(value = "/setFixedDelay/{instanceId}/fixedDelay/{fixedDelay}", method = RequestMethod.GET)
 	@ApiOperation(value = "Set fixed delay for wiremock instance")
-	public void setFixedDelay(@PathVariable("instanceId") Long instanceId, @PathVariable("fixedDelay") BigDecimal fixedDelay) {
+	public void setFixedDelay(@PathVariable("instanceId") Long instanceId, @PathVariable("fixedDelay") BigDecimal fixedDelay) throws WiremockUIException {
 		L.info("Start : RecordingsController.setFixedDelay() : instanceId = {}, fixedDelay = {}", instanceId, fixedDelay);
 
 		systemService.setFixedDelay(instanceId, fixedDelay);
@@ -38,7 +39,7 @@ public class SystemController {
 
 	@RequestMapping(value = "/shutDown/{instanceId}", method = RequestMethod.GET)
 	@ApiOperation(value = "Shutdown Wiremock server based on InstanceID")
-	public void shutDown(@PathVariable("instanceId") Long instanceId) {
+	public void shutDown(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
 		L.info("Start : RecordingsController.shutDown() : instanceId = {}", instanceId);
 
 		systemService.shutdown(instanceId);

@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
+import in.ravikalla.wiremockbackup.exception.WiremockUIException;
 import in.ravikalla.wiremockbackup.repo.InstanceMappingRepository;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
@@ -25,10 +26,10 @@ public class RecordingService {
 		this.instanceMappingRepository = instanceMappingRepository;
 	}
 
-	public void startRecord(Long instanceId) {
+	public void startRecord(Long instanceId) throws WiremockUIException {
 		startRecord(instanceMappingRepository.findById(instanceId));
 	}
-	private void startRecord(Optional<InstanceMapping> instanceMappingOptional) {
+	private void startRecord(Optional<InstanceMapping> instanceMappingOptional) throws WiremockUIException {
 		L.debug("Start : RecordingService.startRecord(...)");
 		InstanceMapping instanceMapping = null;
 		if (instanceMappingOptional.isPresent()) {
@@ -45,6 +46,7 @@ public class RecordingService {
 				recordingsApi.adminRecordingsStartPost(body10);
 			} catch (ApiException e) {
 				L.error("61 : RecordingService.startRecord(...) : Exception when Starting recording : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
+				throw new WiremockUIException("Custom exception while starting recording", e);
 			}
 		} else {
 			L.error("Error : RecordingService.startRecord(...) : couldn\'t find anything to start record");
@@ -53,13 +55,13 @@ public class RecordingService {
 		L.debug("End : RecordingService.startRecord(...)");
 	}
 
-	public InlineResponse200 stopRecord(Long instanceId) {
+	public InlineResponse200 stopRecord(Long instanceId) throws WiremockUIException {
 		L.debug("Start : RecordingService.stopRecord(...) : instanceId = {}", instanceId);
 		InlineResponse200 inlineResponse200 = stopRecord(instanceMappingRepository.findById(instanceId));
 		L.debug("End : RecordingService.stopRecord(...) : instanceId = {}", instanceId);
 		return inlineResponse200;
 	}
-	private InlineResponse200 stopRecord(Optional<InstanceMapping> instanceMappingOptional) {
+	private InlineResponse200 stopRecord(Optional<InstanceMapping> instanceMappingOptional) throws WiremockUIException {
 		InstanceMapping instanceMapping = null;
 		InlineResponse200 inlineResponse200 = null;
 		if (instanceMappingOptional.isPresent()) {
@@ -74,6 +76,7 @@ public class RecordingService {
 				inlineResponse200 = recordingsApi.adminRecordingsStopPost();
 			} catch (ApiException e) {
 				L.error("73 : RecordingService.stopRecord(...) stopRecordption when Stopping recording : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
+				throw new WiremockUIException("Custom exception while stopping", e);
 			}
 		} else {
 			L.error("Error : RecordingService.stopRecord(...) : couldn\'t find anything to stop recording");
@@ -81,10 +84,10 @@ public class RecordingService {
 		return inlineResponse200;
 	}
 
-	public InlineResponse2003 statusOfRecoding(Long instanceId) {
+	public InlineResponse2003 statusOfRecoding(Long instanceId) throws WiremockUIException {
 		return statusOfRecoding(instanceMappingRepository.findById(instanceId));
 	}
-	public InlineResponse2003 statusOfRecoding(Optional<InstanceMapping> instanceMappingOptional) {
+	public InlineResponse2003 statusOfRecoding(Optional<InstanceMapping> instanceMappingOptional) throws WiremockUIException {
 		L.debug("Start : RecordingService.statusOfRecoding(...)");
 		InlineResponse2003 adminRecordingsStatusGet = null;
 		InstanceMapping instanceMapping = null;
@@ -100,6 +103,7 @@ public class RecordingService {
 				adminRecordingsStatusGet = recordingsApi.adminRecordingsStatusGet();
 			} catch (ApiException e) {
 				L.error("61 : RecordingService.statusOfRecoding(...) : Exception when Starting recording : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
+				throw new WiremockUIException("Custom exception while getting status", e);
 			}
 		} else {
 			L.error("Error : RecordingService.statusOfRecoding(...) : couldn\'t find anything to start record");

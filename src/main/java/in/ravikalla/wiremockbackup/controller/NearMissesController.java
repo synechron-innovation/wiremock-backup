@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import in.ravikalla.wiremockbackup.exception.WiremockUIException;
 import in.ravikalla.wiremockbackup.service.NearMissesService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
 import io.swagger.annotations.Api;
@@ -25,7 +26,7 @@ public class NearMissesController {
 	}
 
 	@RequestMapping(value = "/unmatchedNearMisses/instanceId/{instanceId}", method = RequestMethod.GET)
-	public InlineResponse2002 unmatchedNearMisses(@PathVariable("instanceId") Long instanceId) {
+	public InlineResponse2002 unmatchedNearMisses(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
 		L.info("Start : NearMissesController.unmatchedNearMisses() : instanceId = {}", instanceId);
 
 		InlineResponse2002 unmatchedNearMisses = nearMissesService.unmatchedNearMisses(instanceId);

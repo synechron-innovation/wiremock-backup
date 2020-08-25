@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import in.ravikalla.wiremockbackup.exception.WiremockUIException;
 import in.ravikalla.wiremockbackup.service.RecordingService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
 import io.swagger.annotations.Api;
@@ -29,7 +30,7 @@ public class RecordingsController {
 
 	@ApiOperation(value = "Start recording on Wiremock server based on InstanceID")
 	@RequestMapping(value = "/start/{instanceId}", method = RequestMethod.GET)
-	public void startRecoding(@PathVariable("instanceId") Long instanceId) {
+	public void startRecoding(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
 		L.info("Start : RecordingsController.startRecoding() : instanceId = {}", instanceId);
 
 		recordingService.startRecord(instanceId);
@@ -39,7 +40,7 @@ public class RecordingsController {
 
 	@ApiOperation(value = "Stop recording on Wiremock server based on InstanceID")
 	@RequestMapping(value = "/stop/{instanceId}", method = RequestMethod.GET)
-	public InlineResponse200 stopRecoding(@PathVariable("instanceId") Long instanceId) {
+	public InlineResponse200 stopRecoding(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
 		L.info("Start : RecordingsController.stopRecoding() : instanceId = {}", instanceId);
 
 		InlineResponse200 stopRecordResponse = recordingService.stopRecord(instanceId);
@@ -50,7 +51,7 @@ public class RecordingsController {
 
 	@ApiOperation(value = "Status of the Wiremock server recording based on InstanceID")
 	@RequestMapping(value = "/status/{instanceId}", method = RequestMethod.GET)
-	public StatusEnum statusOfRecoding(@PathVariable("instanceId") Long instanceId) {
+	public StatusEnum statusOfRecoding(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
 		L.info("Start : RecordingsController.statusOfRecoding() : instanceId = {}", instanceId);
 
 		InlineResponse2003 statusOfRecoding = recordingService.statusOfRecoding(instanceId);

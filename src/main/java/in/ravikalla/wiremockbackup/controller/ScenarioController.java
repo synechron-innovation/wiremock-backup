@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import in.ravikalla.wiremockbackup.exception.WiremockUIException;
 import in.ravikalla.wiremockbackup.service.ScenarioService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
 import io.swagger.client.model.InlineResponse2004;
@@ -23,7 +24,7 @@ public class ScenarioController {
 	}
 
 	@RequestMapping(value = "/{instanceId}", method = RequestMethod.GET)
-	public InlineResponse2004 getScenarios(@PathVariable("instanceId") Long instanceId) {
+	public InlineResponse2004 getScenarios(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
 		L.info("Start : RecordingsController.getScenarios() : instanceId = {}", instanceId);
 
 		InlineResponse2004 scenarios = scenarioService.getScenarios(instanceId);
@@ -33,7 +34,7 @@ public class ScenarioController {
 	}
 
 	@RequestMapping(value = "/reset/{instanceId}", method = RequestMethod.POST)
-	public void resetScenarios(@PathVariable("instanceId") Long instanceId) {
+	public void resetScenarios(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
 		L.info("Start : RecordingsController.resetScenarios() : instanceId = {}", instanceId);
 
 		scenarioService.resetScenarios(instanceId);
