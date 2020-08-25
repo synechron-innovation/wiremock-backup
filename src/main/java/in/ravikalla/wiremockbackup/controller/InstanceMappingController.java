@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
 import in.ravikalla.wiremockbackup.service.InstanceMappingService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
+import in.ravikalla.wiremockbackup.util.Protocol;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -79,12 +81,12 @@ public class InstanceMappingController {
 	}
 	@ApiOperation(value = "Create instance in WiremockUI system")
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public Long create(@RequestBody InstanceMappingDTO instanceMappingDTO) {
-		L.info("Start : InstanceMappingController.create() : instanceMappingDTO = {}", instanceMappingDTO);
+	public Long create(@RequestParam(required = false) String instanceName, @RequestParam(required = true) Protocol protocol, @RequestParam(required = true) String host, @RequestParam(required = true) String port, @RequestParam(required = true) String targetURL) {
+		L.info("Start : InstanceMappingController.create() : instanceName = {}, protocol = {}, host = {}, port = {}, targetURL = {}", instanceName, protocol, host, port, targetURL);
 
-		Long id = instanceMappingService.create(instanceMappingDTO);
+		Long id = instanceMappingService.create(instanceName, protocol, host, port, targetURL);
 
-		L.info("End : InstanceMappingController.create() : instanceMappingDTO = {}, id = {}", instanceMappingDTO, id);
+		L.info("End : InstanceMappingController.create() : instanceName = {}, protocol = {}, host = {}, port = {}, targetURL = {}, id = {}", instanceName, protocol, host, port, targetURL, id);
 		return id;
 	}
 	@ApiOperation(value = "Update instance in WiremockUI system")

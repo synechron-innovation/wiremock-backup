@@ -40,6 +40,16 @@ public class InstanceMapping {
 		this.mappings = instanceMappingDTO.getMappings();
 	}
 
+	public InstanceMapping(Long id, String instanceName, Protocol protocol, String host, String port, String targetURL, List<Body1> mappings) {
+		this.id = id;
+		this.instanceName = instanceName;
+		this.protocol = protocol;
+		this.host = host;
+		this.port= port;
+		this.targetURL = targetURL;
+		this.mappings = mappings;
+	}
+
 	public Long getId() {
 		return id;
 	}

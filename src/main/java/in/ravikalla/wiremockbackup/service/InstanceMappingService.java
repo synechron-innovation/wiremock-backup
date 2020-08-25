@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
 import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
 import in.ravikalla.wiremockbackup.repo.InstanceMappingRepository;
+import in.ravikalla.wiremockbackup.util.Protocol;
 
 @Service
 public class InstanceMappingService {
@@ -71,12 +72,12 @@ public class InstanceMappingService {
 		L.debug("End : InstanceMappingService.delete() : id = {}", id);
 	}
 
-	public Long create(InstanceMappingDTO instanceMappingDTO) {
-		L.debug("Start : InstanceMappingService.create() : instanceMappingDTO = {}", instanceMappingDTO);
-		instanceMappingDTO.setId(sequenceGeneratorService.generateSequence(InstanceMapping.SEQUENCE_NAME));
-		InstanceMapping insert = instanceMappingRepository.insert(new InstanceMapping(instanceMappingDTO));
-		L.debug("End : InstanceMappingService.create() : instanceMappingDTO = {}, id = {}", instanceMappingDTO, insert.getId());
-		return insert.getId();
+	public Long create(String instanceName, Protocol protocol, String host, String port, String targetURL) {
+		L.debug("Start : InstanceMappingService.create() : instanceName = {}, protocol = {}, host = {}, port = {}, targetURL = {}", instanceName, protocol, host, port, targetURL);
+		Long id = sequenceGeneratorService.generateSequence(InstanceMapping.SEQUENCE_NAME);
+		InstanceMapping instanceMapping = instanceMappingRepository.insert(new InstanceMapping(id, instanceName, protocol, host, port, targetURL, null));
+		L.debug("End : InstanceMappingService.create() : instanceMapping = {}", instanceMapping.getId());
+		return instanceMapping.getId();
 	}
 
 	public InstanceMappingDTO update(InstanceMappingDTO instanceMappingDTO) {
