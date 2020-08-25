@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
 import in.ravikalla.wiremockbackup.document.InstanceMappingForExport;
-import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
 import in.ravikalla.wiremockbackup.exception.WiremockUIException;
 import in.ravikalla.wiremockbackup.repo.InstanceMappingForExportRepository;
 import in.ravikalla.wiremockbackup.repo.InstanceMappingRepository;
@@ -137,15 +136,19 @@ public class MappingOperationsService {
 		return uploadSuccess;
 	}
 
-	public InstanceMapping importRecordingsFromDB(Long instanceId, Integer limit, Integer offset) {
-		return instanceMappingRepository.findById(instanceId).get();
+	public List<Body1> importRecordingsFromDB(Long instanceId, Integer limit, Integer offset) {
+		return instanceMappingRepository.findMappingDetailsById(instanceId);
 	}
 
-	public InstanceMapping exportRecordingsToDB(InstanceMappingDTO instanceMappingDTO) {
-		return instanceMappingRepository.save(new InstanceMapping(instanceMappingDTO));
+	public InstanceMapping exportRecordingsToDB(Long instanceId, List<Body1> mappings) {
+		InstanceMapping instanceMapping = instanceMappingRepository.findBasicDetailsById(instanceId);
+		instanceMapping.setMappings(mappings);
+		return instanceMappingRepository.save(instanceMapping);
 	}
 
-	public void deleteRecordingsFromDB(Long instanceId) {
-		instanceMappingRepository.deleteById(instanceId);
+	public void deleteMappingsOfInstanceFromDB(Long instanceId) {
+		InstanceMapping instanceMapping = instanceMappingRepository.findBasicDetailsById(instanceId);
+		// We are already getting the details without Mappings above. So, no need to set the mappings field to null while saving it below.
+		instanceMappingRepository.save(instanceMapping);
 	}
 }

@@ -1,5 +1,7 @@
 package in.ravikalla.wiremockbackup.controller;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import in.ravikalla.wiremockbackup.service.MappingOperationsService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.client.model.Body1;
 @RestController
 @RequestMapping(AppConstants.URI_MAPPING_OPERATIONS_LOCAL_DB)
 @Api(tags={"3 - Import/Export Mappings of Wiremock from DB"})
@@ -29,31 +32,31 @@ public class MappingLocalAndDBController {
 
 	@ApiOperation(value = "Get all mappings from DB based in its ID")
 	@RequestMapping(value = "/importFromDB/instanceId/{instanceId}", method = RequestMethod.GET)
-	public InstanceMapping importAllFromDBByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) {
+	public List<Body1> importAllFromDBByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) {
 		L.info("Start : MappingOperationsControllerDB.importAllFromDBByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 
-		InstanceMapping instanceMapping = mappingOperationsService.importRecordingsFromDB(instanceId, limit, offset);
+		List<Body1> mappings = mappingOperationsService.importRecordingsFromDB(instanceId, limit, offset);
 
 		L.info("End : MappingOperationsControllerDB.importAllFromDBByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
-		return instanceMapping;
+		return mappings;
 	}
 	@ApiOperation(value = "Export all mappings to DB for an Instance")
-	@RequestMapping(value = "/exportToDB", method = RequestMethod.POST)
-	public InstanceMapping exportAllToDBByInstanceId(@RequestBody InstanceMappingDTO instanceMappingDTO) {
+	@RequestMapping(value = "/exportToDB/instanceId/{instanceId}", method = RequestMethod.POST)
+	public InstanceMapping exportAllToDBByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestBody List<Body1> mappings) {
 		L.info("Start : MappingOperationsControllerDB.exportAllToDBByInstanceId()");
 
-		InstanceMapping instanceMapping = mappingOperationsService.exportRecordingsToDB(instanceMappingDTO);
+		InstanceMapping instanceMapping = mappingOperationsService.exportRecordingsToDB(instanceId, mappings);
 
 		L.info("End : MappingOperationsControllerDB.exportAllToDBByInstanceId() : Exported = {}", instanceMapping);
 		return instanceMapping;
 	}
-	@ApiOperation(value = "Delete all mappings from DB based on its ID")
+	@ApiOperation(value = "Delete all mappings of an instance from DB based on its ID")
 	@RequestMapping(value = "/deleteFromDB/instanceId/{instanceId}", method = RequestMethod.DELETE)
-	public void deleteAllFromDBByInstanceId(@PathVariable("instanceId") Long instanceId) {
-		L.info("Start : MappingOperationsControllerDB.deleteAllFromDBByInstanceId() : instanceId = {}", instanceId);
+	public void deleteMappingsOfInstanceFromDBByInstanceId(@PathVariable("instanceId") Long instanceId) {
+		L.info("Start : MappingOperationsControllerDB.deleteMappingsOfInstanceFromDBByInstanceId() : instanceId = {}", instanceId);
 
-		mappingOperationsService.deleteRecordingsFromDB(instanceId);
+		mappingOperationsService.deleteMappingsOfInstanceFromDB(instanceId);
 
-		L.info("End : MappingOperationsControllerDB.deleteAllFromDBByInstanceId() : instanceId = {}", instanceId);
+		L.info("End : MappingOperationsControllerDB.deleteMappingsOfInstanceFromDBByInstanceId() : instanceId = {}", instanceId);
 	}
 }
