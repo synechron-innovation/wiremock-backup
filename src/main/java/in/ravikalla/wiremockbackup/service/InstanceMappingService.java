@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
 import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
 import in.ravikalla.wiremockbackup.repo.InstanceMappingRepository;
-import in.ravikalla.wiremockbackup.util.Protocol;
 
 @Service
 public class InstanceMappingService {

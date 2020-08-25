@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
 import in.ravikalla.wiremockbackup.service.InstanceMappingService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
-import in.ravikalla.wiremockbackup.util.Protocol;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
