@@ -32,12 +32,12 @@ public class MappingLocalAndDBController {
 
 	@ApiOperation(value = "Get all mappings from DB based in its ID")
 	@RequestMapping(value = "/importFromDB/instanceId/{instanceId}", method = RequestMethod.GET)
-	public List<Body1> importAllFromDBByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) {
-		L.info("Start : MappingOperationsControllerDB.importAllFromDBByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
+	public List<Body1> importAllFromDBByInstanceId(@PathVariable("instanceId") Long instanceId) {
+		L.info("Start : MappingOperationsControllerDB.importAllFromDBByInstanceId() : instanceId = {}", instanceId);
 
-		List<Body1> mappings = mappingOperationsService.importRecordingsFromDB(instanceId, limit, offset);
+		List<Body1> mappings = mappingOperationsService.importRecordingsFromDB(instanceId);
 
-		L.info("End : MappingOperationsControllerDB.importAllFromDBByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
+		L.info("End : MappingOperationsControllerDB.importAllFromDBByInstanceId() : instanceId = {}", instanceId);
 		return mappings;
 	}
 	@ApiOperation(value = "Export all mappings to DB for an Instance")

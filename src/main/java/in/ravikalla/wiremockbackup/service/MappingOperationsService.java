@@ -136,7 +136,7 @@ public class MappingOperationsService {
 		return uploadSuccess;
 	}
 
-	public List<Body1> importRecordingsFromDB(Long instanceId, Integer limit, Integer offset) {
+	public List<Body1> importRecordingsFromDB(Long instanceId) {
 		return instanceMappingRepository.findMappingDetailsById(instanceId);
 	}
 
