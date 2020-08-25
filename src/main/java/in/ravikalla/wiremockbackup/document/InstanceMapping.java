@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
-import in.ravikalla.wiremockbackup.util.Protocol;
 import io.swagger.client.model.Body1;
 
 @Document(collection = "instanceMapping")
@@ -19,7 +18,7 @@ public class InstanceMapping {
 	@Id
 	private Long id;
 	private String instanceName;
-	private Protocol protocol;
+	private Boolean https;
 	private String host;
 	private String port;
 	private String targetURL;
@@ -33,17 +32,17 @@ public class InstanceMapping {
 		super();
 		this.id = instanceMappingDTO.getId();
 		this.instanceName = instanceMappingDTO.getInstanceName();
-		this.protocol = instanceMappingDTO.getProtocol();
+		this.https = instanceMappingDTO.getHttps();
 		this.host = instanceMappingDTO.getHost();
 		this.port = instanceMappingDTO.getPort();
 		this.targetURL = instanceMappingDTO.getTargetURL();
 		this.mappings = instanceMappingDTO.getMappings();
 	}
 
-	public InstanceMapping(Long id, String instanceName, Protocol protocol, String host, String port, String targetURL, List<Body1> mappings) {
+	public InstanceMapping(Long id, String instanceName, Boolean https, String host, String port, String targetURL, List<Body1> mappings) {
 		this.id = id;
 		this.instanceName = instanceName;
-		this.protocol = protocol;
+		this.https = https;
 		this.host = host;
 		this.port= port;
 		this.targetURL = targetURL;
@@ -62,11 +61,11 @@ public class InstanceMapping {
 	public void setInstanceName(String instanceName) {
 		this.instanceName = instanceName;
 	}
-	public Protocol getProtocol() {
-		return protocol;
+	public Boolean getHttps() {
+		return https;
 	}
-	public void setProtocol(Protocol protocol) {
-		this.protocol = protocol;
+	public void setHttps(Boolean https) {
+		this.https = https;
 	}
 	public String getHost() {
 		return host;
@@ -95,6 +94,6 @@ public class InstanceMapping {
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", protocol=" + protocol + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
+		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", https=" + https + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
 	}
 }

@@ -6,7 +6,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import in.ravikalla.wiremockbackup.util.Protocol;
 import io.swagger.client.model.Body;
 
 /**
@@ -25,7 +24,7 @@ public class InstanceMappingForExport {
 	private String instanceName;
 	private String host;
 	private String port;
-	private Protocol protocol;
+	private Boolean https;
 	private String targetURL;
 
 	private List<Body> mappings;
@@ -42,11 +41,11 @@ public class InstanceMappingForExport {
 	public void setInstanceName(String instanceName) {
 		this.instanceName = instanceName;
 	}
-	public Protocol getProtocol() {
-		return protocol;
+	public Boolean getHttps() {
+		return https;
 	}
-	public void setProtocol(Protocol protocol) {
-		this.protocol = protocol;
+	public void setHttps(Boolean https) {
+		this.https = https;
 	}
 	public String getHost() {
 		return host;
@@ -75,6 +74,6 @@ public class InstanceMappingForExport {
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", protocol=" + protocol + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
+		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", https=" + https + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
 	}
 }

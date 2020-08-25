@@ -72,10 +72,10 @@ public class InstanceMappingService {
 		L.debug("End : InstanceMappingService.delete() : id = {}", id);
 	}
 
-	public Long create(String instanceName, Protocol protocol, String host, String port, String targetURL) {
-		L.debug("Start : InstanceMappingService.create() : instanceName = {}, protocol = {}, host = {}, port = {}, targetURL = {}", instanceName, protocol, host, port, targetURL);
+	public Long create(String instanceName, Boolean https, String host, String port, String targetURL) {
+		L.debug("Start : InstanceMappingService.create() : instanceName = {}, https = {}, host = {}, port = {}, targetURL = {}", instanceName, https, host, port, targetURL);
 		Long id = sequenceGeneratorService.generateSequence(InstanceMapping.SEQUENCE_NAME);
-		InstanceMapping instanceMapping = instanceMappingRepository.insert(new InstanceMapping(id, instanceName, protocol, host, port, targetURL, null));
+		InstanceMapping instanceMapping = instanceMappingRepository.insert(new InstanceMapping(id, instanceName, https, host, port, targetURL, null));
 		L.debug("End : InstanceMappingService.create() : instanceMapping = {}", instanceMapping.getId());
 		return instanceMapping.getId();
 	}

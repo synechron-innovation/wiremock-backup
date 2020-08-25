@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
-import in.ravikalla.wiremockbackup.util.Protocol;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.client.model.Body1;
 
@@ -14,8 +13,8 @@ public class InstanceMappingDTO {
 	private Long id;
 	@ApiModelProperty(notes = "Name of the wiremock instance in UI application. This is not present in Wiremock server.")
 	private String instanceName;
-	@ApiModelProperty(notes = "HTTP/HTTPS protocol of the wiremock instance")
-	private Protocol protocol;
+	@ApiModelProperty(notes = "Check if it is HTTPS protocol of the wiremock instance")
+	private Boolean https;
 	@ApiModelProperty(notes = "Host of the wiremock instance. This is where the application is hosted.")
 	private String host;
 	@ApiModelProperty(notes = "Port of the wiremock instance")
@@ -32,7 +31,7 @@ public class InstanceMappingDTO {
 		super();
 		this.id = instanceMapping.getId();
 		this.instanceName = instanceMapping.getInstanceName();
-		this.protocol = instanceMapping.getProtocol();
+		this.https = instanceMapping.getHttps();
 		this.host = instanceMapping.getHost();
 		this.port = instanceMapping.getPort();
 		this.targetURL = instanceMapping.getTargetURL();
@@ -51,11 +50,11 @@ public class InstanceMappingDTO {
 	public void setInstanceName(String instanceName) {
 		this.instanceName = instanceName;
 	}
-	public Protocol getProtocol() {
-		return protocol;
+	public Boolean getHttps() {
+		return https;
 	}
-	public void setProtocol(Protocol protocol) {
-		this.protocol = protocol;
+	public void setHttps(Boolean https) {
+		this.https = https;
 	}
 	public String getHost() {
 		return host;
@@ -84,6 +83,6 @@ public class InstanceMappingDTO {
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", protocol=" + protocol + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
+		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", https=" + https + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
 	}
 }
