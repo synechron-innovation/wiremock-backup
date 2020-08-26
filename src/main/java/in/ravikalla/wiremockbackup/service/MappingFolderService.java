@@ -64,14 +64,14 @@ public class MappingFolderService {
 		String[] folderAndFile = new String[2];
 		String strFolderName = strParentFolder;
 		String strFileName;
-		String[] splitMajorFolderPortion = strMappingName.split("::");
+		String[] splitMajorFolderPortion = strMappingName.split(":::");
 		String[] splitMinorFolderPortion;
 		String strTempFolderPortionOfFile;
 		StringBuilder strChildFolders;
 		if (splitMajorFolderPortion.length > 1) {
 			strFileName = splitMajorFolderPortion[1];
 			strTempFolderPortionOfFile = splitMajorFolderPortion[0];
-			splitMinorFolderPortion = strTempFolderPortionOfFile.split(":");
+			splitMinorFolderPortion = strTempFolderPortionOfFile.split("::");
 			strChildFolders = new StringBuilder();
 			for (String strMinorFolderPortion : splitMinorFolderPortion) {
 				strChildFolders.append("/").append(strMinorFolderPortion);
@@ -134,7 +134,7 @@ public class MappingFolderService {
 		for (String strFolder : splitFolders) {
 			if (null != strFolder && !strFolder.trim().isEmpty()) {
 				if (isDeltaStarted)
-					strBufDeltaFolderPath.append(":");
+					strBufDeltaFolderPath.append("::");
 				isDeltaStarted = true;
 
 				strBufDeltaFolderPath.append(strFolder);
@@ -142,7 +142,7 @@ public class MappingFolderService {
 		}
 		String strDeltaFolderPath = strBufDeltaFolderPath.toString();
 		if (null != strDeltaFolderPath && !strDeltaFolderPath.trim().isEmpty())
-			strFileNameWithoutExtenstion = strDeltaFolderPath + "::" + strFileNameWithoutExtenstion;
+			strFileNameWithoutExtenstion = strDeltaFolderPath + ":::" + strFileNameWithoutExtenstion;
 
 		return strFileNameWithoutExtenstion;
 	}
