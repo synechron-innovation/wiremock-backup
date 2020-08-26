@@ -132,7 +132,11 @@
 			<artifactId>threetenbp</artifactId>
 			<version>${threetenbp-version}</version>
 		</dependency>
-		<!-- End : Dependencies extracted from OpenAPI client "https://github.com/ravikalla/swagger-java-client-wiremock" -->
+			<!-- End : Dependencies extracted from OpenAPI client "https://github.com/ravikalla/swagger-java-client-wiremock" -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
