@@ -11,6 +11,7 @@ import in.ravikalla.wiremockbackup.exception.WiremockUIException;
 import in.ravikalla.wiremockbackup.repo.InstanceMappingRepository;
 import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
+import io.swagger.client.ApiResponse;
 import io.swagger.client.api.NearMissesApi;
 import io.swagger.client.model.InlineResponse2002;
 
@@ -24,13 +25,13 @@ public class NearMissesService {
 		this.instanceMappingRepository = instanceMappingRepository;
 	}
 
-	public InlineResponse2002 unmatchedNearMisses(Long instanceId) throws WiremockUIException {
+	public ApiResponse<InlineResponse2002> unmatchedNearMisses(Long instanceId) throws WiremockUIException {
 		return unmatchedNearMisses(instanceMappingRepository.findById(instanceId));
 	}
-	private InlineResponse2002 unmatchedNearMisses(Optional<InstanceMapping> instanceMappingOptional) throws WiremockUIException {
+	private ApiResponse<InlineResponse2002> unmatchedNearMisses(Optional<InstanceMapping> instanceMappingOptional) throws WiremockUIException {
 		L.debug("Start : NearMissesService.unmatchedNearMisses(...)");
 		InstanceMapping instanceMapping = null;
-		InlineResponse2002 adminRequestsUnmatchedNearMissesGet = null;
+		ApiResponse<InlineResponse2002> adminRequestsUnmatchedNearMissesGetWithHttpInfo = null;
 		if (instanceMappingOptional.isPresent()) {
 			instanceMapping = instanceMappingOptional.get();
 
@@ -40,7 +41,7 @@ public class NearMissesService {
 			apiClient.setBasePath((instanceMapping.getHttps()?"https":"http") + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
 			NearMissesApi nearMissesApi = new NearMissesApi(apiClient);
 			try {
-				adminRequestsUnmatchedNearMissesGet = nearMissesApi.adminRequestsUnmatchedNearMissesGet();
+				adminRequestsUnmatchedNearMissesGetWithHttpInfo = nearMissesApi.adminRequestsUnmatchedNearMissesGetWithHttpInfo();
 			} catch (ApiException e) {
 				L.error("61 : NearMissesService.unmatchedNearMisses(...) : Exception when getting near misses : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
 				throw new WiremockUIException("Custom exception while getting unmatchedNearMisses", e);
@@ -49,6 +50,6 @@ public class NearMissesService {
 			L.error("Error : NearMissesService.unmatchedNearMisses(...) : couldn\'t find anything to get near misses");
 		}
 		L.debug("End : NearMissesService.unmatchedNearMisses(...)");
-		return adminRequestsUnmatchedNearMissesGet;
+		return adminRequestsUnmatchedNearMissesGetWithHttpInfo;
 	}
 }

@@ -11,6 +11,7 @@ import in.ravikalla.wiremockbackup.exception.WiremockUIException;
 import in.ravikalla.wiremockbackup.service.NearMissesService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
 import io.swagger.annotations.Api;
+import io.swagger.client.ApiResponse;
 import io.swagger.client.model.InlineResponse2002;
 
 @RestController
@@ -26,10 +27,10 @@ public class NearMissesController {
 	}
 
 	@RequestMapping(value = "/unmatchedNearMisses/instanceId/{instanceId}", method = RequestMethod.GET)
-	public InlineResponse2002 unmatchedNearMisses(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
+	public ApiResponse<InlineResponse2002> unmatchedNearMisses(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
 		L.info("Start : NearMissesController.unmatchedNearMisses() : instanceId = {}", instanceId);
 
-		InlineResponse2002 unmatchedNearMisses = nearMissesService.unmatchedNearMisses(instanceId);
+		ApiResponse<InlineResponse2002> unmatchedNearMisses = nearMissesService.unmatchedNearMisses(instanceId);
 
 		L.info("End : NearMissesController.unmatchedNearMisses() : instanceId = {}", instanceId);
 		return unmatchedNearMisses;

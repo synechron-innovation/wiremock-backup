@@ -40,6 +40,8 @@ public class MappingFolderService {
 		String[] folderAndFile;
 		String strCurrentFolderName;
 		String strCurrentFileName;
+        ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
 		for (Body1 mapping : splitFile) {
 			isDirCreated = false;
 
@@ -55,7 +57,7 @@ public class MappingFolderService {
 
 			if (isDirCreated) {
 				Path path = Paths.get(strCurrentFolderName + "/"  + strCurrentFileName + "-" + mapping.getId() + ".json");
-		        Files.write(path, convertToJSON(mapping).getBytes());
+		        Files.write(path, objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(mapping).getBytes());
 			}
 		}
 	}
@@ -146,12 +148,6 @@ public class MappingFolderService {
 			strFileNameWithoutExtenstion = strDeltaFolderPath + ":::" + strFileNameWithoutExtenstion;
 
 		return strFileNameWithoutExtenstion;
-	}
-
-	public String convertToJSON(Body1 mapping) throws JsonParseException, JsonMappingException, IOException {
-        ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-    	return objectMapper.writeValueAsString(mapping);
 	}
 
 	public String updateWinFolderPath(String folder) {
