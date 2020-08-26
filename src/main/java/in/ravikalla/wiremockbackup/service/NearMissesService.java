@@ -28,13 +28,13 @@ public class NearMissesService {
 		return unmatchedNearMisses(instanceMappingRepository.findById(instanceId));
 	}
 	private InlineResponse2002 unmatchedNearMisses(Optional<InstanceMapping> instanceMappingOptional) throws WiremockUIException {
-		L.debug("Start : RecordingService.startRecord(...)");
+		L.debug("Start : NearMissesService.unmatchedNearMisses(...)");
 		InstanceMapping instanceMapping = null;
 		InlineResponse2002 adminRequestsUnmatchedNearMissesGet = null;
 		if (instanceMappingOptional.isPresent()) {
 			instanceMapping = instanceMappingOptional.get();
 
-			L.debug("43 : RecordingService.startRecord(...) : instanceMapping = {}", instanceMapping);
+			L.debug("43 : NearMissesService.unmatchedNearMisses(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
 			apiClient.setBasePath((instanceMapping.getHttps()?"https":"http") + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
@@ -42,13 +42,13 @@ public class NearMissesService {
 			try {
 				adminRequestsUnmatchedNearMissesGet = nearMissesApi.adminRequestsUnmatchedNearMissesGet();
 			} catch (ApiException e) {
-				L.error("61 : RecordingService.startRecord(...) : Exception when Starting recording : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
+				L.error("61 : NearMissesService.unmatchedNearMisses(...) : Exception when getting near misses : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
 				throw new WiremockUIException("Custom exception while getting unmatchedNearMisses", e);
 			}
 		} else {
-			L.error("Error : RecordingService.startRecord(...) : couldn\'t find anything to start record");
+			L.error("Error : NearMissesService.unmatchedNearMisses(...) : couldn\'t find anything to get near misses");
 		}
-		L.debug("End : RecordingService.startRecord(...)");
+		L.debug("End : NearMissesService.unmatchedNearMisses(...)");
 		return adminRequestsUnmatchedNearMissesGet;
 	}
 }

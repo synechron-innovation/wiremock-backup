@@ -41,6 +41,7 @@ public class LocalFileUtilityController {
 
 		List<Body1> mappings = mappingOperationsService.importRecordingsFromDB(instanceId);
 		try {
+			downloadToFolder = mappingFolderService.updateWinFolderPath(downloadToFolder);
 			mappingFolderService.createFilesInFolder(mappings, downloadToFolder);
 		} catch (IOException e) {
 			L.error("49 : LocalFileUtilityController.importAllFromDBByInstanceId() : IOException e = {}", e);
@@ -57,6 +58,8 @@ public class LocalFileUtilityController {
 		L.info("Start : LocalFileUtilityController.exportAllToDBByInstanceId() : instanceId = {}, mappingsFolder = {}", instanceId, exportFolder);
 
 		List<String> lstFileNames = new ArrayList<String>();
+		exportFolder = mappingFolderService.updateWinFolderPath(exportFolder);
+
 		mappingFolderService.findFiles(exportFolder, lstFileNames);
 		List<Body1> mappings;
 		try {

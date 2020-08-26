@@ -126,7 +126,8 @@ public class MappingFolderService {
 		String strFileName = file.getName();
 		String strFileNameWithoutExtenstion = strFileName.split("\\.")[0];
 		String strFolderPath = file.getParentFile().getAbsolutePath();
-		System.out.println("150 : strFolderPath = " + strFolderPath + " : strMappingsSourcePath = " + strMappingsSourcePath);
+		strFolderPath = strFolderPath.replace("\\\\", "\\");
+		strFolderPath = strFolderPath.replace("\\", "/");
 		String strDeltaFolder = strFolderPath.substring(strMappingsSourcePath.length());
 		String[] splitFolders = strDeltaFolder.split("/");
 		StringBuilder strBufDeltaFolderPath = new StringBuilder();
@@ -151,5 +152,12 @@ public class MappingFolderService {
         ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     	return objectMapper.writeValueAsString(mapping);
+	}
+
+	public String updateWinFolderPath(String folder) {
+		folder = folder.replace("\\\\", "\\");
+		folder = folder.replace("\\", "/");
+
+		return folder;
 	}
 }
