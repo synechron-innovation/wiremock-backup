@@ -8,4 +8,5 @@ public class AppConstants {
 	public static final String URI_NEARMISSES = "/nearMisses";
 	public static final String URI_SYSTEM = "/system";
 	public static final String URI_SCENARIO = "/scenario";
+	public static final String URI_LOCAL_FILE_UTIL = "/localFileUtil";
 }

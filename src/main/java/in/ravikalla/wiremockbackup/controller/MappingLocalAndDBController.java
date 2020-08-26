@@ -29,7 +29,7 @@ public class MappingLocalAndDBController {
 		this.mappingOperationsService = mappingOperationsService;
 	}
 
-	@ApiOperation(value = "Get all mappings from DB based in its ID")
+	@ApiOperation(value = "Get all mappings from DB based onn its ID")
 	@RequestMapping(value = "/importFromDB/instanceId/{instanceId}", method = RequestMethod.GET)
 	public List<Body1> importAllFromDBByInstanceId(@PathVariable("instanceId") Long instanceId) {
 		L.info("Start : MappingOperationsControllerDB.importAllFromDBByInstanceId() : instanceId = {}", instanceId);
