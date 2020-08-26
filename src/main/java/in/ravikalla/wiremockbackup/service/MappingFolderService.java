@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -133,7 +132,7 @@ public class MappingFolderService {
 		StringBuilder strBufDeltaFolderPath = new StringBuilder();
 		boolean isDeltaStarted = false;
 		for (String strFolder : splitFolders) {
-			if (StringUtils.isNotEmpty(strFolder)) {
+			if (null != strFolder && !strFolder.trim().isEmpty()) {
 				if (isDeltaStarted)
 					strBufDeltaFolderPath.append(":");
 				isDeltaStarted = true;
@@ -142,7 +141,7 @@ public class MappingFolderService {
 			}
 		}
 		String strDeltaFolderPath = strBufDeltaFolderPath.toString();
-		if (StringUtils.isNotEmpty(strDeltaFolderPath))
+		if (null != strDeltaFolderPath && !strDeltaFolderPath.trim().isEmpty())
 			strFileNameWithoutExtenstion = strDeltaFolderPath + "::" + strFileNameWithoutExtenstion;
 
 		return strFileNameWithoutExtenstion;
