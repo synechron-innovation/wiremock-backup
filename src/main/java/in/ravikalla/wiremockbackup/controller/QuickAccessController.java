@@ -40,7 +40,7 @@ public class QuickAccessController {
 	@Autowired
 	private MappingFolderService mappingFolderService;
 	@Autowired
-	RecordingService recordingService;
+	private RecordingService recordingService;
 
 	@ApiOperation(value = "1 - Create a new Wiremock instance")
 	@RequestMapping(value = "/1/createWiremockInstance", method = RequestMethod.POST)
