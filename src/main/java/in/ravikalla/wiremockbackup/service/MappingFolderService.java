@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import io.swagger.client.model.Body;
 import io.swagger.client.model.Body1;
 
 @Service
@@ -36,6 +37,9 @@ public class MappingFolderService {
 //	}
 
 	public void createFilesInFolder(List<Body1> splitFile, String strParentFolder) throws JsonParseException, JsonMappingException, IOException {
+
+		strParentFolder = updateWinFolderPath(strParentFolder);
+
 		boolean isDirCreated;
 		String[] folderAndFile;
 		String strCurrentFolderName;
@@ -89,6 +93,8 @@ public class MappingFolderService {
 	}
 
 	public void findFiles(String strFolderName, List<String> lstFileNames) {
+		strFolderName = updateWinFolderPath(strFolderName);
+
 		File[] files = new File(strFolderName).listFiles();
 	    for (File file : files) {
 	        if (file.isDirectory()) {
@@ -100,30 +106,26 @@ public class MappingFolderService {
 	    }
 	}
 
-	public String combineFiles(String strMappingsRootPath, List<String> lstFileName) throws JsonParseException, JsonMappingException, IOException {
+	public List<Body> convertFilesToMappings(String strMappingsRootPath) throws JsonParseException, JsonMappingException, IOException {
+		strMappingsRootPath = updateWinFolderPath(strMappingsRootPath);
+		List<String> lstFileNames = new ArrayList<String>();
+
+		findFiles(strMappingsRootPath, lstFileNames);
+
 		//create ObjectMapper instance
         ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        List<Body1> lstMapping = convertFilesToMappings(strMappingsRootPath, lstFileName);
-        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+        List<Body> lstMapping = new ArrayList<Body>();
 
-        return objectMapper.writeValueAsString(lstMapping);
-	}
-	public List<Body1> convertFilesToMappings(String strMappingsRootPath, List<String> lstFileName) throws JsonParseException, JsonMappingException, IOException {
-		//create ObjectMapper instance
-        ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        List<Body1> lstMapping = new ArrayList<Body1>();
-
-        for (String strFileName : lstFileName) {
-        	Body1 mapping = objectMapper.readValue(new File(strFileName), Body1.class);
-        	mapping.setName(getHierarchyName(strMappingsRootPath, strFileName, mapping));
+        for (String strFileName : lstFileNames) {
+        	Body mapping = objectMapper.readValue(new File(strFileName), Body.class);
+        	mapping.setName(getHierarchyName(strMappingsRootPath, strFileName));
         	lstMapping.add(mapping);
         }
 
         return lstMapping;
 	}
-	public String getHierarchyName(String strMappingsSourcePath, String strAbsoluteFilePath, Body1 mapping) {
+	public String getHierarchyName(String strMappingsSourcePath, String strAbsoluteFilePath) {
 		File file = new File(strAbsoluteFilePath);
 		String strFileName = file.getName();
 		String strFileNameWithoutExtenstion = strFileName.split("\\.")[0];

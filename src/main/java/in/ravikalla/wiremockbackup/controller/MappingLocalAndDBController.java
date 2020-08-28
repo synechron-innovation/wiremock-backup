@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import in.ravikalla.wiremockbackup.document.InstanceMapping;
+import in.ravikalla.wiremockbackup.document.InstanceMappingForExport;
 import in.ravikalla.wiremockbackup.service.MappingOperationsService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.client.model.Body;
 import io.swagger.client.model.Body1;
 @RestController
 @RequestMapping(AppConstants.URI_MAPPING_OPERATIONS_LOCAL_DB)
@@ -41,13 +43,13 @@ public class MappingLocalAndDBController {
 	}
 	@ApiOperation(value = "Export all mappings to DB for an Instance")
 	@RequestMapping(value = "/exportToDB/instanceId/{instanceId}", method = RequestMethod.POST)
-	public InstanceMapping exportAllToDBByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestBody List<Body1> mappings) {
+	public InstanceMappingForExport exportAllToDBByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestBody List<Body> mappings) {
 		L.info("Start : MappingOperationsControllerDB.exportAllToDBByInstanceId()");
 
-		InstanceMapping instanceMapping = mappingOperationsService.exportRecordingsToDB(instanceId, mappings);
+		InstanceMappingForExport instanceMappingForExport = mappingOperationsService.exportRecordingsToDB(instanceId, mappings);
 
-		L.info("End : MappingOperationsControllerDB.exportAllToDBByInstanceId() : Exported = {}", instanceMapping);
-		return instanceMapping;
+		L.info("End : MappingOperationsControllerDB.exportAllToDBByInstanceId() : Exported = {}", instanceMappingForExport);
+		return instanceMappingForExport;
 	}
 	@ApiOperation(value = "Delete all mappings of an instance from DB based on its ID")
 	@RequestMapping(value = "/deleteFromDB/instanceId/{instanceId}", method = RequestMethod.DELETE)

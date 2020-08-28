@@ -13,6 +13,7 @@ import in.ravikalla.wiremockbackup.document.InstanceMapping;
 import in.ravikalla.wiremockbackup.exception.WiremockUIException;
 import in.ravikalla.wiremockbackup.service.MappingOperationsService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
+import in.ravikalla.wiremockbackup.util.MappingTarget;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -33,7 +34,7 @@ public class MappingOperationsWMController {
 	public Integer importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) throws WiremockUIException {
 		L.info("Start : MappingOperationsWMController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 
-		InstanceMapping instanceMapping = mappingOperationsService.importWiremockRecordingsToDB(instanceId, limit, offset);
+		InstanceMapping instanceMapping = mappingOperationsService.importWiremockRecordings(instanceId, MappingTarget.DB, null, limit, offset);
 		Integer importedInstanceCount = (CollectionUtils.isEmpty(instanceMapping.getMappings())?0:instanceMapping.getMappings().size());
 
 		L.info("End : MappingOperationsWMController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset, importedInstanceCount);
@@ -44,7 +45,7 @@ public class MappingOperationsWMController {
 	public boolean exportAllToWiremockByInstanceId(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
 		L.info("Start : MappingOperationsWMController.exportAllToWiremockByInstanceId() : instanceId = {}", instanceId);
 
-		boolean exported = mappingOperationsService.exportWiremockRecordings(instanceId);
+		boolean exported = mappingOperationsService.exportWiremockRecordings(instanceId, MappingTarget.DB, null);
 
 		L.info("End : MappingOperationsWMController.exportAllToWiremockByInstanceId() : instanceId = {}, Exported = {}", instanceId, exported);
 		return exported;

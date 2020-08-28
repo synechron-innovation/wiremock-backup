@@ -1,7 +1,5 @@
 package in.ravikalla.wiremockbackup.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -18,13 +16,12 @@ import in.ravikalla.wiremockbackup.document.InstanceMapping;
 import in.ravikalla.wiremockbackup.dto.InstanceMappingDTO;
 import in.ravikalla.wiremockbackup.exception.WiremockUIException;
 import in.ravikalla.wiremockbackup.service.InstanceMappingService;
-import in.ravikalla.wiremockbackup.service.MappingFolderService;
 import in.ravikalla.wiremockbackup.service.MappingOperationsService;
 import in.ravikalla.wiremockbackup.service.RecordingService;
 import in.ravikalla.wiremockbackup.util.AppConstants;
+import in.ravikalla.wiremockbackup.util.MappingTarget;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.client.model.Body1;
 import io.swagger.client.model.InlineResponse200;
 
 @RestController
@@ -37,8 +34,6 @@ public class QuickAccessController {
 	private InstanceMappingService instanceMappingService;
 	@Autowired
 	private MappingOperationsService mappingOperationsService;
-	@Autowired
-	private MappingFolderService mappingFolderService;
 	@Autowired
 	private RecordingService recordingService;
 
@@ -85,67 +80,26 @@ public class QuickAccessController {
 		return stopRecordResponse;
 	}
 
-	@ApiOperation(value = "5 - Import mappings from Wiremock server to DB")
+	@ApiOperation(value = "5 - Import mappings from WiremockServer to FileSystem")
 	@RequestMapping(value = "/5/importFromWiremock/instanceId/{instanceId}", method = RequestMethod.GET)
-	public Integer importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) throws WiremockUIException {
+	public Integer importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam String downloadFolder, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) throws WiremockUIException {
 		L.info("Start : QuickAccessController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 
-		InstanceMapping instanceMapping = mappingOperationsService.importWiremockRecordingsToDB(instanceId, limit, offset);
+		InstanceMapping instanceMapping = mappingOperationsService.importWiremockRecordings(instanceId, MappingTarget.LOCAL, downloadFolder, limit, offset);
 		Integer importedInstanceCount = (CollectionUtils.isEmpty(instanceMapping.getMappings())?0:instanceMapping.getMappings().size());
 
 		L.info("End : QuickAccessController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset, importedInstanceCount);
 		return importedInstanceCount;
 	}
 
-	@ApiOperation(value = "6 - Get all mappings from DB to local file system")
-	@RequestMapping(value = "/6/importFromDB/instanceId/{instanceId}", method = RequestMethod.GET)
-	public List<Body1> importAllFromDBByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(required = true) String downloadToFolder) throws WiremockUIException {
-		L.info("Start : QuickAccessController.importAllFromDBByInstanceId() : instanceId = {}", instanceId);
+	@ApiOperation(value = "6 - Export all mappings from FileSystem to WiremockServer")
+	@RequestMapping(value = "/6/exportToWiremock/instanceId/{instanceId}", method = RequestMethod.POST)
+	public boolean exportAllToWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam String uploadFolder) throws WiremockUIException {
+		L.info("Start : QuickAccessController.exportAllToWiremockByInstanceId() : instanceId = {}, uploadFolder = {}", instanceId, uploadFolder);
 
-		List<Body1> mappings = mappingOperationsService.importRecordingsFromDB(instanceId);
-		try {
-			downloadToFolder = mappingFolderService.updateWinFolderPath(downloadToFolder);
-			mappingFolderService.createFilesInFolder(mappings, downloadToFolder);
-		} catch (IOException e) {
-			L.error("49 : QuickAccessController.importAllFromDBByInstanceId() : IOException e = {}", e);
-			throw new WiremockUIException("Exception while writing the file content to local disk", e);
-		}
+		boolean exported = mappingOperationsService.exportWiremockRecordings(instanceId, MappingTarget.LOCAL, uploadFolder);
 
-		L.info("End : QuickAccessController.importAllFromDBByInstanceId() : instanceId = {}, MappingSize = {}", instanceId, (CollectionUtils.isEmpty(mappings)?0:mappings.size()));
-		return mappings;
-	}
-
-	@ApiOperation(value = "7 - Export all mappings from local file system to DB")
-	@RequestMapping(value = "/7/exportToDB/instanceId/{instanceId}", method = RequestMethod.POST)
-	public InstanceMapping exportAllToDBByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(required = true) String exportFolder) throws WiremockUIException {
-		L.info("Start : QuickAccessController.exportAllToDBByInstanceId() : instanceId = {}, mappingsFolder = {}", instanceId, exportFolder);
-
-		List<String> lstFileNames = new ArrayList<String>();
-		exportFolder = mappingFolderService.updateWinFolderPath(exportFolder);
-
-		mappingFolderService.findFiles(exportFolder, lstFileNames);
-		List<Body1> mappings;
-		try {
-			mappings = mappingFolderService.convertFilesToMappings(exportFolder, lstFileNames);
-		} catch (IOException e) {
-			L.error("62 : QuickAccessController.exportAllToDBByInstanceId() : IOException e = {}", e);
-			throw new WiremockUIException("Exception while extracting the file content", e);
-		}
-
-		InstanceMapping instanceMapping = mappingOperationsService.exportRecordingsToDB(instanceId, mappings);
-
-		L.info("End : QuickAccessController.exportAllToDBByInstanceId() : instanceId = {}, mappingsFolder = {}", instanceId, exportFolder);
-		return instanceMapping;
-	}
-
-	@ApiOperation(value = "8 - Export all mappings from DB to Wiremock server")
-	@RequestMapping(value = "/8/exportToWiremock/instanceId/{instanceId}", method = RequestMethod.POST)
-	public boolean exportAllToWiremockByInstanceId(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
-		L.info("Start : QuickAccessController.exportAllToWiremockByInstanceId() : instanceId = {}", instanceId);
-
-		boolean exported = mappingOperationsService.exportWiremockRecordings(instanceId);
-
-		L.info("End : QuickAccessController.exportAllToWiremockByInstanceId() : instanceId = {}, Exported = {}", instanceId, exported);
+		L.info("End : QuickAccessController.exportAllToWiremockByInstanceId() : instanceId = {}, Exported = {}, uploadFolder = {}", instanceId, exported, uploadFolder);
 		return exported;
 	}
 }

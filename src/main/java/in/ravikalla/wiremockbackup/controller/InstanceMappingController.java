@@ -79,12 +79,12 @@ public class InstanceMappingController {
 	}
 	@ApiOperation(value = "Create instance in WiremockUI system")
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public Long create(@RequestParam(required = false) String instanceName, @RequestParam(required = true) Boolean https, @RequestParam(required = true) String wiremockURL, @RequestParam(required = true) String port, @RequestParam(required = true) String targetURL) {
-		L.info("Start : InstanceMappingController.create() : instanceName = {}, host = {}, targetURL = {}", instanceName, https, wiremockURL, port, targetURL);
+	public Long create(@RequestParam(required = false) String instanceName, @RequestParam(required = true) String wiremockURL, @RequestParam(required = true) String targetURL) {
+		L.info("Start : InstanceMappingController.create() : instanceName = {}, wiremockURL = {}, targetURL = {}", instanceName, wiremockURL, targetURL);
 
 		Long id = instanceMappingService.create(instanceName, wiremockURL, targetURL);
 
-		L.info("Start : InstanceMappingController.create() : instanceName = {}, host = {}, targetURL = {}, id = {}", instanceName, https, wiremockURL, port, targetURL, id);
+		L.info("End : InstanceMappingController.create() : instanceName = {}, wiremockURL = {}, targetURL = {}, id = {}", instanceName, wiremockURL, targetURL, id);
 		return id;
 	}
 	@ApiOperation(value = "Update instance in WiremockUI system")
