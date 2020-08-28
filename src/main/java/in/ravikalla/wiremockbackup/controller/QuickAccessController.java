@@ -80,7 +80,7 @@ public class QuickAccessController {
 		return stopRecordResponse;
 	}
 
-	@ApiOperation(value = "5 - Import mappings from WiremockServer to FileSystem")
+	@ApiOperation(value = "5 - Download mappings")
 	@RequestMapping(value = "/5/importFromWiremock/instanceId/{instanceId}", method = RequestMethod.GET)
 	public Integer importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam String downloadFolder, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) throws WiremockUIException {
 		L.info("Start : QuickAccessController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
@@ -92,7 +92,7 @@ public class QuickAccessController {
 		return importedInstanceCount;
 	}
 
-	@ApiOperation(value = "6 - Export all mappings from FileSystem to WiremockServer")
+	@ApiOperation(value = "6 - Upload mappings")
 	@RequestMapping(value = "/6/exportToWiremock/instanceId/{instanceId}", method = RequestMethod.POST)
 	public boolean exportAllToWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam String uploadFolder) throws WiremockUIException {
 		L.info("Start : QuickAccessController.exportAllToWiremockByInstanceId() : instanceId = {}, uploadFolder = {}", instanceId, uploadFolder);
