@@ -8,7 +8,7 @@
 		<version>2.3.2.RELEASE</version>
 	</parent>
 
-	<groupId>in.ravikalla.wiremockbackup</groupId>
+	<groupId>org.wiremockbackup</groupId>
 	<artifactId>wiremock-backup</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Wiremock Backup</name>
@@ -159,7 +159,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
-                    <mainClass>in.ravikalla.wiremockbackup.WiremockBackupApplication</mainClass>
+                    <mainClass>org.wiremockbackup.WiremockBackupApplication</mainClass>
                 </configuration>
                   <executions>
                     <execution>
