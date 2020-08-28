@@ -71,11 +71,11 @@ public class InstanceMappingService {
 		L.debug("End : InstanceMappingService.delete() : id = {}", id);
 	}
 
-	public Long create(String instanceName, Boolean https, String host, String port, String targetURL) {
-		L.debug("Start : InstanceMappingService.create() : instanceName = {}, https = {}, host = {}, port = {}, targetURL = {}", instanceName, https, host, port, targetURL);
+	public Long create(String instanceName, String wiremockURL, String targetURL) {
+		L.debug("Start : InstanceMappingService.create() : instanceName = {}, wiremockURL = {}, targetURL = {}", instanceName, wiremockURL, targetURL);
 		Long id = sequenceGeneratorService.generateSequence(InstanceMapping.SEQUENCE_NAME);
-		InstanceMapping instanceMapping = instanceMappingRepository.insert(new InstanceMapping(id, instanceName, https, host, port, targetURL, null));
-		L.debug("End : InstanceMappingService.create() : instanceMapping = {}", instanceMapping.getId());
+		InstanceMapping instanceMapping = instanceMappingRepository.insert(new InstanceMapping(id, instanceName, wiremockURL, targetURL, null));
+		L.debug("End : InstanceMappingService.create() : id = {}, instanceName = {}, wiremockURL = {}, targetURL = {}", id, instanceName, wiremockURL, targetURL);
 		return instanceMapping.getId();
 	}
 
@@ -83,7 +83,7 @@ public class InstanceMappingService {
 		L.debug("Start : InstanceMappingService.update() : instanceMappingDTO = {}", instanceMappingDTO);
 		InstanceMapping instanceMapping = instanceMappingRepository.save(new InstanceMapping(instanceMappingDTO));
 		instanceMappingDTO = new InstanceMappingDTO(instanceMapping);
-		L.debug("End : InstanceMappingService.update() : instanceMappingDTO = {}", instanceMappingDTO);
+		L.debug("End : InstanceMappingService.update()");
 		return instanceMappingDTO;
 	}
 }

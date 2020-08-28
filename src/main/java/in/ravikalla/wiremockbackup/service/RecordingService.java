@@ -38,7 +38,7 @@ public class RecordingService {
 			L.debug("43 : RecordingService.startRecord(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath((instanceMapping.getHttps()?"https":"http") + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
+			apiClient.setBasePath(instanceMapping.getWiremockURL());
 			RecordingsApi recordingsApi = new RecordingsApi(apiClient);
 			try {
 				Body10 body10 = new Body10();
@@ -70,7 +70,7 @@ public class RecordingService {
 			L.debug("63 : RecordingService.record(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath((instanceMapping.getHttps()?"https":"http") + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
+			apiClient.setBasePath(instanceMapping.getWiremockURL());
 			RecordingsApi recordingsApi = new RecordingsApi(apiClient);
 			try {
 				inlineResponse200 = recordingsApi.adminRecordingsStopPost();
@@ -97,7 +97,7 @@ public class RecordingService {
 			L.debug("43 : RecordingService.statusOfRecoding(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath((instanceMapping.getHttps()?"https":"http") + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
+			apiClient.setBasePath(instanceMapping.getWiremockURL());
 			RecordingsApi recordingsApi = new RecordingsApi(apiClient);
 			try {
 				adminRecordingsStatusGet = recordingsApi.adminRecordingsStatusGet();

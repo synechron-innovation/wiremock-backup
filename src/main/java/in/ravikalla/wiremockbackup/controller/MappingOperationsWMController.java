@@ -33,7 +33,7 @@ public class MappingOperationsWMController {
 	public Integer importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) throws WiremockUIException {
 		L.info("Start : MappingOperationsWMController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 
-		InstanceMapping instanceMapping = mappingOperationsService.importWiremockRecordings(instanceId, limit, offset);
+		InstanceMapping instanceMapping = mappingOperationsService.importWiremockRecordingsToDB(instanceId, limit, offset);
 		Integer importedInstanceCount = (CollectionUtils.isEmpty(instanceMapping.getMappings())?0:instanceMapping.getMappings().size());
 
 		L.info("End : MappingOperationsWMController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset, importedInstanceCount);

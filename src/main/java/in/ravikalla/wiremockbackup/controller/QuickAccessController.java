@@ -44,12 +44,12 @@ public class QuickAccessController {
 
 	@ApiOperation(value = "1 - Create a new Wiremock instance")
 	@RequestMapping(value = "/1/createWiremockInstance", method = RequestMethod.POST)
-	public Long create(@RequestParam(required = false) String instanceName, @RequestParam(required = true) Boolean https, @RequestParam(required = true) String host, @RequestParam(required = true) String port, @RequestParam(required = true) String targetURL) {
-		L.info("Start : QuickAccessController.create() : instanceName = {}, https = {}, host = {}, port = {}, targetURL = {}", instanceName, https, host, port, targetURL);
+	public Long create(@RequestParam(required = false) String instanceName, @RequestParam(required = true) String wiremockURL, @RequestParam(required = true) String targetURL) {
+		L.info("Start : QuickAccessController.create() : instanceName = {}, wiremockURL = {}, targetURL = {}", instanceName, wiremockURL, targetURL);
 
-		Long id = instanceMappingService.create(instanceName, https, host, port, targetURL);
+		Long id = instanceMappingService.create(instanceName, wiremockURL, targetURL);
 
-		L.info("End : QuickAccessController.create() : instanceName = {}, https = {}, host = {}, port = {}, targetURL = {}, id = {}", instanceName, https, host, port, targetURL, id);
+		L.info("End : QuickAccessController.create() : instanceName = {}, wiremockURL = {}, targetURL = {}", instanceName, wiremockURL, targetURL);
 		return id;
 	}
 
@@ -90,7 +90,7 @@ public class QuickAccessController {
 	public Integer importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) throws WiremockUIException {
 		L.info("Start : QuickAccessController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 
-		InstanceMapping instanceMapping = mappingOperationsService.importWiremockRecordings(instanceId, limit, offset);
+		InstanceMapping instanceMapping = mappingOperationsService.importWiremockRecordingsToDB(instanceId, limit, offset);
 		Integer importedInstanceCount = (CollectionUtils.isEmpty(instanceMapping.getMappings())?0:instanceMapping.getMappings().size());
 
 		L.info("End : QuickAccessController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset, importedInstanceCount);

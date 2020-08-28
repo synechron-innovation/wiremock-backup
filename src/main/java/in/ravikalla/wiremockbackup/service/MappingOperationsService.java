@@ -32,10 +32,10 @@ public class MappingOperationsService {
 		this.instanceMappingForExportRepository = instanceMappingForExportRepository;
 	}
 
-	public InstanceMapping importWiremockRecordings(Long instanceId, Integer limit, Integer offset) throws WiremockUIException {
-		return importWiremockRecordings(limit, offset, instanceMappingRepository.findById(instanceId));
+	public InstanceMapping importWiremockRecordingsToDB(Long instanceId, Integer limit, Integer offset) throws WiremockUIException {
+		return importWiremockRecordingsToDB(limit, offset, instanceMappingRepository.findById(instanceId));
 	}
-	private InstanceMapping importWiremockRecordings(Integer limit, Integer offset, Optional<InstanceMapping> instanceMappingOptional) throws WiremockUIException {
+	private InstanceMapping importWiremockRecordingsToDB(Integer limit, Integer offset, Optional<InstanceMapping> instanceMappingOptional) throws WiremockUIException {
 		L.debug("Start : MappingOperationsService.importWiremockRecordings(...) : limit = {}, offset = {}", limit, offset);
 		InstanceMapping instanceMapping = null;
 		if (instanceMappingOptional.isPresent()) {
@@ -44,7 +44,7 @@ public class MappingOperationsService {
 			L.debug("43 : MappingOperationsService.importWiremockRecordings(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath((instanceMapping.getHttps()?"https":"http") + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
+			apiClient.setBasePath(instanceMapping.getWiremockURL());
 			StubMappingsApi apiInstance = new StubMappingsApi(apiClient);
 			try {
 				InlineResponse200 inlineResponse200 = apiInstance.adminMappingsGet(limit, offset);
@@ -82,7 +82,7 @@ public class MappingOperationsService {
 
 			if (CollectionUtils.isNotEmpty(instanceMappingForExport.getMappings())) {
 				ApiClient apiClient = new ApiClient();
-				apiClient.setBasePath((instanceMappingForExport.getHttps()?"https":"http") + "://" + instanceMappingForExport.getHost() + ":" + instanceMappingForExport.getPort());
+				apiClient.setBasePath(instanceMappingForExport.getWiremockURL());
 				StubMappingsApi apiInstance = new StubMappingsApi(apiClient);
 				try {
 					apiInstance.adminMappingsDelete();
@@ -117,7 +117,7 @@ public class MappingOperationsService {
 
 			if (CollectionUtils.isNotEmpty(instanceMappingForExport.getMappings())) {
 				ApiClient apiClient = new ApiClient();
-				apiClient.setBasePath((instanceMappingForExport.getHttps()?"https":"http") + "://" + instanceMappingForExport.getHost() + ":" + instanceMappingForExport.getPort());
+				apiClient.setBasePath(instanceMappingForExport.getWiremockURL());
 				StubMappingsApi apiInstance = new StubMappingsApi(apiClient);
 				try {
 					apiInstance.adminMappingsDelete();

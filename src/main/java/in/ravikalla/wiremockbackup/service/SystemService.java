@@ -37,7 +37,7 @@ public class SystemService {
 			L.debug("36 : SystemService.setFixedDelay(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath((instanceMapping.getHttps()?"https":"http") + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
+			apiClient.setBasePath(instanceMapping.getWiremockURL());
 			SystemApi systemApi = new SystemApi(apiClient);
 			try {
 				Body12 body12 = new Body12();
@@ -66,7 +66,7 @@ public class SystemService {
 			L.debug("64 : SystemService.shutdown(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath((instanceMapping.getHttps()?"https":"http") + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
+			apiClient.setBasePath(instanceMapping.getWiremockURL());
 			SystemApi systemApi = new SystemApi(apiClient);
 			try {
 				systemApi.adminShutdownPost();

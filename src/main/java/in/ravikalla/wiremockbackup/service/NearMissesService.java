@@ -38,7 +38,7 @@ public class NearMissesService {
 			L.debug("43 : NearMissesService.unmatchedNearMisses(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
-			apiClient.setBasePath((instanceMapping.getHttps()?"https":"http") + "://" + instanceMapping.getHost() + ":" + instanceMapping.getPort());
+			apiClient.setBasePath(instanceMapping.getWiremockURL());
 			NearMissesApi nearMissesApi = new NearMissesApi(apiClient);
 			try {
 				adminRequestsUnmatchedNearMissesGetWithHttpInfo = nearMissesApi.adminRequestsUnmatchedNearMissesGetWithHttpInfo();

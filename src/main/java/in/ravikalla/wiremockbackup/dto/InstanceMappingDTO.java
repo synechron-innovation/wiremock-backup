@@ -13,12 +13,8 @@ public class InstanceMappingDTO {
 	private Long id;
 	@ApiModelProperty(notes = "Name of the wiremock instance in UI application. This is not present in Wiremock server.")
 	private String instanceName;
-	@ApiModelProperty(notes = "Check if it is HTTPS protocol of the wiremock instance")
-	private Boolean https;
 	@ApiModelProperty(notes = "Host of the wiremock instance. This is where the application is hosted.")
-	private String host;
-	@ApiModelProperty(notes = "Port of the wiremock instance")
-	private String port;
+	private String wiremockURL;
 	@ApiModelProperty(notes = "URL to which Wiremock should be connected to - for recording")
 	private String targetURL;
 	@ApiModelProperty(notes = "List of recorded mappings under the wiremock instance that were imported to the WiremockUI related database")
@@ -31,9 +27,7 @@ public class InstanceMappingDTO {
 		super();
 		this.id = instanceMapping.getId();
 		this.instanceName = instanceMapping.getInstanceName();
-		this.https = instanceMapping.getHttps();
-		this.host = instanceMapping.getHost();
-		this.port = instanceMapping.getPort();
+		this.wiremockURL = instanceMapping.getWiremockURL();
 		this.targetURL = instanceMapping.getTargetURL();
 		this.mappings = instanceMapping.getMappings();
 	}
@@ -50,23 +44,11 @@ public class InstanceMappingDTO {
 	public void setInstanceName(String instanceName) {
 		this.instanceName = instanceName;
 	}
-	public Boolean getHttps() {
-		return https;
+	public String getWiremockURL() {
+		return wiremockURL;
 	}
-	public void setHttps(Boolean https) {
-		this.https = https;
-	}
-	public String getHost() {
-		return host;
-	}
-	public void setHost(String host) {
-		this.host = host;
-	}
-	public String getPort() {
-		return port;
-	}
-	public void setPort(String port) {
-		this.port = port;
+	public void setWiremockURL(String wiremockURL) {
+		this.wiremockURL = wiremockURL;
 	}
 	public List<Body1> getMappings() {
 		return mappings;
@@ -83,6 +65,6 @@ public class InstanceMappingDTO {
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", https=" + https + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
+		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", wiremockURL=" + wiremockURL + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
 	}
 }

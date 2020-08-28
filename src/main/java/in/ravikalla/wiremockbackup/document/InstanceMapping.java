@@ -18,9 +18,7 @@ public class InstanceMapping {
 	@Id
 	private Long id;
 	private String instanceName;
-	private Boolean https;
-	private String host;
-	private String port;
+	private String wiremockURL;
 	private String targetURL;
 
 	private List<Body1> mappings;
@@ -32,19 +30,15 @@ public class InstanceMapping {
 		super();
 		this.id = instanceMappingDTO.getId();
 		this.instanceName = instanceMappingDTO.getInstanceName();
-		this.https = instanceMappingDTO.getHttps();
-		this.host = instanceMappingDTO.getHost();
-		this.port = instanceMappingDTO.getPort();
+		this.wiremockURL = instanceMappingDTO.getWiremockURL();
 		this.targetURL = instanceMappingDTO.getTargetURL();
 		this.mappings = instanceMappingDTO.getMappings();
 	}
 
-	public InstanceMapping(Long id, String instanceName, Boolean https, String host, String port, String targetURL, List<Body1> mappings) {
+	public InstanceMapping(Long id, String instanceName, String wiremockURL, String targetURL, List<Body1> mappings) {
 		this.id = id;
 		this.instanceName = instanceName;
-		this.https = https;
-		this.host = host;
-		this.port= port;
+		this.wiremockURL = wiremockURL;
 		this.targetURL = targetURL;
 		this.mappings = mappings;
 	}
@@ -61,23 +55,11 @@ public class InstanceMapping {
 	public void setInstanceName(String instanceName) {
 		this.instanceName = instanceName;
 	}
-	public Boolean getHttps() {
-		return https;
+	public String getWiremockURL() {
+		return wiremockURL;
 	}
-	public void setHttps(Boolean https) {
-		this.https = https;
-	}
-	public String getHost() {
-		return host;
-	}
-	public void setHost(String host) {
-		this.host = host;
-	}
-	public String getPort() {
-		return port;
-	}
-	public void setPort(String port) {
-		this.port = port;
+	public void setWiremockURL(String wiremockURL) {
+		this.wiremockURL = wiremockURL;
 	}
 	public List<Body1> getMappings() {
 		return mappings;
@@ -94,6 +76,6 @@ public class InstanceMapping {
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", https=" + https + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
+		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", wiremockURL=" + wiremockURL + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
 	}
 }

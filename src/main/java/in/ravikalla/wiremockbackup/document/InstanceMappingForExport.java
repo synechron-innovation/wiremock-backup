@@ -22,9 +22,7 @@ public class InstanceMappingForExport {
 	@Id
 	private Long id;
 	private String instanceName;
-	private String host;
-	private String port;
-	private Boolean https;
+	private String wiremockURL;
 	private String targetURL;
 
 	private List<Body> mappings;
@@ -41,23 +39,11 @@ public class InstanceMappingForExport {
 	public void setInstanceName(String instanceName) {
 		this.instanceName = instanceName;
 	}
-	public Boolean getHttps() {
-		return https;
+	public String getWiremockURL() {
+		return wiremockURL;
 	}
-	public void setHttps(Boolean https) {
-		this.https = https;
-	}
-	public String getHost() {
-		return host;
-	}
-	public void setHost(String host) {
-		this.host = host;
-	}
-	public String getPort() {
-		return port;
-	}
-	public void setPort(String port) {
-		this.port = port;
+	public void setWiremockURL(String wiremockURL) {
+		this.wiremockURL = wiremockURL;
 	}
 	public List<Body> getMappings() {
 		return mappings;
@@ -74,6 +60,6 @@ public class InstanceMappingForExport {
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", https=" + https + ", host=" + host + ", port=" + port + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
+		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", wiremockURL=" + wiremockURL + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
 	}
 }
