@@ -1,0 +1,18 @@
+version: '3.5'
+
+services:
+  wiremockui-mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - wiremock_mongodb_network
+  wiremockui:
+    image: ravikalla/wiremock-backup
+    ports:
+      - "8080:8080"
+    networks:
+      - wiremock_mongodb_network
+networks:
+  wiremock_mongodb_network:
+    name: wiremock_mongodb_network_name
