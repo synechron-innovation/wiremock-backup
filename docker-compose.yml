@@ -13,6 +13,12 @@ services:
       - "8080:8080"
     networks:
       - wiremock_mongodb_network
+  wiremock-docker:
+    image: ravikalla/wiremock-docker
+    ports:
+      - "8151:8151"
+    networks:
+      - wiremock_mongodb_network
 networks:
   wiremock_mongodb_network:
     name: wiremock_mongodb_network_name
