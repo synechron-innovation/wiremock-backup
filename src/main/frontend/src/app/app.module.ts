@@ -16,13 +16,15 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { OrganizeRecordingsComponent } from './components/organize-recordings/organize-recordings.component';
 import { InstanceMappingService } from './services/instance-mapping.service';
 import { FolderTreeComponent } from './components/organize-recordings/folder-tree/folder-tree.component';
+import { RecordingNameMappingPipe } from './pipes/recording-name-mapping.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingPageComponent,
     OrganizeRecordingsComponent,
-    FolderTreeComponent
+    FolderTreeComponent,
+    RecordingNameMappingPipe
   ],
   imports: [
     BrowserModule,
