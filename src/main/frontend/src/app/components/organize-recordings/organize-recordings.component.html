@@ -7,9 +7,18 @@
             </app-folder-tree>
         </div>
         <div class="col-sm-8">
-            <!-- TODO: text-area -->
             <div class="edit-recording-section">
-                <textarea matInput [disabled]="!selectedRecording" [(ngModel)]="editableRecording"></textarea>
+                <div class="recording-name">
+                    <span>{{selectedRecording?.name | recordingNameMapping}}</span>
+                </div>
+                <textarea matInput [disabled]="!selectedRecording" [(ngModel)]="editableRecording"
+                    placeholder="Select a recording to edit it"></textarea>
+                <div class="recording-actions">
+                    <button type="button" mat-raised-button color="primary" [disabled]="!selectedRecording"
+                        (click)="applyChanges()">Apply</button>
+                    <button type="button" mat-raised-button color="accent" [disabled]="!selectedRecording"
+                        (click)="resetSelection()">Cancel</button>
+                </div>
             </div>
         </div>
     </div>

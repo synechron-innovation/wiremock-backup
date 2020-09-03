@@ -33,4 +33,15 @@ export class OrganizeRecordingsComponent implements OnInit {
     console.log('editableRecording: ', this.editableRecording);
   }
 
+  applyChanges(): void {
+    this.selectedRecording = Object.assign(this.selectedRecording, JSON.parse(this.editableRecording));
+    this.instance.mappings = Array.from(this.instance.mappings);
+    this.resetSelection();
+  }
+
+  resetSelection(): void {
+    this.editableRecording = '';
+    this.selectedRecording = null;
+  }
+
 }
