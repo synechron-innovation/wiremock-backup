@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, EventEmitter, Output } from '@angular/core';
 import { ArrayDataSource } from '@angular/cdk/collections';
 import { FlatTreeControl, NestedTreeControl } from '@angular/cdk/tree';
 
@@ -12,6 +12,7 @@ import { FolderNode, FlatFolderNode } from 'src/app/model/FolderNode';
 })
 export class FolderTreeComponent implements OnInit, OnChanges {
   @Input() recordings: Recording[];
+  @Output() selectRecording = new EventEmitter<string>();
 
   nestedTreeData: FolderNode[];
   // flatTreeData: FlatFolderNode[];
@@ -71,8 +72,8 @@ export class FolderTreeComponent implements OnInit, OnChanges {
 
   hasChild = (_: number, node: FolderNode) => !!node.children && node.children.length > 0;
 
-  selectRecording(node: FolderNode): void {
-    console.log('node: ', node);
+  onRecordingClick(node: FolderNode): void {
+    this.selectRecording.emit(node.recordingPath);
   }
 
   // generateTreeView(): void {

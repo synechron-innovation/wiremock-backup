@@ -3,7 +3,7 @@
     <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node m-1 p-2">
         <!-- use a disabled button to provide padding for tree leaf -->
         <!-- <button mat-icon-button disabled></button> -->
-        <button mat-button class="btn btn-outline-secondary btn-block" (click)="selectRecording(node)">
+        <button mat-button class="btn btn-outline-secondary btn-block" (click)="onRecordingClick(node)">
             <mat-icon class="material-icon folder-icon">text_snippet</mat-icon>{{node.name}}
         </button>
     </cdk-nested-tree-node>

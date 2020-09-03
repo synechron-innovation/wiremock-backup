@@ -6,4 +6,11 @@
     .folder-tree-section {
         border-right: 1px solid black;
     }
+
+    .edit-recording-section {
+        textarea {
+            width: 100%;
+            height: 60vh;
+        }
+    }
 }

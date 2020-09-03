@@ -2,6 +2,7 @@ import { InstanceMappingService } from './../../services/instance-mapping.servic
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Instance } from './../../model/Instance';
+import { Recording } from 'src/app/model/Recording';
 
 @Component({
   selector: 'app-organize-recordings',
@@ -11,6 +12,8 @@ import { Instance } from './../../model/Instance';
 export class OrganizeRecordingsComponent implements OnInit {
   instanceId: number;
   instance: Instance;
+  selectedRecording: Recording;
+  editableRecording: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -22,6 +25,12 @@ export class OrganizeRecordingsComponent implements OnInit {
 
     this.instanceMappingService.getInstanceWithMappingsById(this.instanceId)
       .subscribe((instance: Instance) => this.instance = instance);
+  }
+
+  onRecordingSelection(recordingName: string): void {
+    this.selectedRecording = this.instance.mappings.find((recording: Recording) => recording.name === recordingName);
+    this.editableRecording = JSON.stringify(this.selectedRecording, undefined, 4);
+    console.log('editableRecording: ', this.editableRecording);
   }
 
 }
