@@ -1,0 +1,11 @@
+<div class="organize-container container">
+    <h2>{{instance?.instanceName}} Mappings</h2>
+    <div class="row">
+        <div class="col-sm-4 folder-tree-section">
+            <app-folder-tree [recordings]="instance.mappings" *ngIf="instance.mappings"></app-folder-tree>
+        </div>
+        <div class="col-sm-8">
+            <!-- TODO: text-area -->
+        </div>
+    </div>
+</div>
