@@ -12,6 +12,7 @@ import { Recording } from 'src/app/model/Recording';
 export class OrganizeRecordingsComponent implements OnInit {
   instanceId: number;
   instance: Instance;
+  recordings: Recording[];
   selectedRecording: Recording;
   editableRecording: string;
 
@@ -23,19 +24,26 @@ export class OrganizeRecordingsComponent implements OnInit {
   ngOnInit(): void {
     this.instanceId = +this.route.snapshot.paramMap.get('instanceId');
 
-    this.instanceMappingService.getInstanceWithMappingsById(this.instanceId)
-      .subscribe((instance: Instance) => this.instance = instance);
+    // get instance details
+    this.instanceMappingService.getInstanceByInstanceId(this.instanceId)
+      .subscribe((instance) => {
+        this.instance = instance;
+
+        // get recordings for instance id
+        this.instanceMappingService.getMappingsByInstanceId(this.instanceId)
+          .subscribe((recordings) => this.recordings = recordings);
+      });
   }
 
   onRecordingSelection(recordingName: string): void {
-    this.selectedRecording = this.instance.mappings.find((recording: Recording) => recording.name === recordingName);
+    this.selectedRecording = this.recordings.find((recording: Recording) => recording.name === recordingName);
     this.editableRecording = JSON.stringify(this.selectedRecording, undefined, 4);
     console.log('editableRecording: ', this.editableRecording);
   }
 
   applyChanges(): void {
     this.selectedRecording = Object.assign(this.selectedRecording, JSON.parse(this.editableRecording));
-    this.instance.mappings = Array.from(this.instance.mappings);
+    this.recordings = Array.from(this.recordings);
     this.resetSelection();
   }
 

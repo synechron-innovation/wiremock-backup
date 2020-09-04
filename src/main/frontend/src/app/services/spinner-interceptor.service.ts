@@ -8,14 +8,27 @@ import { SpinnerService } from './spinner.service';
   providedIn: 'root'
 })
 export class SpinnerInterceptorService implements HttpInterceptor {
+  private requests: HttpRequest<any>[] = [];
 
   constructor(private spinnerService: SpinnerService) { }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.spinnerService.startSpinner();
+  removeRequest(req: HttpRequest<any>): void {
+    const index = this.requests.indexOf(req);
+    if (index >= 0) {
+      this.requests.splice(index, 1);
+    }
+    if (!this.requests.length) {
+      this.spinnerService.stopSpinner();
+    }
+  }
 
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    this.requests.push(req);
+    this.spinnerService.startSpinner();
     return next.handle(req).pipe(
-      finalize(() => this.spinnerService.stopSpinner())
+      finalize(() => {
+        this.removeRequest(req);
+      })
     );
   }
 }

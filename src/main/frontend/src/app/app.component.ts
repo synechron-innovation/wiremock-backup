@@ -26,17 +26,20 @@ export class AppComponent implements OnInit {
   }
 
   openDialog(): void {
-    this.dialogRef = this.dialog.open(SpinnerComponent, {
-      width: '100vw',
-      hasBackdrop: true,
-      disableClose: true,
-      panelClass: 'spinner-panel'
-    });
+    if (!this.dialogRef) {
+      this.dialogRef = this.dialog.open(SpinnerComponent, {
+        width: '100vw',
+        hasBackdrop: true,
+        disableClose: true,
+        panelClass: 'spinner-panel'
+      });
+    }
   }
 
   closeDialog(): void {
     if (this.dialogRef) {
       this.dialogRef.close();
+      this.dialogRef = null;
     }
   }
 }
