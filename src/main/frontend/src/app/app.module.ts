@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,6 +43,7 @@ import { SpinnerService } from './services/spinner.service';
     MatInputModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,

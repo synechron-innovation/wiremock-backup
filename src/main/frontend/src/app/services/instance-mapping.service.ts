@@ -23,4 +23,18 @@ export class InstanceMappingService {
       `${this.BASE_URL}/mappingOperationsLocalAndDB/importFromDB/instanceId/${instanceId}`
     );
   }
+
+  exportMappingsToDatabase(recordings: Recording[], instanceId: number): Observable<Instance> {
+    return this.http.post<Instance>(
+      `${this.BASE_URL}/mappingOperationsLocalAndDB/exportToDB/instanceId/${instanceId}`,
+      recordings
+    );
+  }
+
+  exportMappingsToWireMock(instanceId: number): Observable<any> {
+    return this.http.post<any>(
+      `${this.BASE_URL}/mappingOperationsDBAndWM/exportToWiremock/instanceId/${instanceId}`,
+      {}
+    );
+  }
 }

@@ -1,6 +1,9 @@
 import { InstanceMappingService } from './../../services/instance-mapping.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { Instance } from './../../model/Instance';
 import { Recording } from 'src/app/model/Recording';
 
@@ -18,6 +21,7 @@ export class OrganizeRecordingsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private snackbar: MatSnackBar,
     private instanceMappingService: InstanceMappingService
   ) { }
 
@@ -50,6 +54,32 @@ export class OrganizeRecordingsComponent implements OnInit {
   resetSelection(): void {
     this.editableRecording = '';
     this.selectedRecording = null;
+  }
+
+  saveRecordings(): void {
+    this.instanceMappingService.exportMappingsToDatabase(this.recordings, this.instanceId)
+      .subscribe((response) => {
+        this.snackbar.open('Recordings saved to database', 'Close', {
+          duration: 2500
+        });
+      }, (error) => {
+        this.snackbar.open('Error occurred. Please contact administrator.', 'Close', {
+          duration: 2500
+        });
+      });
+  }
+
+  publishRecordings(): void {
+    this.instanceMappingService.exportMappingsToWireMock(this.instanceId)
+      .subscribe((response) => {
+        this.snackbar.open('Recordings published to WireMock', 'Close', {
+          duration: 2500
+        });
+      }, (error) => {
+        this.snackbar.open('Error occurred. Please contact administrator.', 'Close', {
+          duration: 2500
+        });
+      });
   }
 
 }
