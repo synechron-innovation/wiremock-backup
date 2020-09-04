@@ -1,31 +1,38 @@
-import { InstanceMappingService } from './../../services/instance-mapping.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { Instance } from './../../model/Instance';
 import { Recording } from 'src/app/model/Recording';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { InstanceMappingService } from './../../services/instance-mapping.service';
 
 @Component({
   selector: 'app-organize-recordings',
   templateUrl: './organize-recordings.component.html',
   styleUrls: ['./organize-recordings.component.scss']
 })
-export class OrganizeRecordingsComponent implements OnInit {
+export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
   instanceId: number;
   instance: Instance;
   recordings: Recording[];
   selectedRecording: Recording;
   editableRecording: string;
 
+  subscriptions: Subscription;
+
   constructor(
     private route: ActivatedRoute,
     private snackbar: MatSnackBar,
+    private dialog: MatDialog,
     private instanceMappingService: InstanceMappingService
   ) { }
 
   ngOnInit(): void {
+    this.subscriptions = new Subscription();
     this.instanceId = +this.route.snapshot.paramMap.get('instanceId');
 
     // get instance details
@@ -57,29 +64,65 @@ export class OrganizeRecordingsComponent implements OnInit {
   }
 
   saveRecordings(): void {
-    this.instanceMappingService.exportMappingsToDatabase(this.recordings, this.instanceId)
-      .subscribe((response) => {
-        this.snackbar.open('Recordings saved to database', 'Close', {
-          duration: 2500
-        });
-      }, (error) => {
-        this.snackbar.open('Error occurred. Please contact administrator.', 'Close', {
-          duration: 2500
-        });
-      });
+    const dialog = this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: true,
+      width: '500px',
+      height: '250px',
+      data: {
+        operationType: 'save',
+      }
+    });
+
+    const dialogCloseSubscription = dialog.afterClosed().subscribe((comment: string) => {
+      if (comment) {
+        // TODO - add comment to the API call
+        this.instanceMappingService.exportMappingsToDatabase(this.recordings, this.instanceId)
+          .subscribe((response) => {
+            this.snackbar.open('Recordings saved to database', 'Close', {
+              duration: 2500
+            });
+          }, (error) => {
+            this.snackbar.open('Error occurred. Please contact administrator.', 'Close', {
+              duration: 2500
+            });
+          });
+      }
+    });
+
+    this.subscriptions.add(dialogCloseSubscription);
   }
 
   publishRecordings(): void {
-    this.instanceMappingService.exportMappingsToWireMock(this.instanceId)
-      .subscribe((response) => {
-        this.snackbar.open('Recordings published to WireMock', 'Close', {
-          duration: 2500
-        });
-      }, (error) => {
-        this.snackbar.open('Error occurred. Please contact administrator.', 'Close', {
-          duration: 2500
-        });
-      });
+    const dialog = this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: true,
+      width: '500px',
+      height: '250px',
+      data: {
+        operationType: 'publish',
+      }
+    });
+
+    const dialogCloseSubscription = dialog.afterClosed().subscribe((comment: string) => {
+      if (comment) {
+        // TODO - add comment to the API call
+        this.instanceMappingService.exportMappingsToWireMock(this.instanceId)
+          .subscribe((response) => {
+            this.snackbar.open('Recordings published to WireMock', 'Close', {
+              duration: 2500
+            });
+          }, (error) => {
+            this.snackbar.open('Error occurred. Please contact administrator.', 'Close', {
+              duration: 2500
+            });
+          });
+      }
+    });
+
+    this.subscriptions.add(dialogCloseSubscription);
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+    this.subscriptions = null;
+  }
 }
