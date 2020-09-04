@@ -5,6 +5,10 @@
 
     .folder-tree-section {
         border-right: 1px solid black;
+        
+        .folder-tree {
+            height: 65vh;
+        }
     }
 
     .edit-recording-section {

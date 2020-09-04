@@ -2,9 +2,16 @@
     <h2>{{instance?.instanceName}} Mappings</h2>
     <div class="row">
         <div class="col-sm-4 folder-tree-section">
-            <app-folder-tree *ngIf="instance && instance.mappings" [recordings]="instance.mappings"
-                (selectRecording)="onRecordingSelection($event)">
-            </app-folder-tree>
+            <div class="folder-tree">
+                <app-folder-tree *ngIf="recordings" [recordings]="recordings"
+                    (selectRecording)="onRecordingSelection($event)">
+                </app-folder-tree>
+            </div>
+            <div class="persist-actions">
+                <button type="button" mat-raised-button color="primary" (click)="saveRecordings()">Save All</button>
+                <button type="button" mat-raised-button color="primary" class="ml-2"
+                    (click)="publishRecordings()">Publish All</button>
+            </div>
         </div>
         <div class="col-sm-8">
             <div class="edit-recording-section">
@@ -14,9 +21,9 @@
                 <textarea matInput [disabled]="!selectedRecording" [(ngModel)]="editableRecording"
                     placeholder="Select a recording to edit it"></textarea>
                 <div class="recording-actions">
-                    <button type="button" mat-raised-button color="primary" [disabled]="!selectedRecording"
+                    <button type="button" mat-raised-button color="warn" [disabled]="!selectedRecording"
                         (click)="applyChanges()">Apply</button>
-                    <button type="button" mat-raised-button color="accent" [disabled]="!selectedRecording"
+                    <button type="button" mat-raised-button [disabled]="!selectedRecording"
                         (click)="resetSelection()">Cancel</button>
                 </div>
             </div>
