@@ -7,7 +7,9 @@
         border-right: 1px solid black;
         
         .folder-tree {
-            height: 65vh;
+            height: 430px;
+            overflow-y: auto;
+            margin-bottom: 5px;
         }
     }
 

@@ -4,7 +4,7 @@
         <div class="col-sm-4 folder-tree-section">
             <div class="folder-tree">
                 <app-folder-tree *ngIf="recordings" [recordings]="recordings"
-                    (selectRecording)="onRecordingSelection($event)">
+                    (selectRecording)="onRecordingSelection($event)" (treeAction)="handleTreeAction($event)">
                 </app-folder-tree>
             </div>
             <div class="persist-actions">

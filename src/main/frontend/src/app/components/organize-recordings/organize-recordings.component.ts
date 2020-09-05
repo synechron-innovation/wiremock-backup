@@ -9,6 +9,7 @@ import { Instance } from './../../model/Instance';
 import { Recording } from 'src/app/model/Recording';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { InstanceMappingService } from './../../services/instance-mapping.service';
+import { TreeAction, TreeActionTypes } from './../../model/FolderNode';
 
 @Component({
   selector: 'app-organize-recordings',
@@ -73,6 +74,8 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
       }
     });
 
+    console.log('this.recordings: ', this.recordings);
+
     const dialogCloseSubscription = dialog.afterClosed().subscribe((comment: string) => {
       if (comment) {
         // TODO - add comment to the API call
@@ -119,6 +122,13 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
     });
 
     this.subscriptions.add(dialogCloseSubscription);
+  }
+
+  handleTreeAction(treeAction: TreeAction): void {
+    if (treeAction.type === TreeActionTypes.REMOVE) {
+      const recordingIndex = this.recordings.findIndex(recording => recording.name === treeAction.node.recordingPath);
+      this.recordings.splice(recordingIndex, 1);
+    }
   }
 
   ngOnDestroy(): void {
