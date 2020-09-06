@@ -24,6 +24,10 @@
 
 .temp-node-span {
   white-space: nowrap;
+
+  &.temp-leaf-node-span {
+    padding-left: 50px;
+  }
   
   input {
     width: 50%;

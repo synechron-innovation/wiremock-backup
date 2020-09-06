@@ -141,7 +141,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  addTempNode(): void {
+  addTempNode(tempNodeType: FolderNodeTypes): void {
     if (this.checkedFolderNode) {
       let parent: FolderNode;
       if (!this.checkedFolderNode.children) {
@@ -153,8 +153,8 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
         name: '',
         isChecked: false,
         ancestorPath: parent.ancestorPath + '::' + parent.name,
-        nodeType: FolderNodeTypes.TEMP,
-        children: []
+        nodeType: tempNodeType,
+        children: (tempNodeType === FolderNodeTypes.TEMP_FOLDER) ? [] : null
       };
       parent.children.push(tempNode);
 
@@ -169,6 +169,13 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
 
   saveTempNode(node: FolderNode, nodeType: FolderNodeTypes): void {
     node.nodeType = nodeType;
+    if (nodeType === FolderNodeTypes.RECORDING) {
+      node.recordingPath = node.ancestorPath + ':::' + node.name;
+      this.treeAction.emit({
+        type: TreeActionTypes.ADD,
+        node
+      });
+    }
     this.refreshFolderTree();
   }
 

@@ -10,6 +10,8 @@ import { Recording } from 'src/app/model/Recording';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { InstanceMappingService } from './../../services/instance-mapping.service';
 import { TreeAction, TreeActionTypes } from './../../model/FolderNode';
+import { RecordingResponse } from 'src/app/model/RecordingResponse';
+import { RecordingRequest } from 'src/app/model/RecordingRequest';
 
 @Component({
   selector: 'app-organize-recordings',
@@ -50,7 +52,6 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
   onRecordingSelection(recordingName: string): void {
     this.selectedRecording = this.recordings.find((recording: Recording) => recording.name === recordingName);
     this.editableRecording = JSON.stringify(this.selectedRecording, undefined, 4);
-    console.log('editableRecording: ', this.editableRecording);
   }
 
   applyChanges(): void {
@@ -73,8 +74,6 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
         operationType: 'save',
       }
     });
-
-    console.log('this.recordings: ', this.recordings);
 
     const dialogCloseSubscription = dialog.afterClosed().subscribe((comment: string) => {
       if (comment) {
@@ -128,7 +127,14 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
     if (treeAction.type === TreeActionTypes.REMOVE) {
       const recordingIndex = this.recordings.findIndex(recording => recording.name === treeAction.node.recordingPath);
       this.recordings.splice(recordingIndex, 1);
+    } else if (treeAction.type === TreeActionTypes.ADD) {
+      const recording = new Recording();
+      recording.request = new RecordingRequest();
+      recording.response = new RecordingResponse();
+      recording.name = treeAction.node.recordingPath;
+      this.recordings.push(recording);
     }
+    this.resetSelection();
   }
 
   ngOnDestroy(): void {

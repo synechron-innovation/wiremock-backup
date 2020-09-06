@@ -1,41 +1,17 @@
+import { RecordingRequest } from './RecordingRequest';
+import { RecordingResponse } from './RecordingResponse';
 
-export interface Recording {
-  id: string;
-  uuid: string;
-  name: string;
-  request: {
-    method: string;
-    url: string;
-    urlPath: string;
-    urlPathPattern: string;
-    urlPattern: string;
-    queryParameters: any;
-    headers: any;
-    basicAuthCredentials: any;
-    cookies: any;
-    bodyPatterns: any;
-  };
-  response: {
-    status: number;
-    statusMessage: string;
-    headers: any;
-    additionalProxyRequestHeaders: any;
-    body: string;
-    base64Body: any;
-    jsonBody: any;
-    bodyFileName: any;
-    fault: any;
-    fixedDelayMilliseconds: number;
-    fromConfiguredStub: any;
-    proxyBaseUrl: string;
-    transformerParameters: any;
-    transformers: any;
-  };
-  persistent: boolean;
-  priority: any;
-  scenarioName: any;
-  requiredScenarioState: any;
-  newScenarioState: any;
-  postServeActions: any;
-  metadata: any;
+export class Recording {
+  id: string = null;
+  uuid: string = null;
+  name: string = null;
+  request: RecordingRequest;
+  response: RecordingResponse;
+  persistent: boolean = null;
+  priority: any = null;
+  scenarioName: any = null;
+  requiredScenarioState: any = null;
+  newScenarioState: any = null;
+  postServeActions: any = null;
+  metadata: any = null;
 }

@@ -17,7 +17,7 @@ export enum TreeActionTypes {
 }
 
 export enum FolderNodeTypes {
-    FOLDER = 'folder', RECORDING = 'recording', TEMP = 'temp'
+    FOLDER = 'folder', RECORDING = 'recording', TEMP_FOLDER = 'temp_folder', TEMP_RECORDING = 'temp_recording'
 }
 
 export interface FlatFolderNode {
