@@ -1,30 +1,15 @@
-<div class="mb-2">
-    <button class="mr-1" type="button" mat-raised-button color="accent"
-        (click)="addTempNode(folderNodeTypes.TEMP_FOLDER)" matTooltip="Add new folder" matTooltipPosition="above">
-        <mat-icon>create_new_folder</mat-icon>
-    </button>
-    <button class="mr-1" type="button" mat-raised-button color="accent"
-        (click)="addTempNode(folderNodeTypes.TEMP_RECORDING)" matTooltip="Add new recording" matTooltipPosition="above">
-        <mat-icon>note_add</mat-icon>
-    </button>
-    <!-- <button type="button" mat-raised-button color="accent" (click)="deleteNode()" matTooltip="Delete selected"
-        matTooltipPosition="above">
-        <mat-icon>delete</mat-icon>
-    </button> -->
-</div>
-
 <cdk-tree #cdkTree [dataSource]="dataSource" [treeControl]="treeControl">
     <!-- This is the tree node template for leaf nodes -->
-    <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node m-1 p-2">
+    <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node p-2">
         <!-- use a disabled button to provide padding for tree leaf -->
         <!-- <button mat-icon-button disabled></button> -->
         <div class="leaf-node" *ngIf="node.nodeType !== folderNodeTypes.TEMP_RECORDING; else tempRecordingNodeBlock">
-            <mat-checkbox class="pl-5" [checked]="node.isChecked" (change)="onNodeCheck(node)">
+            <div class="d-inline-block pl-4">
                 <button mat-stroked-button color="primary" (click)="onRecordingClick(node)">
                     <mat-icon class="folder-icon">text_snippet</mat-icon>{{node.name}}
                 </button>
-            </mat-checkbox>
-            <div class="pl-2 pb-2 node-actions">
+            </div>
+            <div class="pl-2 node-actions">
                 <button type="button" mat-icon-button color="accent" (click)="deleteNode(node)"
                     matTooltip="Delete Recording" matTooltipPosition="above">
                     <mat-icon>delete</mat-icon>
@@ -46,12 +31,24 @@
                 {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
             </mat-icon>
         </button>
-        <span *ngIf="node.nodeType !== folderNodeTypes.TEMP_FOLDER; else tempFolderNodeBlock">
-            <mat-checkbox class="checklist-leaf-node" [checked]="node.isChecked" (change)="onNodeCheck(node)">
+        <div class="folder-node" *ngIf="node.nodeType !== folderNodeTypes.TEMP_FOLDER; else tempFolderNodeBlock">
+            <span>
                 <mat-icon class="folder-icon">folder</mat-icon>
                 {{node.name}}
-            </mat-checkbox>
-        </span>
+            </span>
+            <div class="pl-2 node-actions">
+                <button type="button" mat-icon-button color="accent"
+                    (click)="addTempNode(node, folderNodeTypes.TEMP_FOLDER)" matTooltip="Add new folder"
+                    matTooltipPosition="above">
+                    <mat-icon>create_new_folder</mat-icon>
+                </button>
+                <button type="button" mat-icon-button color="accent"
+                    (click)="addTempNode(node, folderNodeTypes.TEMP_RECORDING)" matTooltip="Add new recording"
+                    matTooltipPosition="above">
+                    <mat-icon>note_add</mat-icon>
+                </button>
+            </div>
+        </div>
         <ng-template #tempFolderNodeBlock>
             <span class="temp-node-span">
                 <input matInput [(ngModel)]="node.name" placeholder="folder name" />

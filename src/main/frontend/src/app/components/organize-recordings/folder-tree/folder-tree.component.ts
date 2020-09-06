@@ -101,21 +101,6 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
     this.selectRecording.emit(node.recordingPath);
   }
 
-  onNodeCheck(node: FolderNode): void {
-    // first time any node is checked
-    if (!this.checkedFolderNode) {
-      node.isChecked = true;
-      this.checkedFolderNode = node;
-    } else if (this.checkedFolderNode === node) {
-      node.isChecked = false;
-      this.checkedFolderNode = null;
-    } else {
-      this.checkedFolderNode.isChecked = false;
-      node.isChecked = true;
-      this.checkedFolderNode = node;
-    }
-  }
-
   deleteNode(node: FolderNode): void {
     const parent = FolderTreeHelper.getParentByAncestorPath(node, this.nestedTreeData);
     if (!node.children) { // leaf nodes
@@ -134,30 +119,19 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  addTempNode(tempNodeType: FolderNodeTypes): void {
-    if (this.checkedFolderNode) {
-      let parent: FolderNode;
-      if (!this.checkedFolderNode.children) {
-        parent = FolderTreeHelper.getParentByAncestorPath(this.checkedFolderNode, this.nestedTreeData);
-      } else {
-        parent = this.checkedFolderNode;
-      }
-      const tempNode: FolderNode = {
-        name: '',
-        isChecked: false,
-        ancestorPath: parent.ancestorPath + '::' + parent.name,
-        nodeType: tempNodeType,
-        children: (tempNodeType === FolderNodeTypes.TEMP_FOLDER) ? [] : null
-      };
-      parent.children.push(tempNode);
+  addTempNode(node: FolderNode, tempNodeType: FolderNodeTypes): void {
+    const parent = node;
+    const tempNode: FolderNode = {
+      name: '',
+      isChecked: false,
+      ancestorPath: parent.ancestorPath + '::' + parent.name,
+      nodeType: tempNodeType,
+      children: (tempNodeType === FolderNodeTypes.TEMP_FOLDER) ? [] : null
+    };
 
-      this.checkedFolderNode.isChecked = false;
-      this.checkedFolderNode = null;
+    parent.children.push(tempNode);
 
-      this.refreshFolderTree();
-    } else {
-      this.showSnackbarMessage('Please select a node before adding a new folder.');
-    }
+    this.refreshFolderTree();
   }
 
   saveTempNode(node: FolderNode, nodeType: FolderNodeTypes): void {
@@ -224,6 +198,47 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
   //     this.snackbar.open('Failed: Item was not selected.', 'Close', {
   //       duration: 2500
   //     });
+  //   }
+  // }
+
+  // onNodeCheck(node: FolderNode): void {
+  //   // first time any node is checked
+  //   if (!this.checkedFolderNode) {
+  //     node.isChecked = true;
+  //     this.checkedFolderNode = node;
+  //   } else if (this.checkedFolderNode === node) {
+  //     node.isChecked = false;
+  //     this.checkedFolderNode = null;
+  //   } else {
+  //     this.checkedFolderNode.isChecked = false;
+  //     node.isChecked = true;
+  //     this.checkedFolderNode = node;
+  //   }
+  // }
+
+  // addTempNode(tempNodeType: FolderNodeTypes): void {
+  //   if (this.checkedFolderNode) {
+  //     let parent: FolderNode;
+  //     if (!this.checkedFolderNode.children) {
+  //       parent = FolderTreeHelper.getParentByAncestorPath(this.checkedFolderNode, this.nestedTreeData);
+  //     } else {
+  //       parent = this.checkedFolderNode;
+  //     }
+  //     const tempNode: FolderNode = {
+  //       name: '',
+  //       isChecked: false,
+  //       ancestorPath: parent.ancestorPath + '::' + parent.name,
+  //       nodeType: tempNodeType,
+  //       children: (tempNodeType === FolderNodeTypes.TEMP_FOLDER) ? [] : null
+  //     };
+  //     parent.children.push(tempNode);
+
+  //     this.checkedFolderNode.isChecked = false;
+  //     this.checkedFolderNode = null;
+
+  //     this.refreshFolderTree();
+  //   } else {
+  //     this.showSnackbarMessage('Please select a node before adding a new folder.');
   //   }
   // }
 

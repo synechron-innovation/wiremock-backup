@@ -34,8 +34,10 @@
   }
 }
 
-.leaf-node {
+.leaf-node,
+.folder-node {
   display: inline-block;
+  vertical-align: middle;
   
   .node-actions {
     vertical-align: middle;
