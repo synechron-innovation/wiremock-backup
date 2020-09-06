@@ -7,10 +7,10 @@
         (click)="addTempNode(folderNodeTypes.TEMP_RECORDING)" matTooltip="Add new recording" matTooltipPosition="above">
         <mat-icon>note_add</mat-icon>
     </button>
-    <button type="button" mat-raised-button color="accent" (click)="deleteNode()" matTooltip="Delete selected"
+    <!-- <button type="button" mat-raised-button color="accent" (click)="deleteNode()" matTooltip="Delete selected"
         matTooltipPosition="above">
         <mat-icon>delete</mat-icon>
-    </button>
+    </button> -->
 </div>
 
 <cdk-tree #cdkTree [dataSource]="dataSource" [treeControl]="treeControl">
@@ -18,13 +18,19 @@
     <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node m-1 p-2">
         <!-- use a disabled button to provide padding for tree leaf -->
         <!-- <button mat-icon-button disabled></button> -->
-        <span *ngIf="node.nodeType !== folderNodeTypes.TEMP_RECORDING; else tempRecordingNodeBlock">
-            <mat-checkbox class="checklist-leaf-node pl-5" [checked]="node.isChecked" (change)="onNodeCheck(node)">
-                <button mat-button class="btn btn-outline-secondary btn-block" (click)="onRecordingClick(node)">
+        <div class="leaf-node" *ngIf="node.nodeType !== folderNodeTypes.TEMP_RECORDING; else tempRecordingNodeBlock">
+            <mat-checkbox class="pl-5" [checked]="node.isChecked" (change)="onNodeCheck(node)">
+                <button mat-stroked-button color="primary" (click)="onRecordingClick(node)">
                     <mat-icon class="folder-icon">text_snippet</mat-icon>{{node.name}}
                 </button>
             </mat-checkbox>
-        </span>
+            <div class="pl-2 pb-2 node-actions">
+                <button type="button" mat-icon-button color="accent" (click)="deleteNode(node)"
+                    matTooltip="Delete Recording" matTooltipPosition="above">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
         <ng-template #tempRecordingNodeBlock>
             <span class="temp-node-span temp-leaf-node-span">
                 <input matInput [(ngModel)]="node.name" placeholder="recording name" />

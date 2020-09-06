@@ -33,3 +33,18 @@
     width: 50%;
   }
 }
+
+.leaf-node {
+  display: inline-block;
+  
+  .node-actions {
+    vertical-align: middle;
+    display: none;
+  }
+
+  &:hover {
+    .node-actions {
+      display: inline-block;
+    }
+  }
+}

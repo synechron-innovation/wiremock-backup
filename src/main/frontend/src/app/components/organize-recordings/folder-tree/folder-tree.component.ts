@@ -116,27 +116,20 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  deleteNode(): void {
-    if (this.checkedFolderNode) {
-      const parent = FolderTreeHelper.getParentByAncestorPath(this.checkedFolderNode, this.nestedTreeData);
-      if (!this.checkedFolderNode.children) { // leaf nodes
-        const nodeIndex = parent.children.findIndex(childNode => childNode.name === this.checkedFolderNode.name);
-        if (nodeIndex !== -1) {
-          parent.children.splice(nodeIndex, 1);
-        }
-
-        this.refreshFolderTree();
-
-        // emit event to update the recording array
-        this.treeAction.emit({
-          type: TreeActionTypes.REMOVE,
-          node: this.checkedFolderNode
-        });
-        this.checkedFolderNode = null;
+  deleteNode(node: FolderNode): void {
+    const parent = FolderTreeHelper.getParentByAncestorPath(node, this.nestedTreeData);
+    if (!node.children) { // leaf nodes
+      const nodeIndex = parent.children.findIndex(childNode => childNode.name === node.name);
+      if (nodeIndex !== -1) {
+        parent.children.splice(nodeIndex, 1);
       }
-    } else {
-      this.snackbar.open('Failed: Item was not selected.', 'Close', {
-        duration: 2500
+
+      this.refreshFolderTree();
+
+      // emit event to update the recording array
+      this.treeAction.emit({
+        type: TreeActionTypes.REMOVE,
+        node
       });
     }
   }
@@ -207,6 +200,31 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
   //   const foundNodeIndex = this.nestedTreeData.findIndex(node => node.name === 'newTreeFolder1');
   //   this.nestedTreeData.splice(foundNodeIndex, 1);
   //   this.nestedTreeDataSubject.next(this.nestedTreeData);
+  // }
+
+  // deleteNode(): void {
+  //   if (this.checkedFolderNode) {
+  //     const parent = FolderTreeHelper.getParentByAncestorPath(this.checkedFolderNode, this.nestedTreeData);
+  //     if (!this.checkedFolderNode.children) { // leaf nodes
+  //       const nodeIndex = parent.children.findIndex(childNode => childNode.name === this.checkedFolderNode.name);
+  //       if (nodeIndex !== -1) {
+  //         parent.children.splice(nodeIndex, 1);
+  //       }
+
+  //       this.refreshFolderTree();
+
+  //       // emit event to update the recording array
+  //       this.treeAction.emit({
+  //         type: TreeActionTypes.REMOVE,
+  //         node: this.checkedFolderNode
+  //       });
+  //       this.checkedFolderNode = null;
+  //     }
+  //   } else {
+  //     this.snackbar.open('Failed: Item was not selected.', 'Close', {
+  //       duration: 2500
+  //     });
+  //   }
   // }
 
   // generateTreeView(): void {
