@@ -1,5 +1,5 @@
 <div class="mb-2">
-    <button class="mr-1" type="button" mat-raised-button color="accent" (click)="addNewFolder()"
+    <button class="mr-1" type="button" mat-raised-button color="accent" (click)="addTempNode()"
         matTooltip="Add new folder" matTooltipPosition="above">
         <mat-icon>create_new_folder</mat-icon>
     </button>
@@ -32,10 +32,18 @@
                 {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
             </mat-icon>
         </button>
-        <mat-checkbox class="checklist-leaf-node" [checked]="node.isChecked" (change)="onNodeCheck(node)">
-            <mat-icon class="folder-icon">folder</mat-icon>
-            {{node.name}}
-        </mat-checkbox>
+        <span *ngIf="node.nodeType !== folderNodeTypes.TEMP; else tempNodeBlock">
+            <mat-checkbox class="checklist-leaf-node" [checked]="node.isChecked" (change)="onNodeCheck(node)">
+                <mat-icon class="folder-icon">folder</mat-icon>
+                {{node.name}}
+            </mat-checkbox>
+        </span>
+        <ng-template #tempNodeBlock>
+            <span class="temp-node-span">
+                <input matInput [(ngModel)]="node.name" />
+                <a mat-button class="d-inline-block" (click)="saveTempNode(node, folderNodeTypes.FOLDER)">Save</a>
+            </span>
+        </ng-template>
         <!-- <div [class.example-tree-invisible]="!treeControl.isExpanded(node)">
             <ng-container cdkTreeNodeOutlet></ng-container>
         </div> -->

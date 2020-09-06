@@ -13,6 +13,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -46,6 +48,8 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     MatDialogModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    MatTooltipModule,
+    MatCheckboxModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,

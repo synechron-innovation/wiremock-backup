@@ -22,6 +22,8 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
   nestedTreeData: FolderNode[];
   nestedTreeDataSubject = new BehaviorSubject<FolderNode[]>([]);
   checkedFolderNode: FolderNode;
+
+  folderNodeTypes = FolderNodeTypes;
   // flatTreeData: FlatFolderNode[];
 
   // treeControl: FlatTreeControl<FlatFolderNode>;
@@ -51,7 +53,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.treeControl.dataNodes = this.nestedTreeData;
-    this.treeControl.expandAll();
+    setTimeout(() => this.treeControl.expandAll(), 0);
   }
 
   generateNestedTree(): void {
@@ -123,11 +125,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
           parent.children.splice(nodeIndex, 1);
         }
 
-        this.nestedTreeData = JSON.parse(JSON.stringify(this.nestedTreeData));
-        this.nestedTreeDataSubject.next(this.nestedTreeData);
-        this.treeControl.dataNodes = this.nestedTreeData;
-        // expanding all nodes to prevent the tree from completely collapsing
-        this.treeControl.expandAll();
+        this.refreshFolderTree();
 
         // emit event to update the recording array
         this.treeAction.emit({
@@ -143,18 +141,49 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
     }
   }
 
-  addNewFolder(): void {
+  addTempNode(): void {
     if (this.checkedFolderNode) {
+      let parent: FolderNode;
+      if (!this.checkedFolderNode.children) {
+        parent = FolderTreeHelper.getParentByAncestorPath(this.checkedFolderNode, this.nestedTreeData);
+      } else {
+        parent = this.checkedFolderNode;
+      }
+      const tempNode: FolderNode = {
+        name: '',
+        isChecked: false,
+        ancestorPath: parent.ancestorPath + '::' + parent.name,
+        nodeType: FolderNodeTypes.TEMP,
+        children: []
+      };
+      parent.children.push(tempNode);
 
+      this.checkedFolderNode.isChecked = false;
+      this.checkedFolderNode = null;
+
+      this.refreshFolderTree();
     } else {
       this.showSnackbarMessage('Please select a node before adding a new folder.');
     }
+  }
+
+  saveTempNode(node: FolderNode, nodeType: FolderNodeTypes): void {
+    node.nodeType = nodeType;
+    this.refreshFolderTree();
   }
 
   showSnackbarMessage(message: string): void {
     this.snackbar.open(message, 'Close', {
       duration: 2500
     });
+  }
+
+  refreshFolderTree(): void {
+    this.nestedTreeData = JSON.parse(JSON.stringify(this.nestedTreeData));
+    this.nestedTreeDataSubject.next(this.nestedTreeData);
+    this.treeControl.dataNodes = this.nestedTreeData;
+    // expanding all nodes to prevent the tree from completely collapsing
+    setTimeout(() => this.treeControl.expandAll(), 0);
   }
 
   // FOR REFERENCE
