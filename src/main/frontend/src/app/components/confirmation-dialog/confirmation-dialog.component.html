@@ -1,0 +1,16 @@
+<h2><span class="operation-type-text">{{data.operationType}}</span> Changes</h2>
+<mat-dialog-content>
+    <div class="mt-2 mb-2">
+        <div>Are you sure you want to {{data.operationType}} all changes?</div>
+        <mat-form-field appearance="standard" class="comment-section mt-2">
+            <mat-label>Comment</mat-label>
+            <input matInput [(ngModel)]="comment" placeholder="Please enter a comment describing the change">
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions class="float-right">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button color="primary" [mat-dialog-close]="comment">
+        <span class="operation-type-text">{{data.operationType}}</span>
+    </button>
+</mat-dialog-actions>

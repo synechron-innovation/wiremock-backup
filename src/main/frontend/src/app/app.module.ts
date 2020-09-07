@@ -13,6 +13,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +25,7 @@ import { FolderTreeComponent } from './components/organize-recordings/folder-tre
 import { RecordingNameMappingPipe } from './pipes/recording-name-mapping.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SpinnerService } from './services/spinner.service';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -31,9 +34,10 @@ import { SpinnerService } from './services/spinner.service';
     OrganizeRecordingsComponent,
     FolderTreeComponent,
     RecordingNameMappingPipe,
-    SpinnerComponent
+    SpinnerComponent,
+    ConfirmationDialogComponent
   ],
-  entryComponents: [SpinnerComponent],
+  entryComponents: [SpinnerComponent, ConfirmationDialogComponent],
   imports: [
     BrowserModule,
     MatCardModule,
@@ -44,6 +48,8 @@ import { SpinnerService } from './services/spinner.service';
     MatDialogModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
+    MatTooltipModule,
+    MatCheckboxModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,

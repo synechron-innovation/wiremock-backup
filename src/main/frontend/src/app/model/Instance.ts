@@ -1,6 +1,6 @@
 import { Recording } from './Recording';
 
-export interface Instance {
+export class Instance {
     id: number;
     instanceName: string;
     wiremockURL: string;

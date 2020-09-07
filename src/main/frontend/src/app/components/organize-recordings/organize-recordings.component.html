@@ -2,12 +2,12 @@
     <h2>{{instance?.instanceName}} Mappings</h2>
     <div class="row">
         <div class="col-sm-4 folder-tree-section">
-            <div class="folder-tree">
+            <div class="folder-tree border-bottom">
                 <app-folder-tree *ngIf="recordings" [recordings]="recordings"
-                    (selectRecording)="onRecordingSelection($event)">
+                    (selectRecording)="onRecordingSelection($event)" (treeAction)="handleTreeAction($event)">
                 </app-folder-tree>
             </div>
-            <div class="persist-actions">
+            <div class="persist-actions mt-2">
                 <button type="button" mat-raised-button color="primary" (click)="saveRecordings()">Save All</button>
                 <button type="button" mat-raised-button color="primary" class="ml-2"
                     (click)="publishRecordings()">Publish All</button>
@@ -20,7 +20,7 @@
                 </div>
                 <textarea matInput [disabled]="!selectedRecording" [(ngModel)]="editableRecording"
                     placeholder="Select a recording to edit it"></textarea>
-                <div class="recording-actions">
+                <div class="recording-actions mt-2">
                     <button type="button" mat-raised-button color="warn" [disabled]="!selectedRecording"
                         (click)="applyChanges()">Apply</button>
                     <button type="button" mat-raised-button [disabled]="!selectedRecording"
