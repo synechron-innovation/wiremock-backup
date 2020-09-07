@@ -47,6 +47,10 @@
                     matTooltipPosition="above">
                     <mat-icon>note_add</mat-icon>
                 </button>
+                <button type="button" mat-icon-button color="accent" (click)="deleteNode(node)"
+                    matTooltip="Delete Folder" matTooltipPosition="above">
+                    <mat-icon>delete</mat-icon>
+                </button>
             </div>
         </div>
         <ng-template #tempFolderNodeBlock>

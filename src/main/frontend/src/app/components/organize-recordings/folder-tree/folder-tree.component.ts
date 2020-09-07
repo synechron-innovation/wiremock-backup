@@ -103,6 +103,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
 
   deleteNode(node: FolderNode): void {
     const parent = FolderTreeHelper.getParentByAncestorPath(node, this.nestedTreeData);
+
     if (!node.children) { // leaf nodes
       const nodeIndex = parent.children.findIndex(childNode => childNode.name === node.name);
       if (nodeIndex !== -1) {
@@ -116,7 +117,49 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
         type: TreeActionTypes.REMOVE,
         node
       });
+    } else {
+
+      // update ancestor path recursively for each child node
+      // determine which array to be updated - parent.children or the root tree array
+      let nodeArray: FolderNode[];
+      if (parent) {
+        this.updateDescendants(node.children, node.ancestorPath);
+        nodeArray = parent.children;
+      } else {
+        this.updateDescendants(node.children, null);
+        nodeArray = this.nestedTreeData;
+      }
+
+      // delete the node from the parent children and replace it with the children of the node
+      const nodeToBeRemovedIndex = nodeArray.findIndex(child => child.name === node.name);
+      if (nodeToBeRemovedIndex !== -1) {
+        nodeArray.splice(nodeToBeRemovedIndex, 1, ...node.children);
+      }
+
+      this.refreshFolderTree();
     }
+  }
+
+  updateDescendants(nestedTree: FolderNode[], ancestorPath: string): void {
+    const nodeArray = nestedTree;
+    nodeArray.forEach(node => {
+      node.ancestorPath = ancestorPath;
+      const updatedAncestorPath = (!ancestorPath) ? node.name : ancestorPath + '::' + node.name;
+
+      if (node.children && node.children.length > 0) {
+        this.updateDescendants(node.children, updatedAncestorPath);
+      } else if (!node.children) {
+        // leaf node
+        const updatedRecordingPath = node.ancestorPath + ':::' + node.name;
+        this.treeAction.emit({
+          node,
+          type: TreeActionTypes.UPDATE,
+          updatedRecordingPath
+        });
+        node.recordingPath = updatedRecordingPath;
+      }
+
+    });
   }
 
   addTempNode(node: FolderNode, tempNodeType: FolderNodeTypes): void {
@@ -124,7 +167,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
     const tempNode: FolderNode = {
       name: '',
       isChecked: false,
-      ancestorPath: parent.ancestorPath + '::' + parent.name,
+      ancestorPath: (!!parent.ancestorPath) ? parent.ancestorPath + '::' + parent.name : parent.name,
       nodeType: tempNodeType,
       children: (tempNodeType === FolderNodeTypes.TEMP_FOLDER) ? [] : null
     };

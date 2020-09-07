@@ -10,10 +10,11 @@ export interface FolderNode {
 export interface TreeAction {
     type: TreeActionTypes;
     node: FolderNode;
+    updatedRecordingPath?: string;
 }
 
 export enum TreeActionTypes {
-    ADD = 'add', REMOVE = 'remove'
+    ADD = 'add', REMOVE = 'remove', UPDATE = 'update'
 }
 
 export enum FolderNodeTypes {

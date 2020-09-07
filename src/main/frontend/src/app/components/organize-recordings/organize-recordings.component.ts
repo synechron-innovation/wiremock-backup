@@ -133,6 +133,9 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
       recording.response = new RecordingResponse();
       recording.name = treeAction.node.recordingPath;
       this.recordings.push(recording);
+    } else {
+      const recordingToUpdate = this.recordings.find(recording => recording.name === treeAction.node.recordingPath);
+      recordingToUpdate.name = treeAction.updatedRecordingPath;
     }
     this.resetSelection();
   }
