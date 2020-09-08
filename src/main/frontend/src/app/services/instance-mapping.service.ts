@@ -14,6 +14,10 @@ export class InstanceMappingService {
     private http: HttpClient
   ) { }
 
+  getAllInstances(): Observable<Instance[]> {
+    return this.http.get<Instance[]>(`${this.BASE_URL}/instance`);
+  }
+
   getInstanceByInstanceId(instanceId: number): Observable<Instance> {
     return this.http.get<Instance>(`${this.BASE_URL}/instance/id/${instanceId}`);
   }
