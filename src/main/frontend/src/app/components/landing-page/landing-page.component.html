@@ -1,6 +1,57 @@
-<div>
-    TODO - Implement table
-</div>
-<div>
-    <a routerLink="organize/1">Temporary link to organize screen</a>
+<div class="landing-page">
+    <div class="row">
+        <div class="col-sm-4 instance-list-heading">
+            <button type="button" mat-icon-button (click)="openInstanceDetailsDialog()"
+                matTooltip="Create new instance">
+                <mat-icon>add_circle_outline</mat-icon>
+            </button>
+            <button type="button" mat-icon-button (click)="deleteInstance()" matTooltip="Delete selected instance">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+        <div class="col-sm-4 text-center">
+            <h2>WireMock Instances</h2>
+        </div>
+        <div class="col-sm-4"></div>
+    </div>
+
+    <div class="row instance-row d-flex align-items-center" *ngFor="let instance of instances">
+        <div class="col-sm-2">
+            <mat-checkbox (click)="updateSelection(instance)" class="mr-2"></mat-checkbox>
+            <span class="font-weight-bold">{{ instance?.instanceName }}</span>
+        </div>
+        <div class="col-sm-2 text text-10 text-center">10 Recordings</div>
+        <div class="col-sm-6 action-buttons">
+            <button type="button" mat-icon-button matTooltip="Start recording">
+                <mat-icon>play_arrow</mat-icon>
+            </button>
+            <button type="button" mat-icon-button matTooltip="Stop recording">
+                <mat-icon>stop</mat-icon>
+            </button>
+            <button type="button" mat-icon-button matTooltip="Stage mappings">
+                <mat-icon>cloud_download</mat-icon>
+            </button>
+            <button type="button" mat-icon-button matTooltip="Export mappings">
+                <mat-icon>cloud_upload</mat-icon>
+            </button>
+            <button type="button" mat-icon-button routerLink="organize/{{instance.id}}"
+                matTooltip="View mappings in folder view">
+                <mat-icon>account_tree</mat-icon>
+            </button>
+            <button type="button" mat-icon-button (click)="openInstanceDetailsDialog(instance)"
+                matTooltip="Edit instance details">
+                <mat-icon>edit</mat-icon>
+            </button>
+            <button type="button" mat-icon-button [cdkCopyToClipboard]="instance.wiremockURL"
+                matTooltip="Copy WireMock URL">
+                <mat-icon>content_copy</mat-icon>
+            </button>
+            <button type="button" mat-icon-button matTooltip="Show history">
+                <mat-icon>history</mat-icon>
+            </button>
+        </div>
+        <div class="col-sm-2 text text-12 text-center">
+            Recording
+        </div>
+    </div>
 </div>

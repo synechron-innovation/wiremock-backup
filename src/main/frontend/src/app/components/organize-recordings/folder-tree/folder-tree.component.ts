@@ -169,7 +169,8 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
       isChecked: false,
       ancestorPath: (!!parent.ancestorPath) ? parent.ancestorPath + '::' + parent.name : parent.name,
       nodeType: tempNodeType,
-      children: (tempNodeType === FolderNodeTypes.TEMP_FOLDER) ? [] : null
+      children: (tempNodeType === FolderNodeTypes.TEMP_FOLDER) ? [] : null,
+      recordingPath: null
     };
 
     parent.children.push(tempNode);
@@ -177,14 +178,30 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
     this.refreshFolderTree();
   }
 
+  addTempCloneNode(node: FolderNode): void {
+    const parent = FolderTreeHelper.getParentByAncestorPath(node, this.nestedTreeData);
+    parent.children.push({ ...node, ...{ name: '', nodeType: FolderNodeTypes.TEMP_RECORDING } });
+    this.refreshFolderTree();
+  }
+
   saveTempNode(node: FolderNode, nodeType: FolderNodeTypes): void {
     node.nodeType = nodeType;
     if (nodeType === FolderNodeTypes.RECORDING) {
-      node.recordingPath = node.ancestorPath + ':::' + node.name;
-      this.treeAction.emit({
-        type: TreeActionTypes.ADD,
-        node
-      });
+      if (!!node.recordingPath) { // clone action
+        const updatedRecordingPath = node.ancestorPath + ':::' + node.name;
+        this.treeAction.emit({
+          type: TreeActionTypes.CLONE,
+          node,
+          updatedRecordingPath
+        });
+        node.recordingPath = updatedRecordingPath;
+      } else {
+        node.recordingPath = node.ancestorPath + ':::' + node.name;
+        this.treeAction.emit({
+          type: TreeActionTypes.ADD,
+          node
+        });
+      }
     }
     this.refreshFolderTree();
   }

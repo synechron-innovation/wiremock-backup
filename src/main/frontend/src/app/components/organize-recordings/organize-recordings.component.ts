@@ -133,6 +133,12 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
       recording.response = new RecordingResponse();
       recording.name = treeAction.node.recordingPath;
       this.recordings.push(recording);
+    } else if (treeAction.type === TreeActionTypes.CLONE) {
+      const existingRecording = this.recordings.find(recording => recording.name === treeAction.node.recordingPath);
+      if (!!existingRecording) {
+        const clonedRecording = { ...existingRecording, ...{ name: treeAction.updatedRecordingPath } };
+        this.recordings.push(clonedRecording);
+      }
     } else {
       const recordingToUpdate = this.recordings.find(recording => recording.name === treeAction.node.recordingPath);
       recordingToUpdate.name = treeAction.updatedRecordingPath;
