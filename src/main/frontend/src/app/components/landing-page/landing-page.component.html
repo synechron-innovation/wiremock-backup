@@ -1,10 +1,11 @@
 <div class="landing-page">
     <div class="row">
         <div class="col-sm-4 instance-list-heading">
-            <button type="button" mat-icon-button matTooltip="Create new instance">
+            <button type="button" mat-icon-button (click)="openInstanceDetailsDialog()"
+                matTooltip="Create new instance">
                 <mat-icon>add_circle_outline</mat-icon>
             </button>
-            <button type="button" mat-icon-button matTooltip="Delete selected instance">
+            <button type="button" mat-icon-button (click)="deleteInstance()" matTooltip="Delete selected instance">
                 <mat-icon>delete</mat-icon>
             </button>
         </div>
@@ -14,10 +15,10 @@
         <div class="col-sm-4"></div>
     </div>
 
-    <div class="row instance-list-view d-flex align-items-center" *ngFor="let instance of instances">
+    <div class="row instance-row d-flex align-items-center" *ngFor="let instance of instances">
         <div class="col-sm-2">
-            <mat-checkbox [checked]="selectedInstance && selectedInstance.id === instance.id"
-                (click)="selectedInstance = instance" class="mr-2"></mat-checkbox>{{ instance?.instanceName }}
+            <mat-checkbox (click)="updateSelection(instance)" class="mr-2"></mat-checkbox>
+            <span class="font-weight-bold">{{ instance?.instanceName }}</span>
         </div>
         <div class="col-sm-2 text text-10 text-center">10 Recordings</div>
         <div class="col-sm-6 action-buttons">
@@ -37,7 +38,8 @@
                 matTooltip="View mappings in folder view">
                 <mat-icon>account_tree</mat-icon>
             </button>
-            <button type="button" mat-icon-button matTooltip="Edit instance details">
+            <button type="button" mat-icon-button (click)="openInstanceDetailsDialog(instance)"
+                matTooltip="Edit instance details">
                 <mat-icon>edit</mat-icon>
             </button>
             <button type="button" mat-icon-button [cdkCopyToClipboard]="instance.wiremockURL"

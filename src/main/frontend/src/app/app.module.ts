@@ -27,6 +27,7 @@ import { RecordingNameMappingPipe } from './pipes/recording-name-mapping.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SpinnerService } from './services/spinner.service';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { InstanceDetailsDialogComponent } from './components/instance-details-dialog/instance-details-dialog.component';
 
 @NgModule({
   declarations: [
@@ -36,9 +37,10 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     FolderTreeComponent,
     RecordingNameMappingPipe,
     SpinnerComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    InstanceDetailsDialogComponent
   ],
-  entryComponents: [SpinnerComponent, ConfirmationDialogComponent],
+  entryComponents: [SpinnerComponent, ConfirmationDialogComponent, InstanceDetailsDialogComponent],
   imports: [
     BrowserModule,
     MatCardModule,

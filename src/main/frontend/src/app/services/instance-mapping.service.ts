@@ -14,6 +14,21 @@ export class InstanceMappingService {
     private http: HttpClient
   ) { }
 
+  createInstance(instanceName: string, targetURL: string, wiremockURL: string): Observable<Instance> {
+    return this.http.post<Instance>(
+      `${this.BASE_URL}/instance?instanceName=${instanceName}&targetURL=${targetURL}&wiremockURL=${wiremockURL}`,
+      null
+    );
+  }
+
+  updateInstance(instance: Instance): Observable<Instance> {
+    return this.http.put<Instance>(`${this.BASE_URL}/instance`, instance);
+  }
+
+  deleteInstance(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.BASE_URL}/instance?id=${id}`);
+  }
+
   getAllInstances(): Observable<Instance[]> {
     return this.http.get<Instance[]>(`${this.BASE_URL}/instance`);
   }
