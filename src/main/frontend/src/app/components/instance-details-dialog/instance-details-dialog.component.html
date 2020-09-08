@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>
+    <span class="text-capitalize">{{(data.operationType)}} Instance Details</span>
+</h2>
+<mat-dialog-content class="instance-detail-form">
+    <mat-form-field appearance="fill">
+        <mat-label>Instance Name</mat-label>
+        <input matInput [(ngModel)]="instance.instanceName">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Target URL</mat-label>
+        <input matInput [(ngModel)]="instance.targetURL">
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Wiremock URL</mat-label>
+        <input matInput [(ngModel)]="instance.wiremockURL">
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions class="float-right">
+    <button type="button" mat-raised-button color="primary" (click)="onSave()">Save</button>
+    <button type="button" mat-raised-button color="primary" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

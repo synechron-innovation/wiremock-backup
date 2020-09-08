@@ -1,0 +1,27 @@
+.landing-page {
+    margin: 2rem 4rem;
+    border: 1px solid #000;
+    max-height: 30rem;
+
+    .instance-row {
+        margin: 0 1rem 1rem 1rem;
+        border: 1px solid #b4b4b4;
+        padding: 5px 0;
+
+        .text {
+            font-weight: 400;
+            &-12 {
+                font-size: 12px;
+            }
+
+            &-10 { 
+                font-size: 10px;
+            }
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+    }
+}

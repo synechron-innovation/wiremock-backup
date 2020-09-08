@@ -10,6 +10,10 @@
                 </button>
             </div>
             <div class="pl-2 node-actions">
+                <button type="button" mat-icon-button color="accent" (click)="addTempCloneNode(node)"
+                    matTooltip="Clone Recording" matTooltipPosition="above">
+                    <mat-icon>file_copy</mat-icon>
+                </button>
                 <button type="button" mat-icon-button color="accent" (click)="deleteNode(node)"
                     matTooltip="Delete Recording" matTooltipPosition="above">
                     <mat-icon>delete</mat-icon>

@@ -14,7 +14,7 @@ export interface TreeAction {
 }
 
 export enum TreeActionTypes {
-    ADD = 'add', REMOVE = 'remove', UPDATE = 'update'
+    ADD = 'add', REMOVE = 'remove', UPDATE = 'update', CLONE = 'clone'
 }
 
 export enum FolderNodeTypes {

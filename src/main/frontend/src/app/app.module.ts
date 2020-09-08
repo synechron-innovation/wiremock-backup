@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 
 import { CdkTreeModule } from '@angular/cdk/tree';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltipModule, MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -26,6 +27,7 @@ import { RecordingNameMappingPipe } from './pipes/recording-name-mapping.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { SpinnerService } from './services/spinner.service';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { InstanceDetailsDialogComponent } from './components/instance-details-dialog/instance-details-dialog.component';
 
 @NgModule({
   declarations: [
@@ -35,13 +37,15 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     FolderTreeComponent,
     RecordingNameMappingPipe,
     SpinnerComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    InstanceDetailsDialogComponent
   ],
-  entryComponents: [SpinnerComponent, ConfirmationDialogComponent],
+  entryComponents: [SpinnerComponent, ConfirmationDialogComponent, InstanceDetailsDialogComponent],
   imports: [
     BrowserModule,
     MatCardModule,
     CdkTreeModule,
+    ClipboardModule,
     MatIconModule,
     MatButtonModule,
     MatInputModule,
@@ -57,7 +61,12 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
   ],
   providers: [
     InstanceMappingService, SpinnerService,
-    { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptorService, multi: true },
+    {
+      provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: {
+        position: 'above'
+      }
+    }
   ],
   bootstrap: [AppComponent]
 })
