@@ -55,6 +55,12 @@ export class InstanceMappingService {
     );
   }
 
+  importMappingsFromWireMock(instanceId: number, limit: number, offset: number): Observable<number> {
+    return this.http.get<number>(
+      `${this.BASE_URL}/mappingOperationsDBAndWM/importFromWiremock/instanceId/${instanceId}?limit=${limit}&offset=${offset}`
+    );
+  }
+
   exportMappingsToDatabase(recordings: Recording[], instanceId: number): Observable<Instance> {
     return this.http.post<Instance>(
       `${this.BASE_URL}/mappingOperationsLocalAndDB/exportToDB/instanceId/${instanceId}`,

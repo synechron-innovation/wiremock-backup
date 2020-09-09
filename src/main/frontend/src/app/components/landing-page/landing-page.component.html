@@ -28,10 +28,10 @@
             <button type="button" mat-icon-button (click)="stopRecording(instance)" matTooltip="Stop recording">
                 <mat-icon>stop</mat-icon>
             </button>
-            <button type="button" mat-icon-button matTooltip="Stage mappings">
+            <button type="button" mat-icon-button (click)="stageMappings(instance.id)" matTooltip="Stage mappings">
                 <mat-icon>cloud_download</mat-icon>
             </button>
-            <button type="button" mat-icon-button matTooltip="Export mappings">
+            <button type="button" mat-icon-button (click)="exportMappings(instance.id)" matTooltip="Export mappings">
                 <mat-icon>cloud_upload</mat-icon>
             </button>
             <button type="button" mat-icon-button routerLink="organize/{{instance.id}}"

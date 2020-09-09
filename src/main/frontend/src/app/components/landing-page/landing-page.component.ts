@@ -134,6 +134,24 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  stageMappings(instanceId: number): void {
+    this.instanceMappingService.importMappingsFromWireMock(instanceId, 100, 0)
+      .subscribe((response) => {
+        this.showSnackbar('Successfully staged mappings');
+      }, (error) => {
+        this.showSnackbar('Error occurred while trying to stage mappings');
+      });
+  }
+
+  exportMappings(instanceId: number): void {
+    this.instanceMappingService.exportMappingsToWireMock(instanceId)
+      .subscribe((response) => {
+        this.showSnackbar('Successfully exported mappings');
+      }, (error) => {
+        this.showSnackbar('Error occurred while trying to export mappings');
+      });
+  }
+
   showSnackbar(message: string): void {
     this.snackbar.open(message, 'Close', {
       duration: 2500
