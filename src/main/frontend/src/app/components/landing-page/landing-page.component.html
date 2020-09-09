@@ -22,10 +22,10 @@
         </div>
         <div class="col-sm-2 text text-10 text-center">10 Recordings</div>
         <div class="col-sm-6 action-buttons">
-            <button type="button" mat-icon-button matTooltip="Start recording">
+            <button type="button" mat-icon-button (click)="startRecording(instance)" matTooltip="Start recording">
                 <mat-icon>play_arrow</mat-icon>
             </button>
-            <button type="button" mat-icon-button matTooltip="Stop recording">
+            <button type="button" mat-icon-button (click)="stopRecording(instance)" matTooltip="Stop recording">
                 <mat-icon>stop</mat-icon>
             </button>
             <button type="button" mat-icon-button matTooltip="Stage mappings">
@@ -51,7 +51,7 @@
             </button>
         </div>
         <div class="col-sm-2 text text-12 text-center">
-            Recording
+            {{recordingStatusMap?.get(instance)}}
         </div>
     </div>
 </div>

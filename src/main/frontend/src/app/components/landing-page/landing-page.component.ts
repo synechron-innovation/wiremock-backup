@@ -17,6 +17,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   instances: Instance[] = [];
   selectedInstance: Instance;
   subscription: Subscription;
+  recordingStatusMap: WeakMap<Instance, string>;
 
   constructor(
     private dialog: MatDialog,
@@ -26,6 +27,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = new Subscription();
+    this.recordingStatusMap = new WeakMap();
     this.getAllInstances();
   }
 
@@ -40,6 +42,10 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   getAllInstances(): void {
     this.instanceMappingService.getAllInstances().subscribe((listOfInstances) => {
       this.instances = listOfInstances;
+      listOfInstances.forEach((instance) => {
+        this.instanceMappingService.getRecordingStatus(instance.id)
+          .subscribe((recordingState) => this.recordingStatusMap.set(instance, recordingState));
+      });
     });
   }
 
@@ -93,6 +99,38 @@ export class LandingPageComponent implements OnInit, OnDestroy {
         });
     } else {
       this.showSnackbar('Please select an instance to delete');
+    }
+  }
+
+  startRecording(instance: Instance): void {
+    const recordingStatus = this.recordingStatusMap.get(instance);
+
+    if (recordingStatus !== 'RECORDING') {
+      this.instanceMappingService.startRecording(instance.id)
+        .subscribe((response) => {
+          this.recordingStatusMap.set(instance, 'RECORDING');
+          this.showSnackbar('Recording started successfully');
+        }, (error) => {
+          this.showSnackbar('Error occurred while starting the recording');
+        });
+    } else {
+      this.showSnackbar('Recording is already started');
+    }
+  }
+
+  stopRecording(instance: Instance): void {
+    const recordingStatus = this.recordingStatusMap.get(instance);
+
+    if (recordingStatus !== 'NEVERSTARTED' && recordingStatus !== 'STOPPED') {
+      this.instanceMappingService.stopRecording(instance.id)
+        .subscribe((response) => {
+          this.recordingStatusMap.set(instance, 'STOPPED');
+          this.showSnackbar('Recording stopped successfully');
+        }, (error) => {
+          this.showSnackbar('Error occurred while stopping the recording');
+        });
+    } else {
+      this.showSnackbar('Recording is already stopped');
     }
   }
 

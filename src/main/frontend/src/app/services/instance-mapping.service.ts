@@ -37,6 +37,18 @@ export class InstanceMappingService {
     return this.http.get<Instance>(`${this.BASE_URL}/instance/id/${instanceId}`);
   }
 
+  startRecording(instanceId: number): Observable<any> {
+    return this.http.get<any>(`${this.BASE_URL}/recordings/start/${instanceId}`);
+  }
+
+  stopRecording(instanceId: number): Observable<any> {
+    return this.http.get<any>(`${this.BASE_URL}/recordings/stop/${instanceId}`);
+  }
+
+  getRecordingStatus(instanceId: number): Observable<string> {
+    return this.http.get<string>(`${this.BASE_URL}/recordings/status/${instanceId}`);
+  }
+
   getMappingsByInstanceId(instanceId: number): Observable<Recording[]> {
     return this.http.get<Recording[]>(
       `${this.BASE_URL}/mappingOperationsLocalAndDB/importFromDB/instanceId/${instanceId}`
