@@ -209,6 +209,79 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
     this.refreshFolderTree();
   }
 
+  moveOneLevelUp(node: FolderNode): void {
+    const parent = FolderTreeHelper.getParentByAncestorPath(node, this.nestedTreeData);
+    if (!!parent) {
+      const nodeIndexInParentChildren = parent.children.findIndex(child => child.name === node.name);
+      if (nodeIndexInParentChildren !== -1) {
+        parent.children.splice(nodeIndexInParentChildren, 1);
+      }
+
+      const grandparent = FolderTreeHelper.getParentByAncestorPath(parent, this.nestedTreeData);
+      if (grandparent) {
+        node.ancestorPath = parent.ancestorPath;
+        grandparent.children.unshift(node);
+      } else {
+        node.ancestorPath = null;
+        this.nestedTreeData.unshift(node);
+      }
+      const updatedRecordingPath = (!node.ancestorPath) ? node.name : node.ancestorPath + ':::' + node.name;
+      this.treeAction.emit({
+        node,
+        type: TreeActionTypes.UPDATE,
+        updatedRecordingPath
+      });
+      node.recordingPath = updatedRecordingPath;
+    } else {
+      this.showSnackbarMessage('Root element can\'t be moved up');
+      return;
+    }
+    this.refreshFolderTree();
+  }
+
+  moveOneLevelDown(node: FolderNode): void {
+    const parent = FolderTreeHelper.getParentByAncestorPath(node, this.nestedTreeData);
+    let siblings: FolderNode[];
+    let nearestFolderNode: FolderNode;
+
+    if (!!parent) {
+      siblings = parent.children;
+      nearestFolderNode = parent.children.find(child => !!child.children);
+    } else {
+      // nested tree first level node
+      siblings = this.nestedTreeData;
+      nearestFolderNode = this.nestedTreeData.find(treeNode => !!treeNode.children);
+    }
+
+    if (nearestFolderNode) {  // parent has a child which is a folder
+      const nodeIndexInParentChildren = siblings.findIndex(child => child.name === node.name);
+      if (nodeIndexInParentChildren !== -1) {
+        siblings.splice(nodeIndexInParentChildren, 1);
+      }
+
+      if (nearestFolderNode.ancestorPath) {
+        node.ancestorPath = nearestFolderNode.ancestorPath + '::' + nearestFolderNode.name;
+      } else {
+        node.ancestorPath = nearestFolderNode.name;
+      }
+
+      nearestFolderNode.children.unshift(node);
+
+      const updatedRecordingPath = (!node.ancestorPath) ? node.name : node.ancestorPath + ':::' + node.name;
+      this.treeAction.emit({
+        node,
+        type: TreeActionTypes.UPDATE,
+        updatedRecordingPath
+      });
+      node.recordingPath = updatedRecordingPath;
+    } else {
+      this.showSnackbarMessage('Can\'t perform the operation as no sibling folder found to move into');
+      return;
+    }
+
+    this.refreshFolderTree();
+  }
+
   showSnackbarMessage(message: string): void {
     this.snackbar.open(message, 'Close', {
       duration: 2500

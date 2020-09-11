@@ -18,6 +18,14 @@
                     matTooltip="Delete Recording" matTooltipPosition="above">
                     <mat-icon>delete</mat-icon>
                 </button>
+                <button type="button" mat-icon-button color="accent" (click)="moveOneLevelUp(node)" matTooltip="Move up"
+                    matTooltipPosition="above">
+                    <mat-icon>keyboard_arrow_up</mat-icon>
+                </button>
+                <button type="button" mat-icon-button color="accent" (click)="moveOneLevelDown(node)"
+                    matTooltip="Move down" matTooltipPosition="above">
+                    <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
             </div>
         </div>
         <ng-template #tempRecordingNodeBlock>
