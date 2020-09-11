@@ -1,4 +1,5 @@
 export interface FolderNode {
+    id: string;
     name: string;
     isChecked: boolean;
     ancestorPath: string;

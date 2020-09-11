@@ -21,7 +21,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
 
   nestedTreeData: FolderNode[];
   nestedTreeDataSubject = new BehaviorSubject<FolderNode[]>([]);
-  checkedFolderNode: FolderNode;
+  expandedNodeSet: Set<string>;
 
   folderNodeTypes = FolderNodeTypes;
   // flatTreeData: FlatFolderNode[];
@@ -53,7 +53,6 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.treeControl.dataNodes = this.nestedTreeData;
-    setTimeout(() => this.treeControl.expandAll(), 0);
   }
 
   generateNestedTree(): void {
@@ -68,6 +67,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
         let folderNode = this.getMatchingNode(nodeArray, folder);
         if (!folderNode) {
           folderNode = {
+            id: `${(Math.random() * 10000).toFixed(0)}_${folder}`,
             name: folder,
             isChecked: false,
             ancestorPath,
@@ -81,6 +81,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
       });
 
       nodeArray.push({
+        id: `${(Math.random() * 10000).toFixed(0)}_${recordingName}`,
         name: recordingName,
         isChecked: false,
         ancestorPath,
@@ -165,6 +166,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
   addTempNode(node: FolderNode, tempNodeType: FolderNodeTypes): void {
     const parent = node;
     const tempNode: FolderNode = {
+      id: `${(Math.random() * 10000).toFixed(0)}_`,
       name: '',
       isChecked: false,
       ancestorPath: (!!parent.ancestorPath) ? parent.ancestorPath + '::' + parent.name : parent.name,
@@ -185,6 +187,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   saveTempNode(node: FolderNode, nodeType: FolderNodeTypes): void {
+    node.id += node.name;
     node.nodeType = nodeType;
     if (nodeType === FolderNodeTypes.RECORDING) {
       if (!!node.recordingPath) { // clone action
@@ -214,10 +217,36 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
 
   refreshFolderTree(): void {
     this.nestedTreeData = JSON.parse(JSON.stringify(this.nestedTreeData));
+
+    this.expandedNodeSet = new Set();
+    this.rememberExpandedNodes(this.treeControl.dataNodes, this.expandedNodeSet);
+
     this.nestedTreeDataSubject.next(this.nestedTreeData);
     this.treeControl.dataNodes = this.nestedTreeData;
-    // expanding all nodes to prevent the tree from completely collapsing
-    setTimeout(() => this.treeControl.expandAll(), 0);
+
+    this.expandNodeById(this.treeControl.dataNodes, this.expandedNodeSet);
+  }
+
+  rememberExpandedNodes(nodeArray: FolderNode[], expandedNodeSet: Set<string>): void {
+    if (nodeArray && nodeArray.length) {
+      nodeArray.forEach(node => {
+        if (node.children && node.children.length && this.treeControl.isExpanded(node)) {
+          expandedNodeSet.add(node.id);
+          this.rememberExpandedNodes(node.children, expandedNodeSet);
+        }
+      });
+    }
+  }
+
+  expandNodeById(nodeArray: FolderNode[], expandedNodeSet: Set<string>): void {
+    if (nodeArray && nodeArray.length) {
+      nodeArray.forEach(node => {
+        if (node.children && node.children.length && expandedNodeSet.has(node.id)) {
+          this.treeControl.expand(node);
+          this.expandNodeById(node.children, expandedNodeSet);
+        }
+      });
+    }
   }
 
   // FOR REFERENCE
