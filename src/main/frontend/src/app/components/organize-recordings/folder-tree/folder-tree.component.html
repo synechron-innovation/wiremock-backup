@@ -30,12 +30,13 @@
     <!-- This is the tree node template for expandable nodes -->
     <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild"
         class="example-tree-node border-left border-bottom">
-        <button mat-icon-button [attr.aria-label]="'Toggle ' + node.name" cdkTreeNodeToggle>
-            <mat-icon class="mat-icon-rtl-mirror">
-                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-            </mat-icon>
-        </button>
         <div class="folder-node" *ngIf="node.nodeType !== folderNodeTypes.TEMP_FOLDER; else tempFolderNodeBlock">
+            <button mat-icon-button [attr.aria-label]="'Toggle ' + node.name" cdkTreeNodeToggle>
+                <mat-icon class="mat-icon-rtl-mirror">
+                    {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+            </button>
+
             <span>
                 <mat-icon class="folder-icon">folder</mat-icon>
                 {{node.name}}

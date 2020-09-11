@@ -36,17 +36,16 @@
 
 .leaf-node,
 .folder-node {
-  display: inline-block;
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
   
   .node-actions {
-    vertical-align: middle;
-    display: none;
+    visibility: hidden;
   }
 
   &:hover {
     .node-actions {
-      display: inline-block;
+      visibility: visible;
     }
   }
 }
