@@ -1,10 +1,10 @@
-<div class="organize-container container">
+<div class="organize-container">
     <h2>{{instance?.instanceName}} Mappings</h2>
     <div class="row">
         <div class="col-sm-4 folder-tree-section">
             <div class="folder-tree border-bottom">
-                <app-folder-tree *ngIf="recordings" [recordings]="recordings"
-                    (selectRecording)="onRecordingSelection($event)" (treeAction)="handleTreeAction($event)">
+                <app-folder-tree *ngIf="recordings" [recordings]="recordings" (editRecording)="onEditRecording($event)"
+                    (editMappings)="openEditMappingsDialog($event)" (treeAction)="handleTreeAction($event)">
                 </app-folder-tree>
             </div>
             <div class="persist-actions mt-2">
@@ -16,14 +16,14 @@
         <div class="col-sm-8">
             <div class="edit-recording-section">
                 <div class="recording-name">
-                    <span>{{selectedRecording?.name | recordingNameMapping}}</span>
+                    <span>{{recordingToBeEdited?.name | recordingNameMapping}}</span>
                 </div>
-                <textarea matInput [disabled]="!selectedRecording" [(ngModel)]="editableRecording"
+                <textarea matInput [disabled]="!recordingToBeEdited" [(ngModel)]="recordingAsString"
                     placeholder="Select a recording to edit it"></textarea>
                 <div class="recording-actions mt-2">
-                    <button type="button" mat-raised-button color="warn" [disabled]="!selectedRecording"
+                    <button type="button" mat-raised-button color="warn" [disabled]="!recordingToBeEdited"
                         (click)="applyChanges()">Apply</button>
-                    <button type="button" mat-raised-button [disabled]="!selectedRecording"
+                    <button type="button" mat-raised-button [disabled]="!recordingToBeEdited"
                         (click)="resetSelection()">Cancel</button>
                 </div>
             </div>
