@@ -16,12 +16,14 @@ import { FolderTreeHelper } from './../../../helper/folder-tree.helper';
 })
 export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() recordings: Recording[];
-  @Output() selectRecording = new EventEmitter<string>();
+  @Output() editRecording = new EventEmitter<string>();
+  @Output() editMappings = new EventEmitter<Set<string>>();
   @Output() treeAction = new EventEmitter<TreeAction>();
 
   nestedTreeData: FolderNode[];
   nestedTreeDataSubject = new BehaviorSubject<FolderNode[]>([]);
   expandedNodeSet: Set<string>;
+  selectedRecordingPaths: Set<string>;
 
   folderNodeTypes = FolderNodeTypes;
   // flatTreeData: FlatFolderNode[];
@@ -41,6 +43,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.selectedRecordingPaths = new Set();
     console.log('changes: ', changes);
     if (changes.recordings && changes.recordings.previousValue !== changes.recordings.currentValue) {
       this.generateNestedTree();
@@ -99,7 +102,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
   hasChild = (_: number, node: FolderNode) => !!node.children;
 
   onRecordingClick(node: FolderNode): void {
-    this.selectRecording.emit(node.recordingPath);
+    this.editRecording.emit(node.recordingPath);
   }
 
   deleteNode(node: FolderNode): void {
@@ -209,77 +212,22 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
     this.refreshFolderTree();
   }
 
-  moveOneLevelUp(node: FolderNode): void {
-    const parent = FolderTreeHelper.getParentByAncestorPath(node, this.nestedTreeData);
-    if (!!parent) {
-      const nodeIndexInParentChildren = parent.children.findIndex(child => child.name === node.name);
-      if (nodeIndexInParentChildren !== -1) {
-        parent.children.splice(nodeIndexInParentChildren, 1);
-      }
-
-      const grandparent = FolderTreeHelper.getParentByAncestorPath(parent, this.nestedTreeData);
-      if (grandparent) {
-        node.ancestorPath = parent.ancestorPath;
-        grandparent.children.unshift(node);
-      } else {
-        node.ancestorPath = null;
-        this.nestedTreeData.unshift(node);
-      }
-      const updatedRecordingPath = (!node.ancestorPath) ? node.name : node.ancestorPath + ':::' + node.name;
-      this.treeAction.emit({
-        node,
-        type: TreeActionTypes.UPDATE,
-        updatedRecordingPath
-      });
-      node.recordingPath = updatedRecordingPath;
+  onRecordingSelection(node: FolderNode): void {
+    if (node.isChecked) {
+      this.selectedRecordingPaths.add(node.recordingPath);
     } else {
-      this.showSnackbarMessage('Root element can\'t be moved up');
-      return;
+      if (this.selectedRecordingPaths.has(node.recordingPath)) {
+        this.selectedRecordingPaths.delete(node.recordingPath);
+      }
     }
-    this.refreshFolderTree();
   }
 
-  moveOneLevelDown(node: FolderNode): void {
-    const parent = FolderTreeHelper.getParentByAncestorPath(node, this.nestedTreeData);
-    let siblings: FolderNode[];
-    let nearestFolderNode: FolderNode;
-
-    if (!!parent) {
-      siblings = parent.children;
-      nearestFolderNode = parent.children.find(child => !!child.children);
+  editSelectedMappings(): void {
+    if (this.selectedRecordingPaths.size === 0) {
+      this.showSnackbarMessage('Please select at least one recording to proceed');
     } else {
-      // nested tree first level node
-      siblings = this.nestedTreeData;
-      nearestFolderNode = this.nestedTreeData.find(treeNode => !!treeNode.children);
+      this.editMappings.emit(this.selectedRecordingPaths);
     }
-
-    if (nearestFolderNode) {  // parent has a child which is a folder
-      const nodeIndexInParentChildren = siblings.findIndex(child => child.name === node.name);
-      if (nodeIndexInParentChildren !== -1) {
-        siblings.splice(nodeIndexInParentChildren, 1);
-      }
-
-      if (nearestFolderNode.ancestorPath) {
-        node.ancestorPath = nearestFolderNode.ancestorPath + '::' + nearestFolderNode.name;
-      } else {
-        node.ancestorPath = nearestFolderNode.name;
-      }
-
-      nearestFolderNode.children.unshift(node);
-
-      const updatedRecordingPath = (!node.ancestorPath) ? node.name : node.ancestorPath + ':::' + node.name;
-      this.treeAction.emit({
-        node,
-        type: TreeActionTypes.UPDATE,
-        updatedRecordingPath
-      });
-      node.recordingPath = updatedRecordingPath;
-    } else {
-      this.showSnackbarMessage('Can\'t perform the operation as no sibling folder found to move into');
-      return;
-    }
-
-    this.refreshFolderTree();
   }
 
   showSnackbarMessage(message: string): void {

@@ -12,6 +12,7 @@ import { InstanceMappingService } from './../../services/instance-mapping.servic
 import { TreeAction, TreeActionTypes } from './../../model/FolderNode';
 import { RecordingResponse } from 'src/app/model/RecordingResponse';
 import { RecordingRequest } from 'src/app/model/RecordingRequest';
+import { EditMappingsDialogComponent } from '../edit-mappings-dialog/edit-mappings-dialog.component';
 
 @Component({
   selector: 'app-organize-recordings',
@@ -22,8 +23,8 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
   instanceId: number;
   instance: Instance;
   recordings: Recording[];
-  selectedRecording: Recording;
-  editableRecording: string;
+  recordingToBeEdited: Recording;
+  recordingAsString: string;
 
   subscriptions: Subscription;
 
@@ -49,20 +50,20 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
       });
   }
 
-  onRecordingSelection(recordingName: string): void {
-    this.selectedRecording = this.recordings.find((recording: Recording) => recording.name === recordingName);
-    this.editableRecording = JSON.stringify(this.selectedRecording, undefined, 4);
+  onEditRecording(recordingName: string): void {
+    this.recordingToBeEdited = this.recordings.find((recording: Recording) => recording.name === recordingName);
+    this.recordingAsString = JSON.stringify(this.recordingToBeEdited, undefined, 4);
   }
 
   applyChanges(): void {
-    this.selectedRecording = Object.assign(this.selectedRecording, JSON.parse(this.editableRecording));
+    this.recordingToBeEdited = Object.assign(this.recordingToBeEdited, JSON.parse(this.recordingAsString));
     this.recordings = Array.from(this.recordings);
     this.resetSelection();
   }
 
   resetSelection(): void {
-    this.editableRecording = '';
-    this.selectedRecording = null;
+    this.recordingAsString = '';
+    this.recordingToBeEdited = null;
   }
 
   saveRecordings(): void {
@@ -118,6 +119,43 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
             });
           });
       }
+    });
+
+    this.subscriptions.add(dialogCloseSubscription);
+  }
+
+  openEditMappingsDialog(selectedRecordings: Set<string>): void {
+    const isSingleRecording = selectedRecordings.size === 1;
+    const dialogData = {
+      multipleMappings: !isSingleRecording,
+      mappingString: (isSingleRecording) ? Array.from(selectedRecordings)[0] : ''
+    };
+
+    const dialog = this.dialog.open(EditMappingsDialogComponent, {
+      disableClose: true,
+      width: '500px',
+      height: '250px',
+      data: dialogData
+    });
+
+    const dialogCloseSubscription = dialog.afterClosed().subscribe((updatedMapping: string) => {
+      if (!updatedMapping) {
+        return;
+      }
+
+      selectedRecordings.forEach(recordingId => {
+        const recording = this.recordings.find(record => record.name === recordingId);
+
+        if (recording && isSingleRecording) {
+          recording.name = updatedMapping;
+        } else if (recording && !isSingleRecording) {
+          const [mapping, recordingName] = recording.name.split(':::');
+          recording.name = updatedMapping + ':::' + recordingName;
+        }
+
+      });
+
+      this.recordings = Array.from(this.recordings);
     });
 
     this.subscriptions.add(dialogCloseSubscription);

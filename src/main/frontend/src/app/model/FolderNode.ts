@@ -1,7 +1,7 @@
 export interface FolderNode {
     id: string;
     name: string;
-    isChecked: boolean;
+    isChecked?: boolean;
     ancestorPath: string;
     recordingPath?: string;
     nodeType: FolderNodeTypes;

@@ -1,0 +1,14 @@
+mat-dialog-content {
+    padding: 1rem;
+}
+
+.edit-mappings-form {
+    display: flex;
+    justify-content: center;
+}
+
+.edit-mappings-form.full-width {
+    .mat-form-field {
+        width: 90%;
+    }
+}
