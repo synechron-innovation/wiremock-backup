@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>
+    Edit Mapping{{(data.multipleMappings) ? 's' : ''}}
+</h2>
+<form [formGroup]="mappingForm" (ngSubmit)="onSave()">
+    <mat-dialog-content class="edit-mappings-form" [ngClass]="{ 'full-width': !recordingName }">
+        <mat-form-field appearance="fill" class="mr-2">
+            <mat-label>Folder Mapping</mat-label>
+            <input matInput formControlName="folderMapping">
+            <mat-error *ngIf="folderMapping.errors && folderMapping.errors.required">
+                Folder mapping is required
+            </mat-error>
+            <mat-error *ngIf="folderMapping.errors && folderMapping.errors.pattern">
+                Only alphanumeric and '&gt;' is allowed
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" *ngIf="recordingName">
+            <mat-label>Recording Name</mat-label>
+            <input matInput formControlName="recordingName">
+            <mat-error *ngIf="recordingName.errors && recordingName.errors.required">
+                Recording name is required
+            </mat-error>
+            <mat-error *ngIf="recordingName.errors && recordingName.errors.pattern">
+                Only alphanumeric characters are allowed
+            </mat-error>
+        </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions class="float-right">
+        <button type="submit" mat-raised-button color="primary" [disabled]="!mappingForm.valid">Save</button>
+        <button type="button" mat-raised-button color="primary" mat-dialog-close>Cancel</button>
+    </mat-dialog-actions>
+</form>
