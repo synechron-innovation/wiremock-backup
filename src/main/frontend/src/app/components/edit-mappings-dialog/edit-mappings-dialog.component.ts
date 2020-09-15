@@ -28,12 +28,20 @@ export class EditMappingsDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.mappingForm = new FormGroup({
-      folderMapping: new FormControl('', [Validators.required, Validators.pattern(/^\w+( [\w>]+)*$/)])
+      folderMapping: new FormControl('', [Validators.pattern(/^\w+( [\w>]+)*$/)])
     });
 
     if (!this.data.multipleMappings) {
-      const [folderStructure, recordingName] = (this.data.mappingString as string).split(':::');
-      this.mappingForm.get('folderMapping').setValue(this.nameMappingPipe.transform(folderStructure));
+      const mappingStringArray = (this.data.mappingString as string).split(':::');
+      const folderStructure = mappingStringArray[0];
+      let recordingName = mappingStringArray[1];
+
+      if (recordingName) {
+        this.mappingForm.get('folderMapping').setValue(this.nameMappingPipe.transform(folderStructure));
+      } else {
+        recordingName = folderStructure;
+      }
+
       this.mappingForm.addControl(
         'recordingName',
         new FormControl(recordingName, [Validators.required, Validators.pattern(/^\w+$/)])
@@ -45,7 +53,7 @@ export class EditMappingsDialogComponent implements OnInit {
     if (this.mappingForm.valid) {
       let updatedMapping = this.mappingForm.get('folderMapping').value.split('>').map((mapping: string) => mapping.trim()).join('::');
       if (!this.data.multipleMappings) {
-        updatedMapping += ':::' + this.mappingForm.get('recordingName').value;
+        updatedMapping += `${this.mappingForm.get('folderMapping').value ? ':::' : ''}` + this.mappingForm.get('recordingName').value;
       }
       this.dialogRef.close(updatedMapping);
     }

@@ -6,9 +6,6 @@
         <mat-form-field appearance="fill" class="mr-2">
             <mat-label>Folder Mapping</mat-label>
             <input matInput formControlName="folderMapping">
-            <mat-error *ngIf="folderMapping.errors && folderMapping.errors.required">
-                Folder mapping is required
-            </mat-error>
             <mat-error *ngIf="folderMapping.errors && folderMapping.errors.pattern">
                 Only alphanumeric and '&gt;' is allowed
             </mat-error>
