@@ -7,7 +7,7 @@
             <mat-label>Folder Mapping</mat-label>
             <input matInput formControlName="folderMapping">
             <mat-error *ngIf="folderMapping.errors && folderMapping.errors.pattern">
-                Only alphanumeric and '&gt;' is allowed
+                Special character ':' is not allowed
             </mat-error>
         </mat-form-field>
         <mat-form-field appearance="fill" *ngIf="recordingName">
@@ -17,7 +17,7 @@
                 Recording name is required
             </mat-error>
             <mat-error *ngIf="recordingName.errors && recordingName.errors.pattern">
-                Only alphanumeric characters are allowed
+                Characters '&gt;' & ':' are not allowed
             </mat-error>
         </mat-form-field>
     </mat-dialog-content>

@@ -28,7 +28,7 @@ export class EditMappingsDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.mappingForm = new FormGroup({
-      folderMapping: new FormControl('', [Validators.pattern(/^\w+( [\w>]+)*$/)])
+      folderMapping: new FormControl('', [Validators.pattern(/^[\w][^:]+([\w>][^:]+)*$/)])
     });
 
     if (!this.data.multipleMappings) {
@@ -44,7 +44,7 @@ export class EditMappingsDialogComponent implements OnInit {
 
       this.mappingForm.addControl(
         'recordingName',
-        new FormControl(recordingName, [Validators.required, Validators.pattern(/^\w+$/)])
+        new FormControl(recordingName, [Validators.required, Validators.pattern(/^[^>:]*$/)])
       );
     }
   }
