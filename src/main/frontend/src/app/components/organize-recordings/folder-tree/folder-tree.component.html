@@ -1,5 +1,8 @@
 <div>
-    <button type="button" mat-button color="accent" (click)="editSelectedMappings()">Organize</button>
+    <button type="button" mat-raised-button [disabled]="selectedRecordingPaths.size === 0" color="accent"
+        (click)="editSelectedMappings()">Organize</button>
+    <button type="button" class="ml-1" mat-button [disabled]="selectedRecordingPaths.size === 0" color="accent"
+        (click)="clearSelection()">Clear selections</button>
 </div>
 
 <cdk-tree #cdkTree [dataSource]="dataSource" [treeControl]="treeControl">
