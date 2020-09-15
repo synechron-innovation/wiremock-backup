@@ -1,5 +1,18 @@
 <div class="organize-container">
-    <h2>{{instance?.instanceName}} Mappings</h2>
+    <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4 text-center">
+            <h2>{{instance?.instanceName}} Mappings</h2>
+        </div>
+        <div class="col-sm-4 text-right">
+            <button mat-button color="primary" (click)="onGoBack()">
+                <mat-icon>
+                    arrow_back
+                </mat-icon>
+                Go back
+            </button>
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-4 folder-tree-section">
             <div class="folder-tree border-bottom">

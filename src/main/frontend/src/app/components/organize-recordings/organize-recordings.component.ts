@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Location } from '@angular/common';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -32,6 +33,7 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackbar: MatSnackBar,
     private dialog: MatDialog,
+    private location: Location,
     private instanceMappingService: InstanceMappingService
   ) { }
 
@@ -174,7 +176,11 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
     } else if (treeAction.type === TreeActionTypes.CLONE) {
       const existingRecording = this.recordings.find(recording => recording.name === treeAction.node.recordingPath);
       if (!!existingRecording) {
-        const clonedRecording = { ...existingRecording, ...{ name: treeAction.updatedRecordingPath } };
+        const randomHexString = this.getRandomHex(10);
+        const clonedRecording = {
+          ...existingRecording,
+          ...{ id: randomHexString, uuid: randomHexString, name: treeAction.updatedRecordingPath }
+        };
         this.recordings.push(clonedRecording);
       }
     } else {
@@ -182,6 +188,20 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
       recordingToUpdate.name = treeAction.updatedRecordingPath;
     }
     this.resetSelection();
+  }
+
+  private getRandomHex(size: number): string {
+    const result = [];
+    const hexRef = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+
+    for (let n = 0; n < size; n++) {
+      result.push(hexRef[Math.floor(Math.random() * 16)]);
+    }
+    return result.join('');
+  }
+
+  onGoBack(): void {
+    this.location.back();
   }
 
   ngOnDestroy(): void {
