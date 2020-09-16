@@ -62,26 +62,33 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
     console.log('json structure: ', this.recordings);
     this.nestedTreeData = [];
     this.recordings.forEach((recording: Recording) => {
-      const [folderMapping, recordingName] = recording.name.split(':::');
+      const mappingArray = recording.name.split(':::');
+      const folderMapping = mappingArray[0];
+      let recordingName = mappingArray[1];
+
       let nodeArray = this.nestedTreeData;
       let ancestorPath = null;
 
-      folderMapping.split('::').forEach(folder => {
-        let folderNode = this.getMatchingNode(nodeArray, folder);
-        if (!folderNode) {
-          folderNode = {
-            id: `${(Math.random() * 10000).toFixed(0)}_${folder}`,
-            name: folder,
-            isChecked: false,
-            ancestorPath,
-            nodeType: FolderNodeTypes.FOLDER,
-            children: []
-          };
-          nodeArray.push(folderNode);
-        }
-        nodeArray = folderNode.children;
-        ancestorPath = (!ancestorPath) ? folderNode.name : ancestorPath + '::' + folderNode.name;
-      });
+      if (recordingName) {
+        folderMapping.split('::').forEach(folder => {
+          let folderNode = this.getMatchingNode(nodeArray, folder);
+          if (!folderNode) {
+            folderNode = {
+              id: `${(Math.random() * 10000).toFixed(0)}_${folder}`,
+              name: folder,
+              isChecked: false,
+              ancestorPath,
+              nodeType: FolderNodeTypes.FOLDER,
+              children: []
+            };
+            nodeArray.push(folderNode);
+          }
+          nodeArray = folderNode.children;
+          ancestorPath = (!ancestorPath) ? folderNode.name : ancestorPath + '::' + folderNode.name;
+        });
+      } else {
+        recordingName = folderMapping;
+      }
 
       nodeArray.push({
         id: `${(Math.random() * 10000).toFixed(0)}_${recordingName}`,
@@ -178,14 +185,15 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
       recordingPath: null
     };
 
-    parent.children.push(tempNode);
+    parent.children.unshift(tempNode);
 
     this.refreshFolderTree();
   }
 
   addTempCloneNode(node: FolderNode): void {
     const parent = FolderTreeHelper.getParentByAncestorPath(node, this.nestedTreeData);
-    parent.children.push({ ...node, ...{ name: '', nodeType: FolderNodeTypes.TEMP_RECORDING } });
+    const nodeToBeClonedIndex = parent.children.findIndex(child => child.id === node.id);
+    parent.children.splice(nodeToBeClonedIndex + 1, 0, { ...node, ...{ name: '', nodeType: FolderNodeTypes.TEMP_RECORDING } });
     this.refreshFolderTree();
   }
 
@@ -228,6 +236,21 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
     } else {
       this.editMappings.emit(this.selectedRecordingPaths);
     }
+  }
+
+  clearSelection(): void {
+    this.selectedRecordingPaths.clear();
+    this.deselectRecordingNodes(this.nestedTreeData);
+  }
+
+  private deselectRecordingNodes(nodeArray: FolderNode[]): void {
+    nodeArray.forEach(node => {
+      if (node.nodeType === FolderNodeTypes.RECORDING) {
+        node.isChecked = false;
+      } else if (node.children) {
+        this.deselectRecordingNodes(node.children);
+      }
+    });
   }
 
   showSnackbarMessage(message: string): void {
