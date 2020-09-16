@@ -23,7 +23,6 @@ export class SpinnerInterceptorService implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('req: ', req);
     if (req.url.indexOf('status') === -1) {
       this.requests.push(req);
     }
