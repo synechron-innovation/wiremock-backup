@@ -44,12 +44,9 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.selectedRecordingPaths = new Set();
-    console.log('changes: ', changes);
+
     if (changes.recordings && changes.recordings.previousValue !== changes.recordings.currentValue) {
       this.generateNestedTree();
-      console.log('nested tree: ', this.nestedTreeData);
-      // this.generateTreeView();
-      // this.dataSource = new ArrayDataSource(this.nestedTreeData);
       this.nestedTreeDataSubject.next(this.nestedTreeData);
     }
   }
@@ -59,7 +56,6 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   generateNestedTree(): void {
-    console.log('json structure: ', this.recordings);
     this.nestedTreeData = [];
     this.recordings.forEach((recording: Recording) => {
       const mappingArray = recording.name.split(':::');
@@ -292,133 +288,4 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
       });
     }
   }
-
-  // FOR REFERENCE
-  // addChildToRootNode(): void {
-  //   console.log('this.nestedTreeData: ', this.nestedTreeData);
-  //   this.nestedTreeData.push({
-  //     name: 'newTreeFolder1',
-  //     children: []
-  //   });
-  //   this.nestedTreeDataSubject.next(this.nestedTreeData);
-  // }
-
-  // deleteNewlyAddedNode(): void {
-  //   const foundNodeIndex = this.nestedTreeData.findIndex(node => node.name === 'newTreeFolder1');
-  //   this.nestedTreeData.splice(foundNodeIndex, 1);
-  //   this.nestedTreeDataSubject.next(this.nestedTreeData);
-  // }
-
-  // deleteNode(): void {
-  //   if (this.checkedFolderNode) {
-  //     const parent = FolderTreeHelper.getParentByAncestorPath(this.checkedFolderNode, this.nestedTreeData);
-  //     if (!this.checkedFolderNode.children) { // leaf nodes
-  //       const nodeIndex = parent.children.findIndex(childNode => childNode.name === this.checkedFolderNode.name);
-  //       if (nodeIndex !== -1) {
-  //         parent.children.splice(nodeIndex, 1);
-  //       }
-
-  //       this.refreshFolderTree();
-
-  //       // emit event to update the recording array
-  //       this.treeAction.emit({
-  //         type: TreeActionTypes.REMOVE,
-  //         node: this.checkedFolderNode
-  //       });
-  //       this.checkedFolderNode = null;
-  //     }
-  //   } else {
-  //     this.snackbar.open('Failed: Item was not selected.', 'Close', {
-  //       duration: 2500
-  //     });
-  //   }
-  // }
-
-  // onNodeCheck(node: FolderNode): void {
-  //   // first time any node is checked
-  //   if (!this.checkedFolderNode) {
-  //     node.isChecked = true;
-  //     this.checkedFolderNode = node;
-  //   } else if (this.checkedFolderNode === node) {
-  //     node.isChecked = false;
-  //     this.checkedFolderNode = null;
-  //   } else {
-  //     this.checkedFolderNode.isChecked = false;
-  //     node.isChecked = true;
-  //     this.checkedFolderNode = node;
-  //   }
-  // }
-
-  // addTempNode(tempNodeType: FolderNodeTypes): void {
-  //   if (this.checkedFolderNode) {
-  //     let parent: FolderNode;
-  //     if (!this.checkedFolderNode.children) {
-  //       parent = FolderTreeHelper.getParentByAncestorPath(this.checkedFolderNode, this.nestedTreeData);
-  //     } else {
-  //       parent = this.checkedFolderNode;
-  //     }
-  //     const tempNode: FolderNode = {
-  //       name: '',
-  //       isChecked: false,
-  //       ancestorPath: parent.ancestorPath + '::' + parent.name,
-  //       nodeType: tempNodeType,
-  //       children: (tempNodeType === FolderNodeTypes.TEMP_FOLDER) ? [] : null
-  //     };
-  //     parent.children.push(tempNode);
-
-  //     this.checkedFolderNode.isChecked = false;
-  //     this.checkedFolderNode = null;
-
-  //     this.refreshFolderTree();
-  //   } else {
-  //     this.showSnackbarMessage('Please select a node before adding a new folder.');
-  //   }
-  // }
-
-  // generateTreeView(): void {
-  //   console.log('json structure: ', this.recordings);
-  //   this.flatTreeData = [];
-  //   this.recordings.forEach((recording: Recording) => {
-  //     const [folderMapping, recordingName] = recording.name.split(':::');
-  //     let index = 0;
-  //     folderMapping.split('::').forEach(folder => {
-
-  //       if (!this.flatTreeData.find((node: FlatFolderNode) => node.name === folder && node.level === index)) {
-  //         this.flatTreeData.push({
-  //           name: folder,
-  //           expandable: true,
-  //           level: index
-  //         });
-  //       }
-  //       index++;
-  //     });
-  //     this.flatTreeData.push({
-  //       name: recordingName,
-  //       expandable: false,
-  //       level: index
-  //     });
-
-  //   });
-  //   console.log('flatTreeData', this.flatTreeData);
-  // }
-
-  // hasChild = (_: number, node: FlatFolderNode) => node.expandable;
-
-  // getParentNode(node: FlatFolderNode): FlatFolderNode {
-  //   const nodeIndex = this.flatTreeData.indexOf(node);
-
-  //   for (let i = nodeIndex - 1; i >= 0; i--) {
-  //     if (this.flatTreeData[i].level === node.level - 1) {
-  //       return this.flatTreeData[i];
-  //     }
-  //   }
-
-  //   return null;
-  // }
-
-  // shouldRender(node: FlatFolderNode): boolean {
-  //   const parent = this.getParentNode(node);
-  //   return !parent || parent.isExpanded;
-  // }
-
 }
