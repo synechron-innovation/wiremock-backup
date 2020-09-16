@@ -1,3 +1,8 @@
+.folder-tree-container {
+  max-height: 65vh;
+  overflow-y: auto;
+}
+
 .example-tree-invisible {
   display: none;
 }

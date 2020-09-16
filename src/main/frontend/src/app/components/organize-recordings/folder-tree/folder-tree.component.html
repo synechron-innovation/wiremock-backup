@@ -1,85 +1,89 @@
-<div>
+<div class="pb-1 border-bottom">
     <button type="button" mat-raised-button [disabled]="selectedRecordingPaths.size === 0" color="accent"
         (click)="editSelectedMappings()">Organize</button>
     <button type="button" class="ml-1" mat-button [disabled]="selectedRecordingPaths.size === 0" color="accent"
         (click)="clearSelection()">Clear selections</button>
 </div>
 
-<cdk-tree #cdkTree [dataSource]="dataSource" [treeControl]="treeControl">
-    <!-- This is the tree node template for leaf nodes -->
-    <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node">
-        <!-- use a disabled button to provide padding for tree leaf -->
-        <!-- <button mat-icon-button disabled></button> -->
-        <div class="leaf-node" *ngIf="node.nodeType !== folderNodeTypes.TEMP_RECORDING; else tempRecordingNodeBlock">
-            <div class="pl-4">
-                <mat-checkbox [(ngModel)]="node.isChecked" (change)="onRecordingSelection(node)">
-                </mat-checkbox>
+<div class="folder-tree-container">
+    <cdk-tree #cdkTree [dataSource]="dataSource" [treeControl]="treeControl">
+        <!-- This is the tree node template for leaf nodes -->
+        <cdk-nested-tree-node *cdkTreeNodeDef="let node" class="example-tree-node">
+            <!-- use a disabled button to provide padding for tree leaf -->
+            <!-- <button mat-icon-button disabled></button> -->
+            <div class="leaf-node"
+                *ngIf="node.nodeType !== folderNodeTypes.TEMP_RECORDING; else tempRecordingNodeBlock">
+                <div class="pl-4">
+                    <mat-checkbox [(ngModel)]="node.isChecked" (change)="onRecordingSelection(node)">
+                    </mat-checkbox>
+                </div>
+                <div class="pl-2">
+                    <button mat-stroked-button color="primary" (click)="onRecordingClick(node)">
+                        <mat-icon class="folder-icon">text_snippet</mat-icon>{{node.name}}
+                    </button>
+                </div>
+                <div class="pl-2 node-actions">
+                    <button type="button" mat-icon-button color="accent" (click)="addTempCloneNode(node)"
+                        matTooltip="Clone Recording" matTooltipPosition="above">
+                        <mat-icon>file_copy</mat-icon>
+                    </button>
+                    <button type="button" mat-icon-button color="accent" (click)="deleteNode(node)"
+                        matTooltip="Delete Recording" matTooltipPosition="above">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
             </div>
-            <div class="pl-2">
-                <button mat-stroked-button color="primary" (click)="onRecordingClick(node)">
-                    <mat-icon class="folder-icon">text_snippet</mat-icon>{{node.name}}
+            <ng-template #tempRecordingNodeBlock>
+                <span class="temp-node-span temp-leaf-node-span">
+                    <input matInput [(ngModel)]="node.name" placeholder="recording name" />
+                    <a mat-button class="d-inline-block"
+                        (click)="saveTempNode(node, folderNodeTypes.RECORDING)">Save</a>
+                </span>
+            </ng-template>
+        </cdk-nested-tree-node>
+        <!-- This is the tree node template for expandable nodes -->
+        <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild"
+            class="example-tree-node border-left border-bottom">
+            <div class="folder-node" *ngIf="node.nodeType !== folderNodeTypes.TEMP_FOLDER; else tempFolderNodeBlock">
+                <button mat-icon-button [attr.aria-label]="'Toggle ' + node.name" cdkTreeNodeToggle>
+                    <mat-icon class="mat-icon-rtl-mirror">
+                        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                    </mat-icon>
                 </button>
-            </div>
-            <div class="pl-2 node-actions">
-                <button type="button" mat-icon-button color="accent" (click)="addTempCloneNode(node)"
-                    matTooltip="Clone Recording" matTooltipPosition="above">
-                    <mat-icon>file_copy</mat-icon>
-                </button>
-                <button type="button" mat-icon-button color="accent" (click)="deleteNode(node)"
-                    matTooltip="Delete Recording" matTooltipPosition="above">
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </div>
-        </div>
-        <ng-template #tempRecordingNodeBlock>
-            <span class="temp-node-span temp-leaf-node-span">
-                <input matInput [(ngModel)]="node.name" placeholder="recording name" />
-                <a mat-button class="d-inline-block" (click)="saveTempNode(node, folderNodeTypes.RECORDING)">Save</a>
-            </span>
-        </ng-template>
-    </cdk-nested-tree-node>
-    <!-- This is the tree node template for expandable nodes -->
-    <cdk-nested-tree-node *cdkTreeNodeDef="let node; when: hasChild"
-        class="example-tree-node border-left border-bottom">
-        <div class="folder-node" *ngIf="node.nodeType !== folderNodeTypes.TEMP_FOLDER; else tempFolderNodeBlock">
-            <button mat-icon-button [attr.aria-label]="'Toggle ' + node.name" cdkTreeNodeToggle>
-                <mat-icon class="mat-icon-rtl-mirror">
-                    {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
-                </mat-icon>
-            </button>
 
-            <span>
-                <mat-icon class="folder-icon">folder</mat-icon>
-                {{node.name}}
-            </span>
-            <div class="pl-2 node-actions">
-                <button type="button" mat-icon-button color="accent"
-                    (click)="addTempNode(node, folderNodeTypes.TEMP_FOLDER)" matTooltip="Add new folder"
-                    matTooltipPosition="above">
-                    <mat-icon>create_new_folder</mat-icon>
-                </button>
-                <button type="button" mat-icon-button color="accent"
-                    (click)="addTempNode(node, folderNodeTypes.TEMP_RECORDING)" matTooltip="Add new recording"
-                    matTooltipPosition="above">
-                    <mat-icon>note_add</mat-icon>
-                </button>
-                <button type="button" mat-icon-button color="accent" (click)="deleteNode(node)"
-                    matTooltip="Delete Folder" matTooltipPosition="above">
-                    <mat-icon>delete</mat-icon>
-                </button>
+                <span>
+                    <mat-icon class="folder-icon">folder</mat-icon>
+                    {{node.name}}
+                </span>
+                <div class="pl-2 node-actions">
+                    <button type="button" mat-icon-button color="accent"
+                        (click)="addTempNode(node, folderNodeTypes.TEMP_FOLDER)" matTooltip="Add new folder"
+                        matTooltipPosition="above">
+                        <mat-icon>create_new_folder</mat-icon>
+                    </button>
+                    <button type="button" mat-icon-button color="accent"
+                        (click)="addTempNode(node, folderNodeTypes.TEMP_RECORDING)" matTooltip="Add new recording"
+                        matTooltipPosition="above">
+                        <mat-icon>note_add</mat-icon>
+                    </button>
+                    <button type="button" mat-icon-button color="accent" (click)="deleteNode(node)"
+                        matTooltip="Delete Folder" matTooltipPosition="above">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
             </div>
-        </div>
-        <ng-template #tempFolderNodeBlock>
-            <span class="temp-node-span">
-                <input matInput [(ngModel)]="node.name" placeholder="folder name" />
-                <a mat-button class="d-inline-block" (click)="saveTempNode(node, folderNodeTypes.FOLDER)">Save</a>
-            </span>
-        </ng-template>
-        <!-- <div [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+            <ng-template #tempFolderNodeBlock>
+                <span class="temp-node-span">
+                    <input matInput [(ngModel)]="node.name" placeholder="folder name" />
+                    <a mat-button class="d-inline-block" (click)="saveTempNode(node, folderNodeTypes.FOLDER)">Save</a>
+                </span>
+            </ng-template>
+            <!-- <div [class.example-tree-invisible]="!treeControl.isExpanded(node)">
             <ng-container cdkTreeNodeOutlet></ng-container>
         </div> -->
-        <div *ngIf="treeControl.isExpanded(node)">
-            <ng-container cdkTreeNodeOutlet></ng-container>
-        </div>
-    </cdk-nested-tree-node>
-</cdk-tree>
+            <div *ngIf="treeControl.isExpanded(node)">
+                <ng-container cdkTreeNodeOutlet></ng-container>
+            </div>
+        </cdk-nested-tree-node>
+    </cdk-tree>
+</div>
