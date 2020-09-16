@@ -12,18 +12,18 @@
         </mat-form-field>
         <br>
         <mat-form-field appearance="fill">
-            <mat-label>Target URL</mat-label>
-            <input matInput formControlName="targetURL">
-            <mat-error *ngIf="targetURL.errors && targetURL.errors.required">
-                Target URL is required
-            </mat-error>
-        </mat-form-field>
-        <br>
-        <mat-form-field appearance="fill">
             <mat-label>Wiremock URL</mat-label>
             <input matInput formControlName="wiremockURL">
             <mat-error *ngIf="wiremockURL.errors && wiremockURL.errors.required">
                 WireMock URL is required
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Target URL</mat-label>
+            <input matInput formControlName="targetURL">
+            <mat-error *ngIf="targetURL.errors && targetURL.errors.required">
+                Target URL is required
             </mat-error>
         </mat-form-field>
     </mat-dialog-content>
