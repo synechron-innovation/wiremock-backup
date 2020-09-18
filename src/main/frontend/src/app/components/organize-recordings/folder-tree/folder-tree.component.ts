@@ -184,8 +184,16 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
 
   addTempCloneNode(node: FolderNode): void {
     const parent = FolderTreeHelper.getParentByAncestorPath(node, this.nestedTreeData);
-    const nodeToBeClonedIndex = parent.children.findIndex(child => child.id === node.id);
-    parent.children.splice(nodeToBeClonedIndex + 1, 0, { ...node, ...{ name: '', nodeType: FolderNodeTypes.TEMP_RECORDING } });
+    let nodeArray: FolderNode[];
+
+    if (parent && parent.children) {
+      nodeArray = parent.children;
+    } else {
+      nodeArray = this.nestedTreeData;
+    }
+
+    const nodeToBeClonedIndex = nodeArray.findIndex(child => child.id === node.id);
+    nodeArray.splice(nodeToBeClonedIndex + 1, 0, { ...node, ...{ name: '', nodeType: FolderNodeTypes.TEMP_RECORDING } });
     this.refreshFolderTree();
   }
 
@@ -194,7 +202,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
     node.nodeType = nodeType;
     if (nodeType === FolderNodeTypes.RECORDING) {
       if (!!node.recordingPath) { // clone action
-        const updatedRecordingPath = node.ancestorPath + ':::' + node.name;
+        const updatedRecordingPath = (node.ancestorPath) ? node.ancestorPath + ':::' + node.name : node.name;
         this.treeAction.emit({
           type: TreeActionTypes.CLONE,
           node,
