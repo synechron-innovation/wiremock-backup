@@ -141,9 +141,6 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
     });
 
     const dialogCloseSubscription = dialog.afterClosed().subscribe((updatedMapping: string) => {
-      if (!updatedMapping) {
-        return;
-      }
 
       selectedRecordings.forEach(recordingId => {
         const recording = this.recordings.find(record => record.name === recordingId);
@@ -152,7 +149,12 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
           recording.name = updatedMapping;
         } else if (recording && !isSingleRecording) {
           const [mapping, recordingName] = recording.name.split(':::');
-          recording.name = updatedMapping + ':::' + recordingName;
+          recording.name = (updatedMapping) ? updatedMapping + ':::' : '';
+          if (recordingName) {
+            recording.name += recordingName;
+          } else {
+            recording.name += mapping;
+          }
         }
 
       });
@@ -176,7 +178,8 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
     } else if (treeAction.type === TreeActionTypes.CLONE) {
       const existingRecording = this.recordings.find(recording => recording.name === treeAction.node.recordingPath);
       if (!!existingRecording) {
-        const randomHexString = this.getRandomHex(10);
+        // bd08db7e-b35a-4325-bb63-784d35dfb1f5
+        const randomHexString = this.generateRandomId();
         const clonedRecording = {
           ...existingRecording,
           ...{ id: randomHexString, uuid: randomHexString, name: treeAction.updatedRecordingPath }
@@ -188,6 +191,15 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
       recordingToUpdate.name = treeAction.updatedRecordingPath;
     }
     this.resetSelection();
+  }
+
+  generateRandomId(): string {
+    let randomId = `${this.getRandomHex(8)}-`;
+    for (let i = 0; i < 3; i++) {
+      randomId += `${this.getRandomHex(4)}-`;
+    }
+    randomId += this.getRandomHex(12);
+    return randomId;
   }
 
   private getRandomHex(size: number): string {
