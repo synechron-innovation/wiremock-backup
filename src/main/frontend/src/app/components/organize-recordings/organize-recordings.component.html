@@ -28,7 +28,7 @@
         </div>
         <div class="edit-recording-section">
             <div class="recording-name">
-                <span>{{recordingToBeEdited?.name | recordingNameMapping}}</span>
+                {{recordingToBeEdited?.name | recordingNameMapping}}
             </div>
             <div class="recording-textarea">
                 <textarea matInput [disabled]="!recordingToBeEdited" [(ngModel)]="recordingAsString"
