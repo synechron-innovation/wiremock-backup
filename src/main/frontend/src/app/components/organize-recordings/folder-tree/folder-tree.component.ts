@@ -109,12 +109,17 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   deleteNode(node: FolderNode): void {
-    const parent = FolderTreeHelper.getParentByAncestorPath(node, this.nestedTreeData);
+    let nodeArray: FolderNode[];
+    if (node.ancestorPath) {
+      nodeArray = FolderTreeHelper.getParentByAncestorPath(node, this.nestedTreeData).children;
+    } else {
+      nodeArray = this.nestedTreeData;
+    }
 
     if (!node.children) { // leaf nodes
-      const nodeIndex = parent.children.findIndex(childNode => childNode.name === node.name);
+      const nodeIndex = nodeArray.findIndex(childNode => childNode.name === node.name);
       if (nodeIndex !== -1) {
-        parent.children.splice(nodeIndex, 1);
+        nodeArray.splice(nodeIndex, 1);
       }
 
       this.refreshFolderTree();
@@ -126,16 +131,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
       });
     } else {
 
-      // update ancestor path recursively for each child node
-      // determine which array to be updated - parent.children or the root tree array
-      let nodeArray: FolderNode[];
-      if (parent) {
-        this.updateDescendants(node.children, node.ancestorPath);
-        nodeArray = parent.children;
-      } else {
-        this.updateDescendants(node.children, null);
-        nodeArray = this.nestedTreeData;
-      }
+      this.updateDescendants(node.children, node.ancestorPath);
 
       // delete the node from the parent children and replace it with the children of the node
       const nodeToBeRemovedIndex = nodeArray.findIndex(child => child.name === node.name);
@@ -157,7 +153,7 @@ export class FolderTreeComponent implements OnInit, OnChanges, AfterViewInit {
         this.updateDescendants(node.children, updatedAncestorPath);
       } else if (!node.children) {
         // leaf node
-        const updatedRecordingPath = node.ancestorPath + ':::' + node.name;
+        const updatedRecordingPath = (node.ancestorPath) ? node.ancestorPath + ':::' + node.name : node.name;
         this.treeAction.emit({
           node,
           type: TreeActionTypes.UPDATE,
