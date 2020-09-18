@@ -141,9 +141,6 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
     });
 
     const dialogCloseSubscription = dialog.afterClosed().subscribe((updatedMapping: string) => {
-      if (!updatedMapping) {
-        return;
-      }
 
       selectedRecordings.forEach(recordingId => {
         const recording = this.recordings.find(record => record.name === recordingId);
@@ -152,7 +149,12 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
           recording.name = updatedMapping;
         } else if (recording && !isSingleRecording) {
           const [mapping, recordingName] = recording.name.split(':::');
-          recording.name = updatedMapping + ':::' + recordingName;
+          recording.name = (updatedMapping) ? updatedMapping + ':::' : '';
+          if (recordingName) {
+            recording.name += recordingName;
+          } else {
+            recording.name += mapping;
+          }
         }
 
       });
