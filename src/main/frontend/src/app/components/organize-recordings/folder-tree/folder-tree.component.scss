@@ -1,6 +1,8 @@
 .folder-tree-container {
+  min-height: 64vh;
   max-height: 65vh;
-  overflow-y: auto;
+  max-width: 35vw;
+  overflow: auto;
 }
 
 .example-tree-invisible {
