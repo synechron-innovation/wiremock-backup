@@ -8,6 +8,7 @@ import { Instance } from 'src/app/model/Instance';
 import { InstanceRecordingData } from './../../model/Instance';
 import { InstanceDetailsDialogComponent } from './../instance-details-dialog/instance-details-dialog.component';
 import { InstanceMappingService } from 'src/app/services/instance-mapping.service';
+import { HistoryDialogComponent } from '../history-dialog/history-dialog.component';
 
 @Component({
   selector: 'app-landing-page',
@@ -49,7 +50,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   openInstanceDetailsDialog(instance?: Instance): void {
     const instanceDialog = this.dialog.open(InstanceDetailsDialogComponent, {
       disableClose: true,
-      width: '30vw',
+      width: '500px',
       data: {
         operationType: (!!instance) ? 'edit' : 'new',
         instance
@@ -83,6 +84,18 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     });
 
     this.subscription.add(instanceDialogSub);
+  }
+
+  openHistoryDialog(instanceId: number): void {
+    this.instanceMappingService.importHistoryFromDB(instanceId).subscribe((histories) => {
+      this.dialog.open(HistoryDialogComponent, {
+        disableClose: true,
+        width: '500px',
+        data: {
+          histories
+        }
+      });
+    });
   }
 
   deleteInstance(): void {

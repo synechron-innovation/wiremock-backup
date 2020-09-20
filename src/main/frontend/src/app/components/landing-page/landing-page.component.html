@@ -49,7 +49,7 @@
                 matTooltip="Copy WireMock URL">
                 <mat-icon>content_copy</mat-icon>
             </button>
-            <button type="button" mat-icon-button matTooltip="Show history">
+            <button type="button" mat-icon-button (click)="openHistoryDialog(instance.id)" matTooltip="Show history">
                 <mat-icon>history</mat-icon>
             </button>
         </div>
