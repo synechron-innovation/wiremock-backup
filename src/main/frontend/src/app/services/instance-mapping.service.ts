@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, EMPTY, of } from 'rxjs';
-import { Instance } from './../model/Instance';
+import { Instance, InstanceRecordingData } from './../model/Instance';
 import { Recording } from '../model/Recording';
 
 @Injectable({
@@ -45,8 +45,14 @@ export class InstanceMappingService {
     return this.http.get<any>(`${this.BASE_URL}/recordings/stop/${instanceId}`);
   }
 
-  getRecordingStatus(instanceId: number): Observable<string> {
-    return this.http.get<string>(`${this.BASE_URL}/recordings/status/${instanceId}`);
+  getRecordingStatusAndMappingCount(instanceIds: number[]): Observable<InstanceRecordingData[]> {
+    let generatedRequestParams = '';
+
+    instanceIds.forEach((instanceId, idx) => {
+      generatedRequestParams += `instanceIds=${instanceId}${(idx === instanceIds.length - 1) ? '' : '&'}`;
+    });
+
+    return this.http.post<InstanceRecordingData[]>(`${this.BASE_URL}/quickAccess/7/recStatusAndMapCnt?${generatedRequestParams}`, null);
   }
 
   getMappingsByInstanceId(instanceId: number): Observable<Recording[]> {
@@ -55,15 +61,19 @@ export class InstanceMappingService {
     );
   }
 
+  importHistoryFromDB(instanceId: number): Observable<string[]> {
+    return this.http.get<string[]>(`${this.BASE_URL}/mappingOperationsLocalAndDB/importHistoryFromDB/instanceId/${instanceId}`);
+  }
+
   importMappingsFromWireMock(instanceId: number, limit: number, offset: number): Observable<number> {
     return this.http.get<number>(
       `${this.BASE_URL}/mappingOperationsDBAndWM/importFromWiremock/instanceId/${instanceId}?limit=${limit}&offset=${offset}`
     );
   }
 
-  exportMappingsToDatabase(recordings: Recording[], instanceId: number): Observable<Instance> {
+  exportMappingsToDatabase(recordings: Recording[], comment: string, instanceId: number): Observable<Instance> {
     return this.http.post<Instance>(
-      `${this.BASE_URL}/mappingOperationsLocalAndDB/exportToDB/instanceId/${instanceId}`,
+      `${this.BASE_URL}/mappingOperationsLocalAndDB/exportToDB/instanceId/${instanceId}?comment=${comment}`,
       recordings
     );
   }

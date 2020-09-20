@@ -17,10 +17,13 @@
 
     <div class="row instance-row d-flex align-items-center" *ngFor="let instance of instances">
         <div class="col-sm-2">
-            <mat-checkbox (click)="updateSelection(instance)" class="mr-2"></mat-checkbox>
+            <mat-checkbox [checked]="selectedInstance && selectedInstance.id === instance.id"
+                (change)="updateSelection(instance)" class="mr-2"></mat-checkbox>
             <span class="font-weight-bold">{{ instance?.instanceName }}</span>
         </div>
-        <div class="col-sm-2 text text-10 text-center">10 Recordings</div>
+        <div class="col-sm-2 text text-10 text-center">
+            {{getMappingCountOrRecordingStatus(instance.id, 'count')}} Recordings
+        </div>
         <div class="col-sm-6 action-buttons">
             <button type="button" mat-icon-button (click)="startRecording(instance)" matTooltip="Start recording">
                 <mat-icon>play_arrow</mat-icon>
@@ -46,12 +49,12 @@
                 matTooltip="Copy WireMock URL">
                 <mat-icon>content_copy</mat-icon>
             </button>
-            <button type="button" mat-icon-button matTooltip="Show history">
+            <button type="button" mat-icon-button (click)="openHistoryDialog(instance.id)" matTooltip="Show history">
                 <mat-icon>history</mat-icon>
             </button>
         </div>
         <div class="col-sm-2 text text-12 text-center">
-            {{recordingStatusMap?.get(instance)}}
+            {{getMappingCountOrRecordingStatus(instance.id, 'status')}}
         </div>
     </div>
 </div>
