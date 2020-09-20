@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.wiremockbackup.document.InstanceMapping;
 import org.wiremockbackup.dto.InstanceMappingDTO;
+import org.wiremockbackup.dto.InstanceSummaryDTO;
 import org.wiremockbackup.exception.WiremockUIException;
 import org.wiremockbackup.service.InstanceMappingService;
 import org.wiremockbackup.service.MappingOperationsService;
@@ -23,6 +24,7 @@ import org.wiremockbackup.util.MappingTarget;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.client.model.InlineResponse200;
+import io.swagger.client.model.InlineResponse2003;
 
 @RestController
 @RequestMapping(AppConstants.URI_QUICK)
@@ -102,4 +104,25 @@ public class QuickAccessController {
 		L.info("End : QuickAccessController.exportAllToWiremockByInstanceId() : instanceId = {}, Exported = {}, uploadFolder = {}", instanceId, exported, uploadFolder);
 		return exported;
 	}
+
+	@ApiOperation(value = "7 - Get Recording Status and Mapping Count")
+	@RequestMapping(value = "/7/recStatusAndMapCnt", method = RequestMethod.POST)
+	public List<InstanceSummaryDTO> recStatusAndMapCnt(@RequestParam List<Long> instanceIds) throws WiremockUIException {
+		L.info("Start : QuickAccessController.recStatusAndMapCnt() : instanceIdCount = {}", ((null == instanceIds)?0:instanceIds.size()));
+
+		List<InstanceSummaryDTO> lstInstanceSummaryDTO = recordingService.statusOfRecoding(instanceIds);
+
+		L.info("End : QuickAccessController.recStatusAndMapCnt() : instanceIdCount = {}", ((null == instanceIds)?0:instanceIds.size()));
+		return lstInstanceSummaryDTO;
+	}
+//	@ApiOperation(value = "8 - View History for an Instance")
+//	@RequestMapping(value = "/8/history/instanceId/{instanceId}", method = RequestMethod.GET)
+//	public boolean getHistory(@PathVariable("instanceId") Long instanceId) throws WiremockUIException {
+//		L.info("Start : QuickAccessController.getHistory() : instanceId = {}", instanceId);
+//
+//		boolean exported = mappingOperationsService.exportWiremockRecordings(instanceId, MappingTarget.LOCAL);
+//
+//		L.info("End : QuickAccessController.getHistory() : instanceId = {}", instanceId);
+//		return exported;
+//	}
 }
