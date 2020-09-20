@@ -1,11 +1,16 @@
 package org.wiremockbackup.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.wiremockbackup.document.InstanceMapping;
+import org.wiremockbackup.dto.InstanceSummaryDTO;
 import org.wiremockbackup.exception.WiremockUIException;
 import org.wiremockbackup.repo.InstanceMappingRepository;
 
@@ -87,6 +92,10 @@ public class RecordingService {
 	public InlineResponse2003 statusOfRecoding(Long instanceId) throws WiremockUIException {
 		return statusOfRecoding(instanceMappingRepository.findById(instanceId));
 	}
+	public List<InstanceSummaryDTO> statusOfRecoding(List<Long> lstInstanceId) throws WiremockUIException {
+		// TODO : Lazy load Mappings inside "InstanceMapping" object
+		return statusOfRecodingList(instanceMappingRepository.findAllById(lstInstanceId));
+	}
 	public InlineResponse2003 statusOfRecoding(Optional<InstanceMapping> instanceMappingOptional) throws WiremockUIException {
 		L.debug("Start : RecordingService.statusOfRecoding(...)");
 		InlineResponse2003 adminRecordingsStatusGet = null;
@@ -94,7 +103,7 @@ public class RecordingService {
 		if (instanceMappingOptional.isPresent()) {
 			instanceMapping = instanceMappingOptional.get();
 
-			L.debug("43 : RecordingService.statusOfRecoding(...) : instanceMapping = {}", instanceMapping);
+			L.debug("102 : RecordingService.statusOfRecoding(...) : instanceMapping = {}", instanceMapping);
 
 			ApiClient apiClient = new ApiClient();
 			apiClient.setBasePath(instanceMapping.getWiremockURL());
@@ -102,7 +111,7 @@ public class RecordingService {
 			try {
 				adminRecordingsStatusGet = recordingsApi.adminRecordingsStatusGet();
 			} catch (ApiException e) {
-				L.error("61 : RecordingService.statusOfRecoding(...) : Exception when Starting recording : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
+				L.error("110 : RecordingService.statusOfRecoding(...) : Exception when Starting recording : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
 				throw new WiremockUIException("Custom exception while getting status", e);
 			}
 		} else {
@@ -111,5 +120,39 @@ public class RecordingService {
 
 		L.debug("End : RecordingService.statusOfRecoding(...)");
 		return adminRecordingsStatusGet;
+	}
+	public List<InstanceSummaryDTO> statusOfRecodingList(Iterable<InstanceMapping> instanceMappingIterable) throws WiremockUIException {
+		L.debug("Start : RecordingService.statusOfRecodingList(...)");
+		List<InstanceSummaryDTO> lstAdminRecordingsStatusGet = new ArrayList<InstanceSummaryDTO>();
+		InlineResponse2003 adminRecordingsStatusGet = null;
+		InstanceMapping instanceMapping = null;
+		if (null != instanceMappingIterable) {
+			Iterator<InstanceMapping> iterator = instanceMappingIterable.iterator();
+			while (iterator.hasNext()) {
+				instanceMapping = iterator.next();
+
+				// TODO : Get this count in a separate query to DB as "InstanceMapping" object should be lazy loaded
+				int intMappingCount = (CollectionUtils.isEmpty(instanceMapping.getMappings())?0:instanceMapping.getMappings().size());
+
+				L.debug("131 : RecordingService.statusOfRecodingList(...) : instanceMapping = {}", instanceMapping);
+
+				ApiClient apiClient = new ApiClient();
+				apiClient.setBasePath(instanceMapping.getWiremockURL());
+				RecordingsApi recordingsApi = new RecordingsApi(apiClient);
+				try {
+					adminRecordingsStatusGet = recordingsApi.adminRecordingsStatusGet();
+					lstAdminRecordingsStatusGet.add(new InstanceSummaryDTO(instanceMapping.getId(), adminRecordingsStatusGet.getStatus(),new Long(intMappingCount)));
+					L.debug("137 : RecordingService.statusOfRecodingList(...) : Status = {}, instanceMapping = {}", adminRecordingsStatusGet.getStatus(), instanceMapping);
+				} catch (ApiException e) {
+					L.error("61 : RecordingService.statusOfRecodingList(...) : Exception when Starting recording : ApiException e.Code = {}, e.Body = {}", e.getCode(), e.getResponseBody());
+					throw new WiremockUIException("Custom exception while getting status", e);
+				}
+			}
+		} else {
+			L.error("Error : RecordingService.statusOfRecodingList(...) : couldn\'t find anything to start record");
+		}
+
+		L.debug("End : RecordingService.statusOfRecodingList(...)");
+		return lstAdminRecordingsStatusGet;
 	}
 }
