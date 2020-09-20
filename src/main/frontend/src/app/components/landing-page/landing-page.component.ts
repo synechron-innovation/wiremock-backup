@@ -174,10 +174,10 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  getMappingCountOrRecordingStatus(instanceId: number, query: string): number | string {
+  getMappingCountOrRecordingStatus(instanceId: number, query: string): string {
     const instanceData = this.instanceDataArray && this.instanceDataArray.find(instanceDataObj => instanceDataObj.id === instanceId);
     if (query === 'count') {
-      return instanceData ? instanceData.mappingCount : 0;
+      return instanceData ? `${instanceData.mappingCount} Recording${(instanceData.mappingCount === 1) ? '' : 's'}` : '';
     } else {
       return instanceData ? instanceData.statusEnum : '';
     }
