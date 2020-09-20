@@ -17,7 +17,8 @@
 
     <div class="row instance-row d-flex align-items-center" *ngFor="let instance of instances">
         <div class="col-sm-2">
-            <mat-checkbox (click)="updateSelection(instance)" class="mr-2"></mat-checkbox>
+            <mat-checkbox [checked]="selectedInstance && selectedInstance.id === instance.id"
+                (change)="updateSelection(instance)" class="mr-2"></mat-checkbox>
             <span class="font-weight-bold">{{ instance?.instanceName }}</span>
         </div>
         <div class="col-sm-2 text text-10 text-center">
