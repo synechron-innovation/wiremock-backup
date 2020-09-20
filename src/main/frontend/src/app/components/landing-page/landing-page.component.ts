@@ -5,8 +5,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Instance } from 'src/app/model/Instance';
+import { InstanceRecordingData } from './../../model/Instance';
 import { InstanceDetailsDialogComponent } from './../instance-details-dialog/instance-details-dialog.component';
 import { InstanceMappingService } from 'src/app/services/instance-mapping.service';
+import { HistoryDialogComponent } from '../history-dialog/history-dialog.component';
 
 @Component({
   selector: 'app-landing-page',
@@ -17,7 +19,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   instances: Instance[] = [];
   selectedInstance: Instance;
   subscription: Subscription;
-  recordingStatusMap: WeakMap<Instance, string>;
+  instanceDataArray: InstanceRecordingData[];
 
   constructor(
     private dialog: MatDialog,
@@ -27,7 +29,6 @@ export class LandingPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = new Subscription();
-    this.recordingStatusMap = new WeakMap();
     this.getAllInstances();
   }
 
@@ -42,17 +43,14 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   getAllInstances(): void {
     this.instanceMappingService.getAllInstances().subscribe((listOfInstances) => {
       this.instances = listOfInstances;
-      listOfInstances.forEach((instance) => {
-        this.instanceMappingService.getRecordingStatus(instance.id)
-          .subscribe((recordingState) => this.recordingStatusMap.set(instance, recordingState));
-      });
+      this.refreshRecordingStatusAndMappingCount();
     });
   }
 
   openInstanceDetailsDialog(instance?: Instance): void {
     const instanceDialog = this.dialog.open(InstanceDetailsDialogComponent, {
       disableClose: true,
-      width: '30vw',
+      width: '500px',
       data: {
         operationType: (!!instance) ? 'edit' : 'new',
         instance
@@ -88,6 +86,18 @@ export class LandingPageComponent implements OnInit, OnDestroy {
     this.subscription.add(instanceDialogSub);
   }
 
+  openHistoryDialog(instanceId: number): void {
+    this.instanceMappingService.importHistoryFromDB(instanceId).subscribe((histories) => {
+      this.dialog.open(HistoryDialogComponent, {
+        disableClose: true,
+        width: '500px',
+        data: {
+          histories
+        }
+      });
+    });
+  }
+
   deleteInstance(): void {
     if (this.selectedInstance) {
       this.instanceMappingService.deleteInstance(this.selectedInstance.id)
@@ -103,12 +113,12 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   }
 
   startRecording(instance: Instance): void {
-    const recordingStatus = this.recordingStatusMap.get(instance);
+    const recordingStatus = this.getMappingCountOrRecordingStatus(instance.id, 'status');
 
     if (recordingStatus !== 'RECORDING') {
       this.instanceMappingService.startRecording(instance.id)
         .subscribe((response) => {
-          this.recordingStatusMap.set(instance, 'RECORDING');
+          this.refreshRecordingStatusAndMappingCount();
           this.showSnackbar('Recording started successfully');
         }, (error) => {
           this.showSnackbar('Error occurred while starting the recording');
@@ -119,12 +129,12 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   }
 
   stopRecording(instance: Instance): void {
-    const recordingStatus = this.recordingStatusMap.get(instance);
+    const recordingStatus = this.getMappingCountOrRecordingStatus(instance.id, 'status');
 
     if (recordingStatus !== 'NEVERSTARTED' && recordingStatus !== 'STOPPED') {
       this.instanceMappingService.stopRecording(instance.id)
         .subscribe((response) => {
-          this.recordingStatusMap.set(instance, 'STOPPED');
+          this.refreshRecordingStatusAndMappingCount();
           this.showSnackbar('Recording stopped successfully');
         }, (error) => {
           this.showSnackbar('Error occurred while stopping the recording');
@@ -137,6 +147,7 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   stageMappings(instanceId: number): void {
     this.instanceMappingService.importMappingsFromWireMock(instanceId, 100, 0)
       .subscribe((response) => {
+        this.refreshRecordingStatusAndMappingCount();
         this.showSnackbar('Successfully staged mappings');
       }, (error) => {
         this.showSnackbar('Error occurred while trying to stage mappings');
@@ -150,6 +161,26 @@ export class LandingPageComponent implements OnInit, OnDestroy {
       }, (error) => {
         this.showSnackbar('Error occurred while trying to export mappings');
       });
+  }
+
+  refreshRecordingStatusAndMappingCount(): void {
+    if (!this.instances || !this.instances.length) {
+      return;
+    }
+    this.instanceMappingService.getRecordingStatusAndMappingCount(
+      this.instances.map(instance => instance.id)
+    ).subscribe((response) => {
+      this.instanceDataArray = response;
+    });
+  }
+
+  getMappingCountOrRecordingStatus(instanceId: number, query: string): string {
+    const instanceData = this.instanceDataArray && this.instanceDataArray.find(instanceDataObj => instanceDataObj.id === instanceId);
+    if (query === 'count') {
+      return instanceData ? `${instanceData.mappingCount} Recording${(instanceData.mappingCount === 1) ? '' : 's'}` : '';
+    } else {
+      return instanceData ? instanceData.statusEnum : '';
+    }
   }
 
   showSnackbar(message: string): void {

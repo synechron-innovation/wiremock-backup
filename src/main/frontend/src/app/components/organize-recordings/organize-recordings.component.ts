@@ -80,8 +80,7 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
 
     const dialogCloseSubscription = dialog.afterClosed().subscribe((comment: string) => {
       if (comment) {
-        // TODO - add comment to the API call
-        this.instanceMappingService.exportMappingsToDatabase(this.recordings, this.instanceId)
+        this.instanceMappingService.exportMappingsToDatabase(this.recordings, comment, this.instanceId)
           .subscribe((response) => {
             this.snackbar.open('Recordings saved to database', 'Close', {
               duration: 2500
@@ -98,32 +97,16 @@ export class OrganizeRecordingsComponent implements OnInit, OnDestroy {
   }
 
   publishRecordings(): void {
-    const dialog = this.dialog.open(ConfirmationDialogComponent, {
-      disableClose: true,
-      width: '500px',
-      height: '250px',
-      data: {
-        operationType: 'publish',
-      }
-    });
-
-    const dialogCloseSubscription = dialog.afterClosed().subscribe((comment: string) => {
-      if (comment) {
-        // TODO - add comment to the API call
-        this.instanceMappingService.exportMappingsToWireMock(this.instanceId)
-          .subscribe((response) => {
-            this.snackbar.open('Recordings published to WireMock', 'Close', {
-              duration: 2500
-            });
-          }, (error) => {
-            this.snackbar.open('Error occurred. Please contact administrator.', 'Close', {
-              duration: 2500
-            });
-          });
-      }
-    });
-
-    this.subscriptions.add(dialogCloseSubscription);
+    this.instanceMappingService.exportMappingsToWireMock(this.instanceId)
+      .subscribe((response) => {
+        this.snackbar.open('Recordings published to WireMock', 'Close', {
+          duration: 2500
+        });
+      }, (error) => {
+        this.snackbar.open('Error occurred. Please contact administrator.', 'Close', {
+          duration: 2500
+        });
+      });
   }
 
   openEditMappingsDialog(selectedRecordings: Set<string>): void {

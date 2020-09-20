@@ -27,6 +27,7 @@ import { RecordingNameMappingPipe } from './pipes/recording-name-mapping.pipe';
 import { InstanceMappingService } from './services/instance-mapping.service';
 import { SpinnerInterceptorService } from './services/spinner-interceptor.service';
 import { SpinnerService } from './services/spinner.service';
+import { HistoryDialogComponent } from './components/history-dialog/history-dialog.component';
 
 @NgModule({
   declarations: [
@@ -38,9 +39,15 @@ import { SpinnerService } from './services/spinner.service';
     SpinnerComponent,
     ConfirmationDialogComponent,
     InstanceDetailsDialogComponent,
-    EditMappingsDialogComponent
+    EditMappingsDialogComponent,
+    HistoryDialogComponent
   ],
-  entryComponents: [SpinnerComponent, ConfirmationDialogComponent, InstanceDetailsDialogComponent],
+  entryComponents: [
+    SpinnerComponent,
+    ConfirmationDialogComponent,
+    InstanceDetailsDialogComponent,
+    HistoryDialogComponent
+  ],
   imports: [
     BrowserModule,
     CdkTreeModule,

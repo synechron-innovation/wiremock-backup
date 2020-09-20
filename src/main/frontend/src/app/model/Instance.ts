@@ -7,3 +7,9 @@ export class Instance {
     targetURL: string;
     mappings: Recording[];
 }
+
+export class InstanceRecordingData {
+    id: number;
+    statusEnum: string;
+    mappingCount: number;
+}
