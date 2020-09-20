@@ -21,6 +21,8 @@ public class InstanceMapping {
 	private String wiremockURL;
 	private String targetURL;
 
+	private List<String> history;
+
 	private List<Body1> mappings;
 
 	public InstanceMapping() {
@@ -33,14 +35,16 @@ public class InstanceMapping {
 		this.wiremockURL = instanceMappingDTO.getWiremockURL();
 		this.targetURL = instanceMappingDTO.getTargetURL();
 		this.mappings = instanceMappingDTO.getMappings();
+		this.history = instanceMappingDTO.getHistory();
 	}
 
-	public InstanceMapping(Long id, String instanceName, String wiremockURL, String targetURL, List<Body1> mappings) {
+	public InstanceMapping(Long id, String instanceName, String wiremockURL, String targetURL, List<String> history, List<Body1> mappings) {
 		this.id = id;
 		this.instanceName = instanceName;
 		this.wiremockURL = wiremockURL;
 		this.targetURL = targetURL;
 		this.mappings = mappings;
+		this.history = history;
 	}
 
 	public Long getId() {
@@ -61,6 +65,12 @@ public class InstanceMapping {
 	public void setWiremockURL(String wiremockURL) {
 		this.wiremockURL = wiremockURL;
 	}
+	public List<String> getHistory() {
+		return history;
+	}
+	public void setHistory(List<String> history) {
+		this.history = history;
+	}
 	public List<Body1> getMappings() {
 		return mappings;
 	}
@@ -76,6 +86,6 @@ public class InstanceMapping {
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", wiremockURL=" + wiremockURL + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
+		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", wiremockURL=" + wiremockURL + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ", HistorySize=" + (CollectionUtils.isEmpty(history)?0:history.size()) + ",targetURL=" + targetURL + "]";
 	}
 }

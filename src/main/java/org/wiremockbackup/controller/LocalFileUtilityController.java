@@ -55,13 +55,13 @@ public class LocalFileUtilityController {
 
 	@ApiOperation(value = "Export all mappings to DB for an Instance")
 	@RequestMapping(value = "/exportToDB/instanceId/{instanceId}", method = RequestMethod.POST)
-	public InstanceMappingForExport exportAllToDBByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(required = true) String exportFolder) throws WiremockUIException {
+	public InstanceMappingForExport exportAllToDBByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(required = true) String exportFolder, @RequestParam String comment) throws WiremockUIException {
 		L.info("Start : LocalFileUtilityController.exportAllToDBByInstanceId() : instanceId = {}, mappingsFolder = {}", instanceId, exportFolder);
 		InstanceMappingForExport instanceMappingForExport = null;
 
 		try {
 			List<Body> mappings = mappingFolderService.convertFilesToMappings(exportFolder);
-			instanceMappingForExport = mappingOperationsService.exportRecordingsToDB(instanceId, mappings);
+			instanceMappingForExport = mappingOperationsService.exportRecordingsToDB(instanceId, mappings, comment);
 		} catch (IOException e) {
 			L.error("62 : LocalFileUtilityController.exportAllToDBByInstanceId() : IOException e = {}", e);
 			throw new WiremockUIException("Exception while extracting the file content", e);

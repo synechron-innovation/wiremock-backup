@@ -17,6 +17,8 @@ public class InstanceMappingDTO {
 	private String wiremockURL;
 	@ApiModelProperty(notes = "URL to which Wiremock should be connected to - for recording")
 	private String targetURL;
+	@ApiModelProperty(notes = "List of history data under the wiremock instance that was imported to the WiremockUI related database")
+	private List<String> history;
 	@ApiModelProperty(notes = "List of recorded mappings under the wiremock instance that were imported to the WiremockUI related database")
 	private List<Body1> mappings;
 
@@ -29,6 +31,7 @@ public class InstanceMappingDTO {
 		this.instanceName = instanceMapping.getInstanceName();
 		this.wiremockURL = instanceMapping.getWiremockURL();
 		this.targetURL = instanceMapping.getTargetURL();
+		this.history = instanceMapping.getHistory();
 		this.mappings = instanceMapping.getMappings();
 	}
 
@@ -56,6 +59,12 @@ public class InstanceMappingDTO {
 	public void setMappings(List<Body1> mappings) {
 		this.mappings = mappings;
 	}
+	public List<String> getHistory() {
+		return history;
+	}
+	public void setHistory(List<String> history) {
+		this.history = history;
+	}
 	public String getTargetURL() {
 		return targetURL;
 	}
@@ -65,6 +74,6 @@ public class InstanceMappingDTO {
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", wiremockURL=" + wiremockURL + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
+		return "InstanceMappingDTO [id=" + id + ",instanceName=" + instanceName + ", wiremockURL=" + wiremockURL + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ", HistorySize=" + (CollectionUtils.isEmpty(history)?0:history.size()) + ",targetURL=" + targetURL + "]";
 	}
 }

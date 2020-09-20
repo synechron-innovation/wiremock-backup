@@ -25,6 +25,8 @@ public class InstanceMappingForExport {
 	private String wiremockURL;
 	private String targetURL;
 
+	private List<String> history;
+
 	private List<Body> mappings;
 
 	public Long getId() {
@@ -57,9 +59,15 @@ public class InstanceMappingForExport {
 	public void setTargetURL(String targetURL) {
 		this.targetURL = targetURL;
 	}
+	public List<String> getHistory() {
+		return history;
+	}
+	public void setHistory(List<String> history) {
+		this.history = history;
+	}
 
 	@Override
 	public String toString() {
-		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", wiremockURL=" + wiremockURL + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ",targetURL=" + targetURL + "]";
+		return "InstanceMappingDTO [id=" + getId() + ",instanceName=" + instanceName + ", wiremockURL=" + wiremockURL + ", MappingSize=" + (CollectionUtils.isEmpty(mappings)?0:mappings.size()) + ", HistorySize=" + (CollectionUtils.isEmpty(history)?0:history.size()) + ",targetURL=" + targetURL + "]";
 	}
 }

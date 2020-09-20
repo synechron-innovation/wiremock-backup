@@ -1,6 +1,7 @@
 package org.wiremockbackup.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -194,6 +195,7 @@ public class MappingOperationsService {
 		return uploadSuccess;
 	}
 
+	// TODO : Optimize logic to get mappings. This retrieves history from the DB even if it is not necessary
 	public List<Body1> importRecordingsFromDB(Long instanceId) {
 		InstanceMapping instanceMapping = instanceMappingRepository.findMappingDetailsById(instanceId);
 		List<Body1> mappings = null;
@@ -202,9 +204,20 @@ public class MappingOperationsService {
 		return mappings;
 	}
 
-	public InstanceMappingForExport exportRecordingsToDB(Long instanceId, List<Body> mappings) {
-		InstanceMappingForExport instanceMappingForExport = instanceMappingForExportRepository.findBasicDetailsById(instanceId);
+	// TODO : Optimize logic to get history. Maintain history in a separate collection
+	public List<String> importHistoryFromDB(Long instanceId) {
+		return instanceMappingRepository.findHistoryById(instanceId).getHistory();
+	}
+
+	public InstanceMappingForExport exportRecordingsToDB(Long instanceId, List<Body> mappings, String comment) {
+		InstanceMappingForExport instanceMappingForExport = instanceMappingForExportRepository.findBasicDetailsAndHistoryById(instanceId);
 		instanceMappingForExport.setMappings(mappings);
+		List<String> history = instanceMappingForExport.getHistory();
+		if (null == history)
+			history = new ArrayList<String>();
+		history.add(comment);
+		// TODO : Don't add history to this collection. Maintain it separately
+		instanceMappingForExport.setHistory(history);
 		return instanceMappingForExportRepository.save(instanceMappingForExport);
 	}
 

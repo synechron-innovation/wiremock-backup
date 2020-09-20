@@ -73,7 +73,7 @@ public class InstanceMappingService {
 	public Long create(String instanceName, String wiremockURL, String targetURL) {
 		L.debug("Start : InstanceMappingService.create() : instanceName = {}, wiremockURL = {}, targetURL = {}", instanceName, wiremockURL, targetURL);
 		Long id = sequenceGeneratorService.generateSequence(InstanceMapping.SEQUENCE_NAME);
-		InstanceMapping instanceMapping = instanceMappingRepository.insert(new InstanceMapping(id, instanceName, wiremockURL, targetURL, null));
+		InstanceMapping instanceMapping = instanceMappingRepository.insert(new InstanceMapping(id, instanceName, wiremockURL, targetURL, null, null));
 		L.debug("End : InstanceMappingService.create() : id = {}, instanceName = {}, wiremockURL = {}, targetURL = {}", id, instanceName, wiremockURL, targetURL);
 		return instanceMapping.getId();
 	}

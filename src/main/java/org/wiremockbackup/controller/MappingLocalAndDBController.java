@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.wiremockbackup.document.InstanceMapping;
 import org.wiremockbackup.document.InstanceMappingForExport;
 import org.wiremockbackup.service.MappingOperationsService;
 import org.wiremockbackup.util.AppConstants;
@@ -31,33 +31,43 @@ public class MappingLocalAndDBController {
 		this.mappingOperationsService = mappingOperationsService;
 	}
 
-	@ApiOperation(value = "Get all mappings from DB based onn its ID")
+	@ApiOperation(value = "Get all mappings from DB based on its ID")
 	@RequestMapping(value = "/importFromDB/instanceId/{instanceId}", method = RequestMethod.GET)
 	public List<Body1> importAllFromDBByInstanceId(@PathVariable("instanceId") Long instanceId) {
-		L.info("Start : MappingOperationsControllerDB.importAllFromDBByInstanceId() : instanceId = {}", instanceId);
+		L.info("Start : MappingLocalAndDBController.importAllFromDBByInstanceId() : instanceId = {}", instanceId);
 
 		List<Body1> mappings = mappingOperationsService.importRecordingsFromDB(instanceId);
 
-		L.info("End : MappingOperationsControllerDB.importAllFromDBByInstanceId() : instanceId = {}, MappingSize = {}", instanceId, (CollectionUtils.isEmpty(mappings)?0:mappings.size()));
+		L.info("End : MappingLocalAndDBController.importAllFromDBByInstanceId() : instanceId = {}, MappingSize = {}", instanceId, (CollectionUtils.isEmpty(mappings)?0:mappings.size()));
 		return mappings;
+	}
+	@ApiOperation(value = "Get history from DB based on its ID")
+	@RequestMapping(value = "/importHistoryFromDB/instanceId/{instanceId}", method = RequestMethod.GET)
+	public List<String> importHistoryFromDBByInstanceId(@PathVariable("instanceId") Long instanceId) {
+		L.info("Start : MappingLocalAndDBController.importHistoryFromDBByInstanceId() : instanceId = {}", instanceId);
+
+		List<String> history = mappingOperationsService.importHistoryFromDB(instanceId);
+
+		L.info("End : MappingLocalAndDBController.importHistoryFromDBByInstanceId() : instanceId = {}, HistorySize = {}", instanceId, (CollectionUtils.isEmpty(history)?0:history.size()));
+		return history;
 	}
 	@ApiOperation(value = "Export all mappings to DB for an Instance")
 	@RequestMapping(value = "/exportToDB/instanceId/{instanceId}", method = RequestMethod.POST)
-	public InstanceMappingForExport exportAllToDBByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestBody List<Body> mappings) {
-		L.info("Start : MappingOperationsControllerDB.exportAllToDBByInstanceId()");
+	public InstanceMappingForExport exportAllToDBByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestBody List<Body> mappings, @RequestParam String comment) {
+		L.info("Start : MappingLocalAndDBController.exportAllToDBByInstanceId() : instanceId = {}, comment = {}, size = {}", instanceId, comment, ((null == mappings)?0:mappings.size()));
 
-		InstanceMappingForExport instanceMappingForExport = mappingOperationsService.exportRecordingsToDB(instanceId, mappings);
+		InstanceMappingForExport instanceMappingForExport = mappingOperationsService.exportRecordingsToDB(instanceId, mappings, comment);
 
-		L.info("End : MappingOperationsControllerDB.exportAllToDBByInstanceId() : Exported = {}", instanceMappingForExport);
+		L.info("End : MappingLocalAndDBController.exportAllToDBByInstanceId() : instanceId = {}, comment = {}, size = {}, instanceMappingForExport = {}", instanceId, comment, ((null == mappings)?0:mappings.size()), instanceMappingForExport);
 		return instanceMappingForExport;
 	}
 	@ApiOperation(value = "Delete all mappings of an instance from DB based on its ID")
 	@RequestMapping(value = "/deleteFromDB/instanceId/{instanceId}", method = RequestMethod.DELETE)
 	public void deleteMappingsOfInstanceFromDBByInstanceId(@PathVariable("instanceId") Long instanceId) {
-		L.info("Start : MappingOperationsControllerDB.deleteMappingsOfInstanceFromDBByInstanceId() : instanceId = {}", instanceId);
+		L.info("Start : MappingLocalAndDBController.deleteMappingsOfInstanceFromDBByInstanceId() : instanceId = {}", instanceId);
 
 		mappingOperationsService.deleteMappingsOfInstanceFromDB(instanceId);
 
-		L.info("End : MappingOperationsControllerDB.deleteMappingsOfInstanceFromDBByInstanceId() : instanceId = {}", instanceId);
+		L.info("End : MappingLocalAndDBController.deleteMappingsOfInstanceFromDBByInstanceId() : instanceId = {}", instanceId);
 	}
 }

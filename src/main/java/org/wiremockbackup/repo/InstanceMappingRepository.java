@@ -15,4 +15,7 @@ public interface InstanceMappingRepository extends MongoRepository<InstanceMappi
 
 	@Query(value = "{'id' : ?0 }", fields = "{ 'mappings' : 1}")
 	InstanceMapping findMappingDetailsById(Long instanceId);
+
+	@Query(value = "{'id' : ?0 }", fields = "{ 'id' : 1, 'history' : 1}")
+	InstanceMapping findHistoryById(Long instanceId);
 }
