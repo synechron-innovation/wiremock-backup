@@ -67,9 +67,9 @@ export class InstanceMappingService {
     );
   }
 
-  exportMappingsToDatabase(recordings: Recording[], instanceId: number): Observable<Instance> {
+  exportMappingsToDatabase(recordings: Recording[], comment: string, instanceId: number): Observable<Instance> {
     return this.http.post<Instance>(
-      `${this.BASE_URL}/mappingOperationsLocalAndDB/exportToDB/instanceId/${instanceId}`,
+      `${this.BASE_URL}/mappingOperationsLocalAndDB/exportToDB/instanceId/${instanceId}?comment=${comment}`,
       recordings
     );
   }
