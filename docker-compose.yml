@@ -8,7 +8,7 @@ services:
     networks:
       - wiremock_mongodb_network
   wiremockui:
-    image: ravikalla/wiremock-backup
+    image: ravikalla/wiremock-backup-1
     ports:
       - "8080:8080"
     networks:
