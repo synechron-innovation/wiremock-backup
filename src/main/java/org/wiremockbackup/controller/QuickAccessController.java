@@ -84,7 +84,7 @@ public class QuickAccessController {
 
 	@ApiOperation(value = "5 - Download mappings")
 	@RequestMapping(value = "/5/importFromWiremock/instanceId/{instanceId}", method = RequestMethod.GET)
-	public Integer importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam String downloadFolder, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) throws WiremockUIException {
+	public Integer importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam String downloadFolder, @RequestParam(defaultValue="10000") Integer limit, @RequestParam(defaultValue="0") Integer offset) throws WiremockUIException {
 		L.info("Start : QuickAccessController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 
 		InstanceMapping instanceMapping = mappingOperationsService.importWiremockRecordings(instanceId, MappingTarget.LOCAL, downloadFolder, limit, offset);
