@@ -31,7 +31,7 @@ public class MappingOperationsWMController {
 
 	@ApiOperation(value = "Import all mappings of a Wiremock server to DB based in its ID")
 	@RequestMapping(value = "/importFromWiremock/instanceId/{instanceId}", method = RequestMethod.GET)
-	public Integer importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(defaultValue="100") Integer limit, @RequestParam(defaultValue="0") Integer offset) throws WiremockUIException {
+	public Integer importAllFromWiremockByInstanceId(@PathVariable("instanceId") Long instanceId, @RequestParam(defaultValue="10000") Integer limit, @RequestParam(defaultValue="0") Integer offset) throws WiremockUIException {
 		L.info("Start : MappingOperationsWMController.importAllFromWiremockByInstanceId() : instanceId = {}, limit = {}, offset = {}", instanceId, limit, offset);
 
 		InstanceMapping instanceMapping = mappingOperationsService.importWiremockRecordings(instanceId, MappingTarget.DB, null, limit, offset);
